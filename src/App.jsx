@@ -4,33 +4,36 @@ import './App.css'
 
 // Components
 import Navbar from './components/Navbar'
-import Footer from './components/Footer'
 import Landing from './components/Landing'
-import Itemfor from './components/Itemfor'
+import Tranding from './components/Tranding'
+import Footer from './components/Footer'
 
 // Pages
 import Home from './pages/Home'
+import Foot from './pages/Foot'
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        {/* Navbar stays static */}
+      <div className="App flex flex-col min-h-screen">
+        {/* Navbar always visible */}
         <Navbar />
 
-        {/* Landing and Itemfor stay static */}
-        <Landing />
-        <Itemfor />
-
-        <main className="flex-1">
-          <Routes>
-            {/* Other pages */}
-            <Route path="/home" element={<Home />} />
-          </Routes>
-        </main>
-
-        {/* Footer stays static */}
-        <Footer />
+        {/* Landing + Tranding only show on homepage */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Landing />
+                <Tranding />
+                <Footer/>
+              </>
+            }
+          />
+          <Route path="/home" element={<Home />} />
+          <Route path="/foot" element={<Foot />} />
+        </Routes>
       </div>
     </Router>
   )
