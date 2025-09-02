@@ -26,7 +26,7 @@ const LinkedinIcon = () => (
 
 const Footer = () => {
   return (
-    <footer className="bg-[#3B38A0] text-white pt-16 pb-6 font-sans">
+    <footer className="bg-[#B33791] text-white pt-16 pb-6 font-sans">
       <div className="container mx-auto px-4">
         {/* Main footer content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-8">
@@ -92,8 +92,8 @@ const Footer = () => {
         </div>
 
         {/* Copyright section */}
-        <div className="border-t border-gray-700 text-center pt-6 mt-8">
-          <p className="text-gray-500">&copy; Copyright Naveen 2022. All right reserved</p>
+        <div className="border-t border-red-700 text-center pt-6 mt-8">
+          <p className="text-red-900"> @ 2025 First Ushop. All rights reserved</p>
         </div>
       </div>
     </footer>

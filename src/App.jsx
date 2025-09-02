@@ -7,10 +7,18 @@ import Navbar from './components/Navbar'
 import Landing from './components/Landing'
 import Tranding from './components/Tranding'
 import Footer from './components/Footer'
+import Bestpro from './components/Bestpro'
+import NewAriv from './components/NewAriv'
+import Explor from './components/Explor'
+import Last from './components/Last'
+
 
 // Pages
 import Home from './pages/Home'
 import Foot from './pages/Foot'
+import Contact from './pages/Contact'
+import Register from './pages/Register'
+import About from './pages/About'
 
 function App() {
   return (
@@ -27,12 +35,19 @@ function App() {
               <>
                 <Landing />
                 <Tranding />
+                <Bestpro/>
+                <NewAriv/>
+                <Explor/>
+                <Last/>
                 <Footer/>
               </>
             }
           />
           <Route path="/home" element={<Home />} />
           <Route path="/foot" element={<Foot />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>
