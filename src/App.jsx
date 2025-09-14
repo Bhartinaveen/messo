@@ -11,6 +11,7 @@ import Bestpro from './components/Bestpro'
 import NewAriv from './components/NewAriv'
 import Explor from './components/Explor'
 import Last from './components/Last'
+import Women from './components/Women'
 
 
 // Pages
@@ -19,6 +20,7 @@ import Foot from './pages/Foot'
 import Contact from './pages/Contact'
 import Register from './pages/Register'
 import About from './pages/About'
+import Explore from './pages/Explore'
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
               <>
                 <Landing />
                 <Tranding />
+                <Women/>
                 <Bestpro/>
                 <NewAriv/>
                 <Explor/>
@@ -48,6 +51,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
+          <Route path="/explore" element={<Explore />} />
         </Routes>
       </div>
     </Router>
