@@ -30,16 +30,14 @@ const NewAriv = () => {
           {/* Left Side: Large Product Card (PlayStation 5) */}
           <div className="relative col-span-1 bg-white dark:bg-gray-900 rounded-lg overflow-hidden flex flex-col justify-between p-8 min-h-[30rem] lg:min-h-[40rem]">
               <img 
-                src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="PlayStation 5" 
+                src="/image/l7.jpg"
+                alt="Tshirt" 
                 className="absolute inset-0 w-full h-full object-contain object-center z-0"
                 onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/800x800/FFFFFF/000000?text=Image+Error'; }}
               />
               <div className="relative z-10 flex flex-col justify-end h-full text-gray-900 dark:text-white">
-                <h2 className="text-3xl font-bold">PlayStation 5</h2>
-                <p className="mt-2 max-w-xs text-sm">
-                  Black and White version of the PS5 coming out on sale.
-                </p>
+                <h2 className="text-3xl font-bold">Tshirt</h2>
+                
                 <ShopNowLink />
               </div>
           </div>
@@ -50,16 +48,14 @@ const NewAriv = () => {
             {/* Women's Collections Card */}
             <div className="relative md:col-span-2 lg:col-span-1 bg-white dark:bg-gray-900 rounded-lg overflow-hidden flex items-center p-8 min-h-[19rem]">
                 <img 
-                    src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    src="/image/s9.jpg" 
                     alt="Woman in a stylish hat" 
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 dark:opacity-40"
                     onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/600x400/FFFFFF/000000?text=Image+Error'; }}
                 />
                 <div className="relative z-10 text-gray-900 dark:text-white">
                     <h3 className="text-2xl font-bold">Women's Collections</h3>
-                    <p className="mt-2 max-w-xs text-sm">
-                        Featured woman collections that give you another vibe.
-                    </p>
+                   
                     <ShopNowLink />
                 </div>
             </div>
@@ -68,14 +64,14 @@ const NewAriv = () => {
               {/* Speakers Card */}
               <div className="relative bg-white dark:bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center p-8 min-h-[19rem]">
                   <img 
-                      src="https://images.unsplash.com/photo-1593452389537-6576961445e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                      src="/image/s10.jpg" 
                       alt="Amazon Alexa speakers" 
                       className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 dark:opacity-40"
                       onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/FFFFFF/000000?text=Image+Error'; }}
                   />
                   <div className="relative z-10 text-gray-900 dark:text-white text-center">
-                      <h3 className="text-2xl font-bold">Speakers</h3>
-                      <p className="mt-2 text-sm">Amazon wireless speakers</p>
+                      <h3 className="text-2xl font-bold">coat pant</h3>
+                     
                       <ShopNowLink />
                   </div>
               </div>
@@ -83,14 +79,14 @@ const NewAriv = () => {
               {/* Perfume Card */}
               <div className="relative bg-white dark:bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center p-8 min-h-[19rem]">
                   <img 
-                      src="https://images.unsplash.com/photo-1585399001342-d353e6adeb06?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                      src="/image/s11.jpg" 
                       alt="Gucci Intense Oud EDP perfume" 
                       className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 dark:opacity-40"
                       onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/FFFFFF/000000?text=Image+Error'; }}
                   />
                   <div className="relative z-10 text-gray-900 dark:text-white text-center">
                       <h3 className="text-2xl font-bold">Perfume</h3>
-                      <p className="mt-2 text-sm">GUCCI INTENSE OUD EDP</p>
+                     
                       <ShopNowLink />
                   </div>
               </div>

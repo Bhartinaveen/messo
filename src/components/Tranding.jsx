@@ -4,13 +4,13 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
 const categories = [
-  { name: "Mobile", img: "https://i.ibb.co/5r4Thvh/mobile.png" },
-  { name: "Cosmetics", img: "https://i.ibb.co/5GqXhz1/cosmetics.png" },
-  { name: "Electronics", img: "https://i.ibb.co/djcmkbx/electronics.png" },
-  { name: "Furniture", img: "https://i.ibb.co/w7pg1Yx/furniture.png" },
-  { name: "Watches", img: "https://i.ibb.co/kJpj1Yq/watch.png" },
-  { name: "Decor", img: "https://i.ibb.co/J3Hgdbn/decor.png" },
-  { name: "Accessories", img: "https://i.ibb.co/LhRgykM/accessories.png" },
+  { name: "Mobile", img: "/image/l1.jpg" },
+  { name: "Cosmetics", img: "/image/l2.jpg" },
+  { name: "Electronics", img: "/image/l3.jpg" },
+  { name: "Furniture", img: "/image/l5.jpg" },
+  { name: "Watches", img: "/image/l5.jpg" },
+  { name: "tshirt", img: "/image/l7.jpg" },
+  { name: "Shirt", img: "/image/l6.jpg" },
 ];
 
 // autoplay plugin
@@ -89,11 +89,11 @@ const Tranding = () => {
             key={index}
             className="keen-slider__slide flex flex-col items-center text-center cursor-pointer group"
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition overflow-hidden">
               <img
                 src={cat.img}
                 alt={cat.name}
-                className="w-12 h-12 object-contain"
+                className="w-full h-full object-cover"
               />
             </div>
             <p className="mt-2 text-sm sm:text-base">{cat.name}</p>

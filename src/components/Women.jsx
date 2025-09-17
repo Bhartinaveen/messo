@@ -34,22 +34,22 @@ const Women = () => {
   // New data for the redesigned trend cards with updated, high-quality images
   const trendzItems = [
     {
-      imageUrl: 'https://images.unsplash.com/photo-1572804013427-4d7ca7268211?q=80&w=580&auto=format&fit=crop',
+      imageUrl: '/image/s1.jpg',
       label: 'Summer Dresses',
       altText: 'Woman in a vibrant floral summer dress',
     },
     {
-      imageUrl: 'https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=580&auto=format&fit=crop',
+      imageUrl: '/image/s7.jpg',
       label: 'Baggy Jeans',
       altText: 'Woman posing in stylish baggy jeans',
     },
     {
-      imageUrl: 'https://images.unsplash.com/photo-1616881335327-042f8c5c10e6?q=80&w=580&auto=format&fit=crop',
-      label: 'Statement Earrings',
+      imageUrl: '/image/s6.jpg',
+      label: 'Saree',
       altText: 'Close-up of a woman wearing statement gold earrings',
     },
     {
-      imageUrl: 'https://images.unsplash.com/photo-1603487742131-4191337b585a?q=80&w=580&auto=format&fit=crop',
+      imageUrl: '/image/s8.jpg',
       label: 'Chic Handbags',
       altText: 'A stylish woman holding a chic handbag',
     },
@@ -57,11 +57,11 @@ const Women = () => {
 
   return (
     // Main wrapper with a dark, sophisticated background
-    <div className="w-full min-h-screen bg-[#111827] flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
+    <div className="w-full min-h-screen bg-[#FFF1F1] flex items-center justify-center p-4 sm:p-6 md:p-8 font-sans">
       
       {/* Main banner container with a modern glassmorphism effect */}
       <div
-        className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#1F2937]/50 rounded-2xl shadow-2xl p-8 backdrop-blur-sm border border-gray-700"
+        className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#FDAAAA]/50 rounded-2xl shadow-2xl p-8 backdrop-blur-sm "
       >
         
         {/* ## Left Section: Text Content and Call to Action */}

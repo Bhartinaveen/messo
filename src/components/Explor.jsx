@@ -36,15 +36,15 @@ const products = [
     name: 'Gucci duffle bag',
     price: 960,
     oldPrice: 1160,
-    image: 'https://images.unsplash.com/photo-1583471240194-83957a3e731e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    image: '/image/s8.jpg',
     tag: { text: 'Sale', color: 'bg-red-500' }
   },
   {
     id: 3,
-    name: 'RGB liquid CPU Cooler',
+    name: 'Tshirt',
     price: 160,
     oldPrice: 170,
-    image: 'https://images.unsplash.com/photo-1627281794939-ab8503881677?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    image: '/image/s1.jpg',
     tag: { text: 'New', color: 'bg-blue-500' }
   },
   {
@@ -71,17 +71,17 @@ const products = [
   },
   {
     id: 7,
-    name: 'Soccer Cleats',
+    name: 'Pant',
     price: 120,
     oldPrice: 150,
-    image: 'https://images.unsplash.com/photo-1608229842248-8a24493a5530?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    image: '/image/s3.jpg',
     tag: { text: 'Sale', color: 'bg-red-500' }
   },
   {
     id: 8,
-    name: 'Satin Jacket',
+    name: 'Shirt',
     price: 85,
-    image: 'https://images.unsplash.com/photo-1591047139829-d916b67ea74f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+    image: '/image/l6.jpg',
     tag: { text: 'Trending', color: 'bg-green-500' }
   },
 ];
