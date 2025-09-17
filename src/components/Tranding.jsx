@@ -7,7 +7,7 @@ const categories = [
   { name: "Mobile", img: "/image/l1.jpg" },
   { name: "Cosmetics", img: "/image/l2.jpg" },
   { name: "Electronics", img: "/image/l3.jpg" },
-  { name: "Furniture", img: "/image/l5.jpg" },
+  { name: "jewellery", img: "/image/l8.jpg" },
   { name: "Watches", img: "/image/l5.jpg" },
   { name: "tshirt", img: "/image/l7.jpg" },
   { name: "Shirt", img: "/image/l6.jpg" },
