@@ -7,7 +7,7 @@ const Explore = () => {
     { 
       name: 'Personal Care', 
       icon: '🧴',
-      image: 'https://images.unsplash.com/photo-1590155112843-9cbdb0d09635?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: '/image/e1.jpg',
       description: 'Premium personal care products for your daily routine',
       brand: 'Messo Care'
     },
@@ -35,7 +35,7 @@ const Explore = () => {
     { 
       name: 'Men Perfume', 
       icon: '🧴',
-      image: 'https://images.unsplash.com/photo-1595425970377-2f8ded7c7b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+      image: '/image/e2.jpg',
       description: 'Luxury fragrances for the modern man',
       brand: 'Messo Fragrance'
     },
