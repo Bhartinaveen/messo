@@ -21,6 +21,8 @@ import Contact from './pages/Contact'
 import Register from './pages/Register'
 import About from './pages/About'
 import Explore from './pages/Explore'
+import Terms from './pages/Terms'
+import Privcy from './pages/Privcy'
 
 function App() {
   return (
@@ -52,6 +54,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privcy" element={<Privcy />} />
         </Routes>
       </div>
     </Router>
