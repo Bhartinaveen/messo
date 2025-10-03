@@ -1,19 +1,19 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { Link } from "react-router-dom"; // ✅ use react-router-dom
 
 const categories = [
   { name: "Mobile", img: "/image/l1.jpg" },
   { name: "Cosmetics", img: "/image/l2.jpg" },
   { name: "Electronics", img: "/image/l3.jpg" },
   { name: "jewellery", img: "/image/l8.jpg" },
-  { name: "Watches", img: "/image/l5.jpg" },
+  { name: "Watches", img: "/image/l5.jpg", link: "/watch" }, // ✅ link added
   { name: "tshirt", img: "/image/l7.jpg" },
   { name: "Shirt", img: "/image/l6.jpg" },
 ];
 
-// autoplay plugin
 function Autoplay(slider) {
   let timeout;
   let mouseOver = false;
@@ -26,7 +26,7 @@ function Autoplay(slider) {
     if (mouseOver) return;
     timeout = setTimeout(() => {
       slider.next();
-    }, 2000); // 2 seconds autoplay
+    }, 2000);
   }
 
   slider.on("created", () => {
@@ -66,7 +66,7 @@ const Tranding = () => {
         },
       },
     },
-    [Autoplay] // plugin
+    [Autoplay]
   );
 
   return (
@@ -84,21 +84,31 @@ const Tranding = () => {
 
       {/* Slider */}
       <div ref={sliderRef} className="keen-slider">
-        {categories.map((cat, index) => (
-          <div
-            key={index}
-            className="keen-slider__slide flex flex-col items-center text-center cursor-pointer group"
-          >
-            <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition overflow-hidden">
-              <img
-                src={cat.img}
-                alt={cat.name}
-                className="w-full h-full object-cover"
-              />
+        {categories.map((cat, index) => {
+          const content = (
+            <div
+              key={index}
+              className="keen-slider__slide flex flex-col items-center text-center cursor-pointer group"
+            >
+              <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition overflow-hidden">
+                <img
+                  src={cat.img}
+                  alt={cat.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="mt-2 text-sm sm:text-base">{cat.name}</p>
             </div>
-            <p className="mt-2 text-sm sm:text-base">{cat.name}</p>
-          </div>
-        ))}
+          );
+
+          return cat.link ? (
+            <Link key={index} to={cat.link}>
+              {content}
+            </Link>
+          ) : (
+            content
+          );
+        })}
       </div>
     </div>
   );

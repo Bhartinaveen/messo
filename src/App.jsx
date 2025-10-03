@@ -23,6 +23,7 @@ import About from './pages/About'
 import Explore from './pages/Explore'
 import Terms from './pages/Terms'
 import Privcy from './pages/Privcy'
+import Watch from './pages/Watch'
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privcy" element={<Privcy />} />
+          <Route path="/watch" element={<Watch />} />
         </Routes>
       </div>
     </Router>
