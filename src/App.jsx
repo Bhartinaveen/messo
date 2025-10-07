@@ -24,6 +24,11 @@ import Explore from './pages/Explore'
 import Terms from './pages/Terms'
 import Privcy from './pages/Privcy'
 import Watch from './pages/Watch'
+import Aboutus from './pages/Aboutus'
+import Security from './pages/Security'
+import Cancellation from './pages/Cancellation'
+import Blog from './pages/Blog'
+import Faq from './pages/Faq'
 
 function App() {
   return (
@@ -58,6 +63,11 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privcy" element={<Privcy />} />
           <Route path="/watch" element={<Watch />} />
+          <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/cancellation" element={<Cancellation />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/faq" element={<Faq />} />
         </Routes>
       </div>
     </Router>

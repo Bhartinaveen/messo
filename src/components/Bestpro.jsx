@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const Bestpro = () => {
-  const [visibleProducts, setVisibleProducts] = useState(4);
   const [cartItems, setCartItems] = useState({});
   
   const products = [
@@ -44,52 +43,8 @@ const Bestpro = () => {
       reviews: 65,
       image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       badge: "Trending"
-    },
-    {
-      id: 5,
-      name: "Wireless Headphones",
-      originalPrice: 120,
-      salePrice: 89,
-      rating: 4,
-      reviews: 42,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      badge: "Sale"
-    },
-    {
-      id: 6,
-      name: "Smart Watch",
-      originalPrice: 250,
-      salePrice: 199,
-      rating: 5,
-      reviews: 88,
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      badge: "Popular"
-    },
-    {
-      id: 7,
-      name: "Designer Sunglasses",
-      originalPrice: 180,
-      salePrice: 120,
-      rating: 4,
-      reviews: 36,
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      badge: "New"
-    },
-    {
-      id: 8,
-      name: "Fitness Tracker",
-      originalPrice: 99,
-      salePrice: 79,
-      rating: 4,
-      reviews: 57,
-      image: "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      badge: "Sale"
     }
   ];
-
-  const loadMore = () => {
-    setVisibleProducts(prev => prev + 4);
-  };
 
   const addToCart = (productId) => {
     setCartItems(prev => ({
@@ -116,7 +71,8 @@ const Bestpro = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    // Removed "min-h-screen" from this div to reduce its height
+    <div className="bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Best Selling Products</h2>
@@ -124,7 +80,7 @@ const Bestpro = () => {
         </div>
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0, visibleProducts).map((product) => {
+          {products.map((product) => {
             const cartQuantity = getCartQuantity(product.id);
             
             return (
@@ -138,7 +94,6 @@ const Bestpro = () => {
                     />
                   </div>
                   
-                  {/* Product badge */}
                   <div className="absolute top-3 left-3">
                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
                       product.badge === "Sale" ? "bg-red-500 text-white" : 
@@ -150,7 +105,6 @@ const Bestpro = () => {
                     </span>
                   </div>
                   
-                  {/* Wishlist button */}
                   <div className="absolute top-3 right-3">
                     <button className="p-1.5 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-red-500 hover:text-white transition-colors duration-200">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -215,22 +169,6 @@ const Bestpro = () => {
             );
           })}
         </div>
-        
-        {visibleProducts < products.length && (
-          <div className="text-center mt-12">
-            <button 
-              onClick={loadMore}
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300 shadow-sm hover:shadow-md"
-            >
-              View More Products
-              <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
-        )}
-        
-       
       </div>
     </div>
   );

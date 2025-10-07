@@ -63,16 +63,31 @@ const Navebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="relative shadow-md z-10" style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}>
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+    <nav
+      className="relative shadow-md z-10"
+      style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}
+    >
+      {/* Keep navbar height slim */}
+      <div className="container mx-auto px-6 py-2 flex items-center justify-between">
 
-        {/* Logo */}
-        <div className="text-3xl font-bold text-gray-800">
-          <Link to="/">First UShop</Link>
+        {/* Logo Section */}
+        <div className="flex items-center space-x-2">
+          <Link to="/">
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-md flex-shrink-0">
+              <img
+                src="/image/logo.png" // Update path if needed
+                alt="Logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </Link>
+          <Link to="/" className="text-xl md:text-2xl font-bold text-gray-800 leading-tight">
+            Fts Shopping
+          </Link>
         </div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex items-center space-x-8 font-medium text-gray-700">
+        <ul className="hidden md:flex items-center space-x-8 font-medium text-gray-700 text-sm">
           <li><Link to="/" className="hover:text-gray-900 transition">Home</Link></li>
           <li><Link to="/explore" className="hover:text-gray-900 transition">Explore</Link></li>
           <li><Link to="/contact" className="hover:text-gray-900 transition">Contact</Link></li>
@@ -81,17 +96,20 @@ const Navebar = () => {
         </ul>
 
         {/* Desktop Search & Icons */}
-        <div className="hidden md:flex items-center space-x-5">
-          <div className="flex items-center bg-white rounded-md px-3 py-2">
-            <input type="text" placeholder="What are you looking for?"
-              className="bg-transparent outline-none text-sm w-48 placeholder-gray-600" />
+        <div className="hidden md:flex items-center space-x-4">
+          <div className="flex items-center bg-white rounded-md px-2 py-1">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="bg-transparent outline-none text-sm w-40 placeholder-gray-600"
+            />
             <FiSearch className="text-gray-600 cursor-pointer h-5 w-5" />
           </div>
-          <FiHeart className="text-gray-800 w-6 h-6 hover:text-red-500 cursor-pointer" />
+          <FiHeart className="text-gray-800 w-5 h-5 hover:text-red-500 cursor-pointer" />
           <div className="relative">
-            <FiShoppingCart className="text-gray-800 w-6 h-6 cursor-pointer" />
+            <FiShoppingCart className="text-gray-800 w-5 h-5 cursor-pointer" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
@@ -100,25 +118,27 @@ const Navebar = () => {
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center">
-          <div className="relative mr-4">
+          <div className="relative mr-3">
             <FiShoppingCart className="text-gray-800 w-6 h-6 cursor-pointer" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
           </div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-800">
-            {isMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+            {isMenuOpen ? <FiX size={26} /> : <FiMenu size={26} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full shadow-lg"
-          style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}>
-          <ul className="flex flex-col items-center space-y-4 py-6 font-medium text-gray-700">
+        <div
+          className="md:hidden absolute top-full left-0 w-full shadow-lg"
+          style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}
+        >
+          <ul className="flex flex-col items-center space-y-4 py-4 font-medium text-gray-700">
             <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
             <li><Link to="/explore" onClick={() => setIsMenuOpen(false)}>Explore</Link></li>
             <li><Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>

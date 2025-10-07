@@ -3,24 +3,26 @@ import { Link } from 'react-router-dom'; // For internal navigation
 
 // --- Icons ---
 const SendIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
     strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-    <path strokeLinecap="round" strokeLinejoin="round" 
+    <path strokeLinecap="round" strokeLinejoin="round"
       d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 
       59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
   </svg>
 );
 
 const FacebookIcon = () => (
-  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fillRule="evenodd" 
-    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 
-    2 12c0 4.991 3.657 9.128 8.438 
-    9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 
-    1.492-3.89 3.777-3.89 1.094 0 
-    2.238.195 2.238.195v2.46h-1.26c-1.243 
-    0-1.63.771-1.63 1.562V12h2.773l-.443 
-    2.89h-2.33v6.988C18.343 21.128 22 
-    16.991 22 12z" clipRule="evenodd" /></svg>
+  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+    <path fillRule="evenodd"
+      d="M22 12c0-5.523-4.477-10-10-10S2 6.477 
+      2 12c0 4.991 3.657 9.128 8.438 
+      9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 
+      1.492-3.89 3.777-3.89 1.094 0 
+      2.238.195 2.238.195v2.46h-1.26c-1.243 
+      0-1.63.771-1.63 1.562V12h2.773l-.443 
+      2.89h-2.33v6.988C18.343 21.128 22 
+      16.991 22 12z" clipRule="evenodd" />
+  </svg>
 );
 
 const TwitterIcon = () => (
@@ -43,7 +45,7 @@ const TwitterIcon = () => (
 
 const InstagramIcon = () => (
   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-    <path fillRule="evenodd" 
+    <path fillRule="evenodd"
       d="M12.315 2c2.43 0 2.784.013 3.808.06 
       1.064.049 1.791.218 2.427.465a4.902 
       4.902 0 011.772 1.153 4.902 4.902 0 
@@ -63,8 +65,7 @@ const InstagramIcon = () => (
       -3.808c.049-1.064.218-1.791.465
       -2.427a4.902 4.902 0 011.153
       -1.772A4.902 4.902 0 016.345 
-      4.22c.636-.247 1.363.416 2.427
-      -.465C9.793 2.013 10.147 2 12.315 
+      4.22c.636-.247 1.363-.416 2.427-.465C9.793 2.013 10.147 2 12.315 
       2zM12 7.188a4.813 4.813 0 100 
       9.625 4.813 4.813 0 000-9.625zM12 
       15a3 3 0 110-6 3 3 0 010 6zm4.838
@@ -75,7 +76,7 @@ const InstagramIcon = () => (
 
 const LinkedinIcon = () => (
   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-    <path fillRule="evenodd" 
+    <path fillRule="evenodd"
       d="M19 0h-14c-2.761 0-5 2.239-5 
       5v14c0 2.761 2.239 5 5 
       5h14c2.762 0 5-2.239 5-5v-14c0
@@ -103,9 +104,9 @@ const Footer = () => {
             <p className="text-xl">Subscribe</p>
             <p>Get 10% off your first order</p>
             <div className="relative">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
+              <input
+                type="email"
+                placeholder="Enter your email"
                 className="bg-transparent border border-white rounded-md py-2 px-3 w-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
               />
               <button className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -117,20 +118,18 @@ const Footer = () => {
           {/* Column 2: Support */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Support</h3>
-            <p>Jharkhand,<br/> DH 1515, India.</p>
-            <p>exclusive@gmail.com</p>
-            <p>+88015-88888-9999</p>
+            <p>BMC Bhawani Mall, Saheed Nagar Bhubaneswar,<br /> Odisha-751007, India.</p>
+            <p>Mobile no +91-9040170727</p>
           </div>
 
           {/* Column 3: Account */}
           <div className="space-y-3">
             <h3 className="text-xl font-semibold">Account</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:underline">My Account</a></li>
-              <li><a href="#" className="hover:underline">Login / Register</a></li>
-              <li><a href="#" className="hover:underline">Cart</a></li>
-              <li><a href="#" className="hover:underline">Wishlist</a></li>
-              <li><a href="#" className="hover:underline">Shop</a></li>
+              <li><Link to="/aboutus" className="hover:underline">About Us</Link></li>
+              <li><Link to="/security" className="hover:underline">Security</Link></li>
+              <li><Link to="/cancellation" className="hover:underline">Cancellation and Refund</Link></li>
+              <li><Link to="/blog" className="hover:underline">Blog</Link></li>
             </ul>
           </div>
 
@@ -141,11 +140,11 @@ const Footer = () => {
               <li><Link to="/privcy" className="hover:underline">Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:underline">Terms Of Use</Link></li>
               <li><Link to="/contact" className="hover:underline">Contact</Link></li>
-              <li><a href="#" className="hover:underline">FAQ</a></li>
+              <li><a href="/faq" className="hover:underline">FAQ</a></li>
             </ul>
           </div>
 
-          {/* Column 5: Download App */}
+          {/* Column 5: Follow Us */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Follow Us</h3>
             <div className="flex space-x-4 pt-2">
@@ -158,12 +157,14 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-red-700 text-center pt-6 mt-8">
-          <p className="text-red-900"> @ 2025 First Ushop. All rights reserved</p>
+        <div className="border-t border-gray-700 text-center pt-6 mt-8">
+          <p className="text-gray-900">
+            Copyright © 2025 First Track Solution Technologies. All Rights Reserved.
+          </p>
         </div>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

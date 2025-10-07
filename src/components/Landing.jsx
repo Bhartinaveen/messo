@@ -33,7 +33,7 @@ const slides = [
     {
         series: 'Denim Essentials',
         title: 'Your Everyday Wear',
-        image: '/image/s7.jpg',
+        image: '/image/s6.jpg',
         alt: 'A pair of classic blue jeans'
     },
 ];

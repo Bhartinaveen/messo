@@ -4,12 +4,15 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { Link } from "react-router-dom"; // ✅ use react-router-dom
 
+// ✅ Updated categories array
 const categories = [
-  { name: "Mobile", img: "/image/l1.jpg" },
+  { name: "Kurta", img: "/image/l11.jpg" }, // Added
+  { name: "Kurti", img: "/image/l10.jpg" }, // Added
+  { name: "Laging", img: "/image/l12.jpg" }, // Added
+  { name: "Banarasi Saree", img: "/image/l9.jpg" }, // Added
   { name: "Cosmetics", img: "/image/l2.jpg" },
-  { name: "Electronics", img: "/image/l3.jpg" },
   { name: "jewellery", img: "/image/l8.jpg" },
-  { name: "Watches", img: "/image/l5.jpg", link: "/watch" }, // ✅ link added
+  { name: "Watches", img: "/image/l5.jpg", link: "/watch" },
   { name: "tshirt", img: "/image/l7.jpg" },
   { name: "Shirt", img: "/image/l6.jpg" },
 ];

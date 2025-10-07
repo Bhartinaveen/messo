@@ -1,162 +1,136 @@
 import React from 'react';
 
-// --- SVG Icon Components ---
-const HeartIcon = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
+// Main App Component
+const Explor = () => {
+  // --- Data for Testimonials ---
+  // You can replace this with data fetched from an API
+  const testimonials = [
+    {
+      quote: "This is the best shopping experience I've ever had! The products are high-quality, and the customer service is outstanding. I'll definitely be back for more.",
+      name: "Sarah Johnson",
+      title: "Fashion Blogger",
+      img: "https://placehold.co/100x100/A3E635/4D7C0F?text=SJ&font=sans",
+    },
+    {
+      quote: "I was amazed by the fast shipping and the careful packaging. My items arrived in perfect condition. The variety on this website is incredible!",
+      name: "Michael Chen",
+      title: "Tech Enthusiast",
+      img: "https://placehold.co/100x100/93C5FD/1E3A8A?text=MC&font=sans",
+    },
+    {
+      quote: "A fantastic selection of products at great prices. The website is so easy to navigate, and I found exactly what I was looking for in minutes. Highly recommended!",
+      name: "Jessica Williams",
+      title: "Happy Customer",
+      img: "https://placehold.co/100x100/F9A8D4/831843?text=JW&font=sans",
+    },
+    {
+      quote: "The quality of the items exceeded my expectations. You can tell they care about their customers. The return policy is also very fair and straightforward.",
+      name: "David Rodriguez",
+      title: "First-time Buyer",
+      img: "https://placehold.co/100x100/FCD34D/B45309?text=DR&font=sans",
+    },
+  ];
 
-const ArrowLeftIcon = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m15 18-6-6 6-6"/>
-    </svg>
-);
+  // --- State and Refs ---
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const timeoutRef = React.useRef(null);
 
-const ArrowRightIcon = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m9 18 6-6-6-6"/>
-    </svg>
-);
+  // --- Functions for Navigation ---
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }
+
+  const goNext = () => {
+    const isLastSlide = currentIndex === testimonials.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+  
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex);
+  };
+
+  // --- Effect for Automatic Sliding ---
+  React.useEffect(() => {
+    resetTimeout();
+    timeoutRef.current = setTimeout(
+      () =>
+        setCurrentIndex((prevIndex) =>
+          prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+        ),
+      4000 // Change slide every 4 seconds
+    );
+
+    return () => {
+      resetTimeout();
+    };
+  }, [currentIndex, testimonials.length]);
 
 
-// --- Main Product Data ---
-// Updated mock data to match the new design and structure.
-const products = [
-  {
-    id: 1,
-    name: 'The north coat',
-    price: 260,
-    oldPrice: 360,
-    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    tag: { text: 'Hot', color: 'bg-orange-500' }
-  },
-  {
-    id: 2,
-    name: 'Gucci duffle bag',
-    price: 960,
-    oldPrice: 1160,
-    image: '/image/s8.jpg',
-    tag: { text: 'Sale', color: 'bg-red-500' }
-  },
-  {
-    id: 3,
-    name: 'Tshirt',
-    price: 160,
-    oldPrice: 170,
-    image: '/image/s1.jpg',
-    tag: { text: 'New', color: 'bg-blue-500' }
-  },
-  {
-    id: 4,
-    name: 'Small Booksell',
-    price: 360,
-    image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    tag: { text: 'Trending', color: 'bg-green-500' }
-  },
-  {
-    id: 5,
-    name: 'Gaming Laptop',
-    price: 1250,
-    oldPrice: 1500,
-    image: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    tag: { text: 'New', color: 'bg-blue-500' }
-  },
-  {
-    id: 6,
-    name: 'Wireless Gamepad',
-    price: 55,
-    image: 'https://images.unsplash.com/photo-1580327344181-c1163234e5a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-    tag: { text: 'Hot', color: 'bg-orange-500' }
-  },
-  {
-    id: 7,
-    name: 'Pant',
-    price: 120,
-    oldPrice: 150,
-    image: '/image/s3.jpg',
-    tag: { text: 'Sale', color: 'bg-red-500' }
-  },
-  {
-    id: 8,
-    name: 'Shirt',
-    price: 85,
-    image: '/image/l6.jpg',
-    tag: { text: 'Trending', color: 'bg-green-500' }
-  },
-];
-
-// --- Product Card Component ---
-const ProductCard = ({ product }) => {
+  // --- Render Component ---
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 group">
-      <div className="relative">
-        {product.tag && (
-            <div className={`absolute top-4 left-4 text-white text-xs font-bold px-3 py-1 rounded-full z-10 ${product.tag.color}`}>
-                {product.tag.text}
+    <div className="bg-gray-100 font-sans flex items-center justify-center py-12">
+      <div 
+        className="relative w-full max-w-3xl mx-auto p-4 md:p-8"
+        onMouseEnter={resetTimeout} // Pause on hover
+        onMouseLeave={() => { // Resume on hover out
+            timeoutRef.current = setTimeout(goNext, 4000);
+        }}
+      >
+        <h2 className="text-center text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+          What Our Customers Say
+        </h2>
+        <p className="text-center text-gray-500 mb-8 md:mb-12">
+          Real stories from real people.
+        </p>
+
+        {/* Slider inner content */}
+        <div className="relative h-80 md:h-64 overflow-hidden rounded-xl">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="absolute w-full h-full transition-opacity duration-700 ease-in-out"
+              style={{
+                opacity: index === currentIndex ? 1 : 0,
+                transform: `translateX(${(index - currentIndex) * 100}%)`,
+                transition: 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out',
+              }}
+            >
+              <div className="bg-white rounded-lg shadow-lg p-8 h-full flex flex-col items-center text-center">
+                <img
+                  src={testimonial.img}
+                  alt={testimonial.name}
+                  className="w-20 h-20 rounded-full mb-4 border-4 border-indigo-200 object-cover"
+                />
+                <p className="text-gray-600 italic mb-4 text-lg leading-relaxed">
+                  "{testimonial.quote}"
+                </p>
+                <div className="mt-auto">
+                    <h3 className="font-bold text-gray-800 text-xl">{testimonial.name}</h3>
+                    <p className="text-indigo-500">{testimonial.title}</p>
+                </div>
+              </div>
             </div>
-        )}
-        <button className="absolute top-4 right-4 bg-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors z-10">
-            <HeartIcon className="w-4 h-4" />
-        </button>
-        <img 
-            src={product.image} 
-            alt={product.name} 
-            className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300" 
-            onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/400x400/f3f4f6/333333?text=Image+Not+Found&font=sans'; }}
-        />
-      </div>
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-semibold text-gray-800 text-lg truncate mb-4">{product.name}</h3>
-        <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
-            <div>
-                {product.oldPrice && (
-                    <span className="text-gray-400 line-through mr-2">₹{product.oldPrice.toLocaleString('en-IN')}</span>
-                )}
-                <span className="text-gray-800 font-bold text-lg">₹{product.price.toLocaleString('en-IN')}</span>
-            </div>
-            <button className="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                <span className="text-xl">+</span> Add
-            </button>
+          ))}
+        </div>
+        
+        {/* Pagination Dots */}
+        <div className="flex justify-center mt-6 space-x-2">
+            {testimonials.map((_, slideIndex) => (
+                <button
+                    key={slideIndex}
+                    onClick={() => goToSlide(slideIndex)}
+                    className={`h-3 w-3 rounded-full transition-all duration-300 ${currentIndex === slideIndex ? 'bg-indigo-500 w-6' : 'bg-gray-300 hover:bg-gray-400'}`}
+                    aria-label={`Go to slide ${slideIndex + 1}`}
+                ></button>
+            ))}
         </div>
       </div>
     </div>
   );
 };
 
-
-// --- Main App Component ---
-export default function Explor() {
-  return (
-    <div className="bg-white font-sans text-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="flex items-center gap-4">
-            <div className="w-5 h-10 bg-red-500 rounded"></div>
-            <h2 className="text-red-500 font-semibold">Our Products</h2>
-        </div>
-
-        {/* Section Title and Navigation */}
-        <div className="flex justify-between items-end mt-6 mb-10">
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-wider">Explore Our Products</h1>
-            <div className="hidden sm:flex items-center gap-2">
-                <button className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors">
-                    <ArrowLeftIcon className="w-6 h-6"/>
-                </button>
-                 <button className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors">
-                    <ArrowRightIcon className="w-6 h-6"/>
-                </button>
-            </div>
-        </div>
-
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+export default Explor;
 
