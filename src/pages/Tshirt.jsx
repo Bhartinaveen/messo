@@ -1,36 +1,36 @@
 import React, { useState, useMemo } from 'react';
+import Foot from './Foot';
 import Footer from '../components/Footer';
 
-// --- SVG Icons for Categories (can be replaced with more distinct icons) ---
+// --- SVG Icons for Categories ---
 const MaleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>;
-const FemaleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>;
+const FemaleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg>; // Using a similar icon for neutrality
 const KidsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.03 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" /></svg>;
 
-// --- Watch Data ---
-// Reduced to four watches with ordinary brand names.
-const watches = [
-  { id: 1, brand: 'Apex', name: 'Chronograph Steel', price: '₹4,999', image: '/image/w1.jpg', category: 'Men' },
-  { id: 2, brand: 'Nova', name: 'Elegance Gold', price: '₹3,499', image: '/image/w2.jpg', category: 'Women' },
-  { id: 3, brand: 'Zephyr', name: 'Classic Leather', price: '₹2,799', image: '/image/w3.jpg', category: 'Unisex' },
-  { id: 4, brand: 'Astra', name: 'Explorer Digital', price: '₹1,299', image: '/image/w4.jpg', category: 'Kids' },
+// --- T-shirt Data ---
+const tshirts = [
+  { id: 1, brand: 'Volt', name: 'Graphic Print Tee', price: '₹999', image: '/image/t1.jpg', category: 'Men' },
+  { id: 3, brand: 'PlayTime', name: 'Dino Graphic Tee', price: '₹599', image: '/image/t3.jpg', category: 'Kids' },
+  { id: 4, brand: 'Volt', name: 'Vintage Logo Tee', price: '₹1,199', image: '/image/t4.jpg', category: 'Men' },
+  { id: 2, brand: 'Aura', name: 'V-Neck Cotton Tee', price: '₹799', image: '/image/t2.jpg', category: 'Women' },
 ];
 
-const Watch = () => {
+const Tshirt = () => {
   const [filters, setFilters] = useState({ brand: 'All', category: 'All' });
 
-  const handleFilterChange = (type, value) => {
-    setFilters(prev => ({ ...prev, [type]: value }));
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prev => ({ ...prev, [filterType]: value }));
   };
 
-  const filteredWatches = useMemo(() => {
-    return watches.filter(watch => {
-      const brandMatch = filters.brand === 'All' || watch.brand === filters.brand;
-      const categoryMatch = filters.category === 'All' || watch.category === filters.category || (watch.category === 'Unisex' && (filters.category === 'Men' || filters.category === 'Women'));
+  const filteredTshirts = useMemo(() => {
+    return tshirts.filter(tshirt => {
+      const brandMatch = filters.brand === 'All' || tshirt.brand === filters.brand;
+      const categoryMatch = filters.category === 'All' || tshirt.category === filters.category;
       return brandMatch && categoryMatch;
     });
   }, [filters]);
 
-  const brands = ['All', ...new Set(watches.map(watch => watch.brand))];
+  const brands = ['All', ...new Set(tshirts.map(tshirt => tshirt.brand))];
   const categories = ['All', 'Men', 'Women', 'Kids'];
   const categoryIcons = { 'Men': <MaleIcon />, 'Women': <FemaleIcon />, 'Kids': <KidsIcon /> };
   
@@ -58,11 +58,11 @@ const Watch = () => {
           <header className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tighter">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-600">
-                Timeless Collections
+                The T-Shirt Hub
               </span>
             </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore our curated selection of exquisite watches. Find your perfect timepiece with our advanced filters.
+              Your one-stop shop for trendy, comfortable, and unique t-shirts. Find your perfect fit with our filters.
             </p>
           </header>
 
@@ -89,19 +89,19 @@ const Watch = () => {
               </div>
           </div>
 
-          {/* --- Watch Grid Section --- */}
+          {/* --- T-shirt Grid Section --- */}
           <main>
-            {filteredWatches.length > 0 ? (
+            {filteredTshirts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-                {filteredWatches.map((watch) => (
-                  <div key={watch.id} className="group relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 cursor-pointer">
+                {filteredTshirts.map((tshirt) => (
+                  <div key={tshirt.id} className="group relative bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105 cursor-pointer">
                       <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-indigo-600 text-xs font-semibold px-2 py-1 rounded-full z-10">
-                          {watch.brand}
+                          {tshirt.brand}
                       </div>
-                      <div className="h-72 overflow-hidden relative">
+                      <div className="h-80 overflow-hidden relative">
                         <img 
-                          src={watch.image} 
-                          alt={`${watch.brand} ${watch.name}`} 
+                          src={tshirt.image} 
+                          alt={`${tshirt.brand} ${tshirt.name}`} 
                           className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110" 
                         />
                         {/* Hover Overlay */}
@@ -112,15 +112,15 @@ const Watch = () => {
                         </div>
                       </div>
                       <div className="p-5 text-center">
-                        <p className="text-lg font-bold text-gray-800 truncate">{watch.name}</p>
-                        <p className="mt-2 text-xl font-semibold text-indigo-600">{watch.price}</p>
+                        <p className="text-lg font-bold text-gray-800 truncate">{tshirt.name}</p>
+                        <p className="mt-2 text-xl font-semibold text-indigo-600">{tshirt.price}</p>
                       </div>
                   </div>
                 ))}
               </div>
             ) : (
               <div className="text-center py-20 px-6 bg-white rounded-2xl shadow-lg">
-                  <h2 className="text-3xl font-bold text-gray-800">No Watches Found</h2>
+                  <h2 className="text-3xl font-bold text-gray-800">No T-shirts Found</h2>
                   <p className="mt-3 text-gray-500">Please broaden your filter criteria to see more results.</p>
               </div>
             )}
@@ -131,9 +131,9 @@ const Watch = () => {
       
     </div>
 
-<Footer/>
+     <Footer/>
     </div>
   );
 }
 
-export default Watch;
+export default Tshirt;

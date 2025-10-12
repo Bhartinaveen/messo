@@ -29,6 +29,14 @@ import Security from './pages/Security'
 import Cancellation from './pages/Cancellation'
 import Blog from './pages/Blog'
 import Faq from './pages/Faq'
+import Saree from './pages/saree'
+import Tshirt from './pages/Tshirt'
+import Shirt from './pages/Shirt'
+import Kurta from './pages/Kurta'
+import Kurti from './pages/Kurti'
+import Jwellery from './pages/Jwellery'
+import Matic from './pages/Matic' 
+import Anging from './pages/Anging'
 
 function App() {
   return (
@@ -68,6 +76,15 @@ function App() {
           <Route path="/cancellation" element={<Cancellation />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/saree" element={<Saree />} />
+          <Route path="/tshirt" element={<Tshirt />} />
+          <Route path="/shirt" element={<Shirt />} />
+          <Route path="/kurta" element={<Kurta />} />
+          <Route path="/kurti" element={<Kurti />} />
+          <Route path="/jwellery" element={<Jwellery />} />
+          <Route path="/matic" element={<Matic />} />
+          <Route path="/laging" element={<Anging />} />
+
         </Routes>
       </div>
     </Router>

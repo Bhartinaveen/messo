@@ -2,19 +2,19 @@
 import React from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import { Link } from "react-router-dom"; // ✅ use react-router-dom
+import { Link } from "react-router-dom";
 
-// ✅ Updated categories array
+// ✅ Categories with links
 const categories = [
-  { name: "Kurta", img: "/image/l11.jpg" }, // Added
-  { name: "Kurti", img: "/image/l10.jpg" }, // Added
-  { name: "Laging", img: "/image/l12.jpg" }, // Added
-  { name: "Banarasi Saree", img: "/image/l9.jpg" }, // Added
-  { name: "Cosmetics", img: "/image/l2.jpg" },
-  { name: "jewellery", img: "/image/l8.jpg" },
+  { name: "Kurta", img: "/image/l11.jpg", link: "/kurta" },
+  { name: "Kurti", img: "/image/l10.jpg", link: "/kurti" },
+  { name: "Laging", img: "/image/l12.jpg", link: "/laging" },
+  { name: "Banarasi Saree", img: "/image/l9.jpg", link: "saree" },
+  { name: "Cosmetics", img: "/image/l2.jpg", link: "/matic" },
+  { name: "Jewellery", img: "/image/l8.jpg", link: "/jwellery" },
   { name: "Watches", img: "/image/l5.jpg", link: "/watch" },
-  { name: "tshirt", img: "/image/l7.jpg" },
-  { name: "Shirt", img: "/image/l6.jpg" },
+  { name: "Tshirt", img: "/image/l7.jpg", link: "/tshirt" },
+  { name: "Shirt", img: "/image/l6.jpg", link: "/shirt" },
 ];
 
 function Autoplay(slider) {
@@ -87,31 +87,22 @@ const Tranding = () => {
 
       {/* Slider */}
       <div ref={sliderRef} className="keen-slider">
-        {categories.map((cat, index) => {
-          const content = (
-            <div
-              key={index}
-              className="keen-slider__slide flex flex-col items-center text-center cursor-pointer group"
-            >
-              <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition overflow-hidden">
-                <img
-                  src={cat.img}
-                  alt={cat.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <p className="mt-2 text-sm sm:text-base">{cat.name}</p>
+        {categories.map((cat, index) => (
+          <Link
+            key={index}
+            to={cat.link}
+            className="keen-slider__slide flex flex-col items-center text-center cursor-pointer group"
+          >
+            <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center rounded-full bg-gray-100 group-hover:shadow-md transition overflow-hidden">
+              <img
+                src={cat.img}
+                alt={cat.name}
+                className="w-full h-full object-cover"
+              />
             </div>
-          );
-
-          return cat.link ? (
-            <Link key={index} to={cat.link}>
-              {content}
-            </Link>
-          ) : (
-            content
-          );
-        })}
+            <p className="mt-2 text-sm sm:text-base">{cat.name}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );
