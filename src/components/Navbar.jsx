@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 // --- SVG Icons ---
 const FiSearch = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
     viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
     className={className}>
@@ -13,7 +13,7 @@ const FiSearch = ({ className }) => (
 );
 
 const FiHeart = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
     viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
     className={className}>
@@ -26,7 +26,7 @@ const FiHeart = ({ className }) => (
 );
 
 const FiShoppingCart = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
     viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
     className={className}>
@@ -64,30 +64,32 @@ const Navebar = () => {
 
   return (
     <nav
-      className="relative shadow-md z-10"
-      style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}
+      className="relative shadow-md z-50"
+      style={{ background: "linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)" }}
     >
-      {/* Keep navbar height slim */}
-      <div className="container mx-auto px-6 py-2 flex items-center justify-between">
-
-        {/* Logo Section */}
+      {/* Navbar Row */}
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between">
+        {/* Logo */}
         <div className="flex items-center space-x-2">
           <Link to="/">
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-md flex-shrink-0">
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 shadow-md">
               <img
-                src="/image/logo.png" // Update path if needed
+                src="/image/logo.png"
                 alt="Logo"
                 className="w-full h-full object-cover"
               />
             </div>
           </Link>
-          <Link to="/" className="text-xl md:text-2xl font-bold text-gray-800 leading-tight">
+          <Link
+            to="/"
+            className="text-base md:text-lg font-bold text-gray-800 leading-tight"
+          >
             Fts Shopping
           </Link>
         </div>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex items-center space-x-8 font-medium text-gray-700 text-sm">
+        <ul className="hidden md:flex items-center space-x-6 font-medium text-gray-700 text-sm">
           <li><Link to="/" className="hover:text-gray-900 transition">Home</Link></li>
           <li><Link to="/explore" className="hover:text-gray-900 transition">Explore</Link></li>
           <li><Link to="/contact" className="hover:text-gray-900 transition">Contact</Link></li>
@@ -95,58 +97,68 @@ const Navebar = () => {
           <li><Link to="/register" className="hover:text-gray-900 transition">Sign Up</Link></li>
         </ul>
 
-        {/* Desktop Search & Icons */}
+        {/* Desktop Icons */}
         <div className="hidden md:flex items-center space-x-4">
           <div className="flex items-center bg-white rounded-md px-2 py-1">
             <input
               type="text"
               placeholder="Search..."
-              className="bg-transparent outline-none text-sm w-40 placeholder-gray-600"
+              className="bg-transparent outline-none text-sm w-32 placeholder-gray-600"
             />
-            <FiSearch className="text-gray-600 cursor-pointer h-5 w-5" />
+            <FiSearch className="text-gray-600 cursor-pointer h-4 w-4" />
           </div>
           <FiHeart className="text-gray-800 w-5 h-5 hover:text-red-500 cursor-pointer" />
           <div className="relative">
             <FiShoppingCart className="text-gray-800 w-5 h-5 cursor-pointer" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full h-3.5 w-3.5 flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
           </div>
         </div>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
-          <div className="relative mr-3">
-            <FiShoppingCart className="text-gray-800 w-6 h-6 cursor-pointer" />
+          <div className="relative mr-2">
+            <FiShoppingCart className="text-gray-800 w-5 h-5 cursor-pointer" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full h-3.5 w-3.5 flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}
           </div>
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-800">
-            {isMenuOpen ? <FiX size={26} /> : <FiMenu size={26} />}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-gray-800 focus:outline-none"
+          >
+            {isMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div
-          className="md:hidden absolute top-full left-0 w-full shadow-lg"
-          style={{ background: 'linear-gradient(to right, #D8D6F5, #B2B0E8, #D8D6F5)' }}
-        >
-          <ul className="flex flex-col items-center space-y-4 py-4 font-medium text-gray-700">
-            <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
-            <li><Link to="/explore" onClick={() => setIsMenuOpen(false)}>Explore</Link></li>
-            <li><Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
-            <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
-            <li><Link to="/register" onClick={() => setIsMenuOpen(false)}>Sign Up</Link></li>
-          </ul>
+      {/* Mobile Sidebar Menu (Logo removed) */}
+      <div
+        className={`fixed top-0 right-0 h-[80vh] w-[65%] max-w-[220px] rounded-l-xl shadow-lg transform transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        style={{ background: "linear-gradient(to bottom, #D8D6F5, #B2B0E8)" }}
+      >
+        {/* Close Button Only */}
+        <div className="flex justify-end px-3 py-2 border-b border-gray-300">
+          <button onClick={() => setIsMenuOpen(false)}>
+            <FiX size={22} className="text-gray-800" />
+          </button>
         </div>
-      )}
+
+        {/* Menu Links */}
+        <ul className="flex flex-col items-start pl-4 space-y-3 py-4 font-medium text-gray-700 text-sm">
+          <li><Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
+          <li><Link to="/explore" onClick={() => setIsMenuOpen(false)}>Explore</Link></li>
+          <li><Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
+          <li><Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link></li>
+          <li><Link to="/register" onClick={() => setIsMenuOpen(false)}>Sign Up</Link></li>
+        </ul>
+      </div>
     </nav>
   );
 };
