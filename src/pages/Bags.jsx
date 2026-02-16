@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useContext } from "react";
-import { CartContext } from "../context/CartContext";
-import { WishlistContext } from "../context/WishlistContext";
+import React, { useState, useMemo } from "react";
+import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import { FaTimes, FaCheck, FaHeart, FaEye } from "react-icons/fa";
 
 // --- Bags Data ---
@@ -14,8 +14,8 @@ const bags = [
 ];
 
 const Bags = () => {
-  const { cart, addToCart } = useContext(CartContext);
-  const { wishlist, addToWishlist } = useContext(WishlistContext);
+  const { cart, addToCart } = useCart();
+  const { wishlist, addToWishlist } = useWishlist();
 
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
