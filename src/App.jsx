@@ -5,6 +5,7 @@ import { products } from "/src/data/products.js";
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
+import BottomNav from './components/BottomNav'
 
 import Contact from './pages/Contact'
 import Login from './pages/Login'
@@ -13,6 +14,7 @@ import Profile from './pages/Profile'
 // import EditProfile from './pages/EditProfile'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminProfile from './pages/AdminProfile'
+
 import About from './pages/About'
 
 import Terms from './pages/Terms'
@@ -55,22 +57,21 @@ import BottomWear from './pages/BottomWear'
 function App() {
   return (
     <Router>
-      <div className="App flex flex-col min-h-screen pt-20">
-        {/* Navbar always visible */}
+      <div className="App flex flex-col min-h-screen pt-20 pb-16">
+        
+        {/* Top Navbar */}
         <Navbar />
 
-        {/* Landing + Tranding only show on homepage */}
+        {/* Pages */}
         <Routes>
-          
           <Route path="/" element={<Home />} />
-          
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          {/* <Route path="/profile/edit" element={<EditProfile />} /> */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/profile" element={<AdminProfile />} />
+        
           <Route path="/about" element={<About />} />
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/security" element={<Security />} />
@@ -86,19 +87,21 @@ function App() {
 
           <Route path="/cart" element={<CartPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/checkout" element={<React.Suspense fallback={<div>Loading...</div>}><Checkout /></React.Suspense>} />
-          <Route path="/my-orders" element={<React.Suspense fallback={<div>Loading...</div>}><MyOrdersPage /></React.Suspense>} />
-      
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/my-orders" element={<MyOrdersPage />} />
+
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/category/:slug" element={<Categorypage />} />
 
-          {/* Merchant routes */}
-          <Route path="/merchant/dashboard" element={<React.Suspense fallback={<div>Loading...</div>}><MerchantDashboard /></React.Suspense>} />
-          <Route path="/merchant/profile" element={<React.Suspense fallback={<div>Loading...</div>}><MerchantProfile /></React.Suspense>} />
-          <Route path="/merchant/addresses" element={<React.Suspense fallback={<div>Loading...</div>}><MerchantAddresses /></React.Suspense>} />
-          <Route path="/merchant/orders" element={<React.Suspense fallback={<div>Loading...</div>}><MyOrdersPage /></React.Suspense>} />
+          {/* Merchant */}
+          <Route path="/merchant/dashboard" element={<MerchantDashboard />} />
+          <Route path="/merchant/profile" element={<MerchantProfile />} />
+          <Route path="/merchant/addresses" element={<MerchantAddresses />} />
+          <Route path="/merchant/orders" element={<MyOrdersPage />} />
+
           <Route path="/track" element={<TrackOrder />} />
-        
+
+          {/* Categories */}
           <Route path="/foot" element={<FootWear />} />
           <Route path="/watch" element={<Watch />} />
           <Route path="/accessories" element={<Accessories />} />
@@ -110,14 +113,16 @@ function App() {
           <Route path="/jewel" element={<Jewellery />} />
           <Route path="/cosmetics" element={<Cosmetics />} />
           <Route path="/bottom" element={<BottomWear />} />
-
-          
         </Routes>
-     
+
+        {/* 🔥 Mobile Bottom Navigation */}
+        <BottomNav />
       </div>
+
+      {/* Footer (desktop friendly) */}
       <Footer />
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

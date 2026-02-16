@@ -162,7 +162,11 @@ export const products = [
   name: "Baby Skin Lotion 200ml",
   price: 249,
   oldPrice: 349,
+<<<<<<< HEAD
   image: "/image/baby-care-1.jpg",
+=======
+  image: "/image/babylotion.jpg",
+>>>>>>> c2b1d74 (chore:updated admin panel)
   category: "baby-care",
 },
 {
@@ -170,7 +174,11 @@ export const products = [
   name: "Cotton Baby Blanket",
   price: 499,
   oldPrice: 799,
+<<<<<<< HEAD
   image: "/image/baby-care-2.jpg",
+=======
+  image: "/image/baby-blanket.jpg",
+>>>>>>> c2b1d74 (chore:updated admin panel)
   category: "baby-care",
 },
 {
@@ -178,7 +186,11 @@ export const products = [
   name: "Baby Feeding Bottle 250ml",
   price: 199,
   oldPrice: 299,
+<<<<<<< HEAD
   image: "/image/baby-care-3.jpg",
+=======
+  image: "/image/baby-bottle.jpg",
+>>>>>>> c2b1d74 (chore:updated admin panel)
   category: "baby-care",
 },
 {
@@ -186,7 +198,11 @@ export const products = [
   name: "Baby Diapers (Pack of 30)",
   price: 349,
   oldPrice: 449,
+<<<<<<< HEAD
   image: "/image/baby-care-4.jpg",
+=======
+  image: "/image/baby-diaper.jpg",
+>>>>>>> c2b1d74 (chore:updated admin panel)
   category: "baby-care",
 },
 {
@@ -194,7 +210,11 @@ export const products = [
   name: "Baby Towel (Soft Cotton)",
   price: 299,
   oldPrice: 499,
+<<<<<<< HEAD
   image: "/image/baby-care-5.jpg",
+=======
+  image: "/image/baby-towel.jpg",
+>>>>>>> c2b1d74 (chore:updated admin panel)
   category: "baby-care",
 },
 {
@@ -202,6 +222,7 @@ export const products = [
   name: "Baby Shampoo 100ml",
   price: 149,
   oldPrice: 249,
+<<<<<<< HEAD
   image: "/image/baby-care-6.jpg",
   category: "baby-care",
 },
@@ -238,6 +259,44 @@ export const products = [
   image: "/image/grocery-4.jpg",
   category: "grocery",
 },
+=======
+  image: "/image/baby-shampoo.jpg",
+  category: "baby-care",
+},
+// -------- grocery ----------
+// {
+//   id: 401,
+//   name: "Organic Brown Rice 1kg",
+//   price: 199,
+//   oldPrice: 249,
+//   image: "/image/grocery-1.jpg",
+//   category: "grocery",
+// },
+// {
+//   id: 402,
+//   name: "Olive Oil 500ml",
+//   price: 399,
+//   oldPrice: 499,
+//   image: "/image/grocery-2.jpg",
+//   category: "grocery",
+// },
+// {
+//   id: 403,
+//   name: "Organic Honey 250g",
+//   price: 299,
+//   oldPrice: 399,
+//   image: "/image/grocery-3.jpg",
+//   category: "grocery",
+// },
+// {
+//   id: 404,
+//   name: "Almonds 500g",
+//   price: 599,
+//   oldPrice: 749,
+//   image: "/image/grocery-4.jpg",
+//   category: "grocery",
+// },
+>>>>>>> c2b1d74 (chore:updated admin panel)
 
 // -------- FOOTWEAR ----------
 {

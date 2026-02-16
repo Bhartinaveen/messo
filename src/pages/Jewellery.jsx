@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useContext } from "react";
+import { FaHeart, FaTimes, FaEye, FaCheck } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
-import { FaTimes, FaCheck } from "react-icons/fa";
+import { useWishlist } from "../context/WishlistContext";
 
 // --- Jewellery Data ---
 const jewellery = [
@@ -43,138 +44,143 @@ const jewellery = [
 ];
 
 const Jewellery = () => {
-  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  const { cart, addToCart } = useContext(CartContext);
+  const { wishlist, addToWishlist } = useWishlist();
 
   const [filters, setFilters] = useState({ brand: "All", type: "All" });
   const [quickView, setQuickView] = useState(null);
+  const [addedItems, setAddedItems] = useState([]);
 
-  const isInCart = (id) => cart.some(item => item.id === id);
-
-  const brands = ["All", ...new Set(jewellery.map(i => i.brand))];
-  const types = ["All", ...new Set(jewellery.map(i => i.type))];
+  const brands = ["All", ...new Set(jewellery.map((j) => j.brand))];
+  const types = ["All", ...new Set(jewellery.map((j) => j.type))];
 
   const filteredJewellery = useMemo(() => {
-    return jewellery.filter(item => {
-      const brandMatch = filters.brand === "All" || item.brand === filters.brand;
-      const typeMatch = filters.type === "All" || item.type === filters.type;
-      return brandMatch && typeMatch;
+    return jewellery.filter((item) => {
+      const brandOk = filters.brand === "All" || item.brand === filters.brand;
+      const typeOk = filters.type === "All" || item.type === filters.type;
+      return brandOk && typeOk;
     });
   }, [filters]);
 
+  const handleAddToCart = (item) => {
+    if (!addedItems.includes(item.id)) {
+      addToCart(item);
+      setAddedItems((prev) => [...prev, item.id]);
+    }
+  };
+
+  const isAdded = (id) => addedItems.includes(id);
+  const isWishlisted = (id) => wishlist.some((w) => w.id === id);
+
   return (
-    <div className="bg-gray-50 min-h-screen py-14">
+    <div className="min-h-screen bg-gray-100 py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* Header */}
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-4">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-amber-500">
-            Jewellery Collection
-          </span>
+        {/* HEADER */}
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-amber-500">
+          Jewellery Collection
         </h1>
         <p className="text-center text-gray-600 mb-12">
           Elegant jewellery crafted for every occasion
         </p>
 
-        {/* Filters */}
-        <div className="space-y-10 mb-12">
-          <div>
-            <h3 className="font-bold mb-3">Brand</h3>
-            <div className="flex flex-wrap gap-6">
-              {brands.map(b => (
-                <button
-                  key={b}
-                  onClick={() => setFilters({ ...filters, brand: b })}
-                  className={`pb-1 ${
-                    filters.brand === b
-                      ? "text-teal-600 border-b-2 border-teal-600"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {b}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* FILTERS */}
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
+          {brands.map((b) => (
+            <button
+              key={b}
+              onClick={() => setFilters({ ...filters, brand: b })}
+              className={`font-medium ${
+                filters.brand === b
+                  ? "text-teal-600 border-b-2 border-teal-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {b}
+            </button>
+          ))}
 
-          <div>
-            <h3 className="font-bold mb-3">Type</h3>
-            <div className="flex flex-wrap gap-6">
-              {types.map(t => (
-                <button
-                  key={t}
-                  onClick={() => setFilters({ ...filters, type: t })}
-                  className={`pb-1 ${
-                    filters.type === t
-                      ? "text-teal-600 border-b-2 border-teal-600"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+          {types.map((t) => (
+            <button
+              key={t}
+              onClick={() => setFilters({ ...filters, type: t })}
+              className={`font-medium ${
+                filters.type === t
+                  ? "text-amber-600 border-b-2 border-amber-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
         </div>
 
-        {/* Grid */}
+        {/* GRID */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredJewellery.map(item => {
-            const added = isInCart(item.id);
-
-            return (
-              <div
-                key={item.id}
-                className="group bg-white rounded-xl shadow hover:shadow-xl overflow-hidden"
-              >
-                {/* Image */}
-                <div className="relative h-56">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
+          {filteredJewellery.map((item) => (
+            <div
+              key={item.id}
+              className="relative bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+            >
+              {/* ICONS */}
+              <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                <button
+                  onClick={() => setQuickView(item)}
+                  className="bg-white p-2 rounded-full shadow hover:bg-teal-600 hover:text-white"
+                >
+                  <FaEye />
+                </button>
+                <button
+                  onClick={() => addToWishlist(item)}
+                  className="bg-white p-2 rounded-full shadow"
+                >
+                  <FaHeart
+                    className={isWishlisted(item.id) ? "text-red-500" : "text-gray-400"}
                   />
-
-                  <button
-                    onClick={() => setQuickView(item)}
-                    className="absolute inset-x-3 bottom-3 bg-white py-2 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 transition"
-                  >
-                    Quick View
-                  </button>
-                </div>
-
-                {/* Content */}
-                <div className="p-4 text-center">
-                  <h3 className="text-sm font-semibold truncate">
-                    {item.name}
-                  </h3>
-                  <p className="text-teal-600 font-bold mt-1">
-                    ₹{item.price.toLocaleString()}
-                  </p>
-                  <p className="text-xs text-gray-500">{item.brand}</p>
-
-                  <button
-                    onClick={() =>
-                      added ? removeFromCart(item.id) : addToCart(item)
-                    }
-                    className={`mt-3 w-full py-2 rounded-lg text-sm font-semibold
-                      ${
-                        added
-                          ? "bg-green-500 text-white"
-                          : "bg-teal-600 text-white hover:bg-teal-700"
-                      }`}
-                  >
-                    {added ? "Added ✓" : "Add to Cart"}
-                  </button>
-                </div>
+                </button>
               </div>
-            );
-          })}
+
+              {/* IMAGE */}
+              <div className="h-52 md:h-80 overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* INFO */}
+              <div className="p-4 text-center">
+                <h3 className="font-semibold truncate">{item.name}</h3>
+                <p className="text-teal-600 font-bold text-lg">₹{item.price.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">{item.brand}</p>
+
+                <button
+                  onClick={() => handleAddToCart(item)}
+                  disabled={isAdded(item.id)}
+                  className={`mt-3 w-full py-2 rounded-xl font-semibold ${
+                    isAdded(item.id)
+                      ? "bg-green-500 text-white"
+                      : "bg-teal-600 text-white hover:bg-teal-700"
+                  }`}
+                >
+                  {isAdded(item.id) ? (
+                    <>
+                      <FaCheck className="inline mr-1" /> Added
+                    </>
+                  ) : (
+                    "Add to Cart"
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* QUICK VIEW MODAL */}
         {quickView && (
-          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
-            <div className="bg-white rounded-3xl max-w-3xl w-full p-6 relative">
+          <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
+            <div className="bg-white rounded-3xl max-w-4xl w-full p-6 relative">
               <button
                 onClick={() => setQuickView(null)}
                 className="absolute top-4 right-4 text-xl"
@@ -190,28 +196,25 @@ const Jewellery = () => {
                 />
 
                 <div>
-                  <h2 className="text-2xl font-bold">{quickView.name}</h2>
+                  <h2 className="text-3xl font-bold">{quickView.name}</h2>
                   <p className="text-gray-500">{quickView.brand}</p>
 
                   <p className="text-teal-600 text-2xl font-bold mt-4">
                     ₹{quickView.price.toLocaleString()}
                   </p>
 
-                  <p className="mt-4 text-gray-700">
-                    {quickView.description}
-                  </p>
+                  <p className="mt-4 text-gray-700">{quickView.description}</p>
 
                   <button
-                    onClick={() => addToCart(quickView)}
-                    disabled={isInCart(quickView.id)}
-                    className={`mt-8 w-full py-3 rounded-2xl font-semibold
-                      ${
-                        isInCart(quickView.id)
-                          ? "bg-green-500 text-white"
-                          : "bg-teal-600 text-white hover:bg-teal-700"
-                      }`}
+                    onClick={() => handleAddToCart(quickView)}
+                    disabled={isAdded(quickView.id)}
+                    className={`mt-8 w-full py-3 rounded-2xl font-semibold ${
+                      isAdded(quickView.id)
+                        ? "bg-green-500 text-white"
+                        : "bg-teal-600 text-white hover:bg-teal-700"
+                    }`}
                   >
-                    {isInCart(quickView.id) ? (
+                    {isAdded(quickView.id) ? (
                       <>
                         <FaCheck className="inline mr-1" /> Added
                       </>

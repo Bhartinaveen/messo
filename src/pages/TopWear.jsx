@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { FaHeart, FaTimes, FaCheck } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTimes, FaCheck, FaEye } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 
 // --- Top Wear Data ---
 const topWear = [
@@ -62,6 +63,7 @@ const topWear = [
 
 const TopWear = () => {
   const { addToCart } = useCart();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
@@ -87,6 +89,7 @@ const TopWear = () => {
   };
 
   const isAdded = (id) => addedItems.includes(id);
+  const isWishlisted = (id) => wishlist.some((item) => item.id === id);
 
   return (
     <div className="bg-gray-100 min-h-screen py-8 md:py-16">
@@ -96,7 +99,7 @@ const TopWear = () => {
         <h1 className="text-3xl md:text-5xl font-extrabold text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
           Explore Top Wear
         </h1>
-        <p className="text-center text-gray-600 mb-10 text-sm md:text-base">
+        <p className="text-center text-gray-600 mb-10">
           Trendy styles for men & women
         </p>
 
@@ -106,7 +109,7 @@ const TopWear = () => {
             <button
               key={b}
               onClick={() => setFilters({ ...filters, brand: b })}
-              className={`font-medium text-sm md:text-base ${
+              className={`font-medium ${
                 filters.brand === b
                   ? "text-indigo-600 border-b-2 border-indigo-600"
                   : "text-gray-600"
@@ -120,7 +123,7 @@ const TopWear = () => {
             <button
               key={c}
               onClick={() => setFilters({ ...filters, category: c })}
-              className={`font-medium text-sm md:text-base ${
+              className={`font-medium ${
                 filters.category === c
                   ? "text-purple-600 border-b-2 border-purple-600"
                   : "text-gray-600"
@@ -132,16 +135,38 @@ const TopWear = () => {
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredItems.map((item) => (
             <div
               key={item.id}
               className="relative bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
             >
-              {/* Wishlist */}
-              <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow z-10">
-                <FaHeart className="text-red-500 text-sm" />
-              </button>
+              {/* 👁️ + ❤️ ICONS */}
+              <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                {/* Eye */}
+                <button
+                  onClick={() => setQuickView(item)}
+                  className="bg-white p-2 rounded-full shadow hover:bg-indigo-600 hover:text-white"
+                >
+                  <FaEye />
+                </button>
+
+                {/* Wishlist */}
+                <button
+                  onClick={() =>
+                    isWishlisted(item.id)
+                      ? removeFromWishlist(item.id)
+                      : addToWishlist(item)
+                  }
+                  className="bg-white p-2 rounded-full shadow"
+                >
+                  {isWishlisted(item.id) ? (
+                    <FaHeart className="text-red-500" />
+                  ) : (
+                    <FaRegHeart className="text-gray-400" />
+                  )}
+                </button>
+              </div>
 
               {/* Image */}
               <div className="h-44 md:h-72 overflow-hidden">
@@ -153,50 +178,38 @@ const TopWear = () => {
               </div>
 
               {/* Info */}
-              <div className="p-3 md:p-4 text-center">
-                <h3 className="font-semibold text-sm md:text-base truncate">
-                  {item.name}
-                </h3>
+              <div className="p-4 text-center">
+                <h3 className="font-semibold truncate">{item.name}</h3>
                 <p className="text-indigo-600 font-bold text-lg">
                   {item.price}
                 </p>
-                <p className="text-xs text-gray-500">{item.brand}</p>
+                <p className="text-sm text-gray-500">{item.brand}</p>
 
-                {/* ACTIONS */}
-                <div className="flex gap-2 mt-3">
-                  <button
-                    onClick={() => setQuickView(item)}
-                    className="w-1/2 border py-1.5 rounded-lg text-sm"
-                  >
-                    View
-                  </button>
-
-                  <button
-                    onClick={() => handleAddToCart(item)}
-                    disabled={isAdded(item.id)}
-                    className={`w-1/2 py-1.5 rounded-lg text-sm font-semibold
-                      ${
-                        isAdded(item.id)
-                          ? "bg-green-500 text-white"
-                          : "bg-indigo-600 text-white"
-                      }`}
-                  >
-                    {isAdded(item.id) ? "Added" : "Cart"}
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleAddToCart(item)}
+                  disabled={isAdded(item.id)}
+                  className={`mt-3 w-full py-2 rounded-xl font-semibold
+                    ${
+                      isAdded(item.id)
+                        ? "bg-green-500 text-white"
+                        : "bg-indigo-600 text-white hover:bg-indigo-700"
+                    }`}
+                >
+                  {isAdded(item.id) ? "Added ✓" : "Add to Cart"}
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* QUICK VIEW MODAL */}
+      {/* QUICK VIEW */}
       {quickView && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
-          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-4 md:p-6 relative">
+          <div className="bg-white rounded-3xl max-w-4xl w-full p-6 relative">
             <button
               onClick={() => setQuickView(null)}
-              className="absolute top-3 right-3 text-xl"
+              className="absolute top-4 right-4 text-xl"
             >
               <FaTimes />
             </button>
@@ -205,31 +218,29 @@ const TopWear = () => {
               <img
                 src={quickView.image}
                 alt={quickView.name}
-                className="w-full h-64 md:h-96 object-cover rounded-xl"
+                className="w-full h-80 object-cover rounded-2xl"
               />
 
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold">
-                  {quickView.name}
-                </h2>
+                <h2 className="text-3xl font-bold">{quickView.name}</h2>
                 <p className="text-gray-500">{quickView.brand}</p>
 
-                <p className="text-indigo-600 text-xl font-bold mt-3">
+                <p className="text-indigo-600 text-2xl font-bold mt-4">
                   {quickView.price}
                 </p>
 
-                <p className="mt-4 text-gray-700 text-sm md:text-base">
+                <p className="mt-4 text-gray-700">
                   {quickView.description}
                 </p>
 
                 <button
                   onClick={() => handleAddToCart(quickView)}
                   disabled={isAdded(quickView.id)}
-                  className={`mt-6 w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2
+                  className={`mt-8 w-full py-3 rounded-2xl font-semibold flex justify-center gap-2
                     ${
                       isAdded(quickView.id)
                         ? "bg-green-500 text-white"
-                        : "bg-indigo-600 text-white"
+                        : "bg-indigo-600 text-white hover:bg-indigo-700"
                     }`}
                 >
                   {isAdded(quickView.id) ? (

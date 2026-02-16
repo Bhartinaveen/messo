@@ -100,7 +100,9 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
             {avatar ? (
               <img src={avatar} alt="avatar" className="w-full h-full object-cover" />
             ) : (
-              <div className="text-gray-400">No Image</div>
+             <div className="w-full h-full flex items-center justify-center bg-orange-500 text-white text-3xl font-semibold">
+              {(formData.name || "U").charAt(0).toUpperCase()}
+            </div>
             )}
           </div>
           {isEditing && (
@@ -123,17 +125,6 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
             <div>
               <label className="block text-sm font-medium text-gray-700">Phone</label>
               <input name="phone" value={formData.phone} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Store Name</label>
-              <input name="storeName" value={formData.storeName} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Business Type</label>
-              <input name="businessType" value={formData.businessType} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
             </div>
           </div>
 

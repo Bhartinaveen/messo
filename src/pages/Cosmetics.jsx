@@ -1,14 +1,15 @@
 import React, { useState, useMemo, useContext } from "react";
-import { FaTimes, FaCheck } from "react-icons/fa";
+import { FaHeart, FaTimes, FaEye, FaCheck } from "react-icons/fa";
 import { CartContext } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 
-// --- Product Data ---
+// ---------------- DATA ----------------
 const products = [
   {
     id: 1,
     brand: "Fenty Beauty",
     name: "Pro Filt'r Foundation",
-    price: 3499,
+    price: "₹3,499",
     image: "/image/cos1.jpeg",
     category: "Makeup",
     description: "Long-wear, buildable foundation with a natural matte finish.",
@@ -17,7 +18,7 @@ const products = [
     id: 2,
     brand: "Dior",
     name: "J'adore Eau de Perfume",
-    price: 12999,
+    price: "₹12,999",
     image: "/image/cos2.jpeg",
     category: "Fragrance",
     description: "An iconic floral fragrance with a sensual feminine touch.",
@@ -26,147 +27,154 @@ const products = [
     id: 3,
     brand: "The Ordinary",
     name: "Niacinamide 10% + Zinc 1%",
-    price: 899,
+    price: "₹899",
     image: "/image/cos3.jpeg",
     category: "Skincare",
-    description: "Reduces blemishes, balances oil & improves skin texture.",
+    description: "Reduces blemishes & balances oil production.",
   },
   {
     id: 4,
     brand: "MAC",
     name: "Ruby Woo Lipstick",
-    price: 1799,
+    price: "₹1,799",
     image: "/image/cos4.jpeg",
     category: "Makeup",
-    description: "Classic matte red lipstick loved by professionals.",
+    description: "Iconic matte red lipstick loved by professionals.",
   },
 ];
 
+// ---------------- COMPONENT ----------------
 const Cosmetic = () => {
   const { cart, addToCart } = useContext(CartContext);
+  const { wishlist, addToWishlist } = useWishlist();
 
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
+  const [addedItems, setAddedItems] = useState([]);
 
-  const isAdded = (id) => cart.some((i) => i.id === id);
+  const brands = ["All", ...new Set(products.map(p => p.brand))];
+  const categories = ["All", "Makeup", "Skincare", "Fragrance"];
 
   const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      const brandOk = filters.brand === "All" || item.brand === filters.brand;
+    return products.filter(p => {
+      const brandOk = filters.brand === "All" || p.brand === filters.brand;
       const catOk =
-        filters.category === "All" || item.category === filters.category;
+        filters.category === "All" || p.category === filters.category;
       return brandOk && catOk;
     });
   }, [filters]);
 
-  const brands = ["All", ...new Set(products.map((p) => p.brand))];
-  const categories = ["All", "Makeup", "Skincare", "Fragrance"];
+  const handleAddToCart = (item) => {
+    if (!addedItems.includes(item.id)) {
+      addToCart(item);
+      setAddedItems(prev => [...prev, item.id]);
+    }
+  };
+
+  const isAdded = (id) => addedItems.includes(id);
+  const isWishlisted = (id) => wishlist.some(w => w.id === id);
 
   return (
-    <div className="bg-gray-50 min-h-screen py-14">
+    <div className="min-h-screen bg-gray-100 py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* Header */}
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-4">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-pink-500">
-            Cosmetic Collection
-          </span>
+        {/* HEADER */}
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-pink-600">
+          Explore Cosmetics
         </h1>
         <p className="text-center text-gray-600 mb-12">
-          Premium beauty & skincare products curated for you
+          Beauty, skincare & fragrances curated for you
         </p>
 
-        {/* Filters */}
-        <div className="space-y-8 mb-12">
-          <div>
-            <h3 className="font-bold mb-3">Brand</h3>
-            <div className="flex flex-wrap gap-6">
-              {brands.map((b) => (
-                <button
-                  key={b}
-                  onClick={() => setFilters({ ...filters, brand: b })}
-                  className={`pb-1 transition
-                    ${
-                      filters.brand === b
-                        ? "text-rose-600 border-b-2 border-rose-600"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                >
-                  {b}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* FILTERS (EthnicWear style) */}
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
+          {brands.map(b => (
+            <button
+              key={b}
+              onClick={() => setFilters({ ...filters, brand: b })}
+              className={`font-medium ${
+                filters.brand === b
+                  ? "text-rose-600 border-b-2 border-rose-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {b}
+            </button>
+          ))}
 
-          <div>
-            <h3 className="font-bold mb-3">Category</h3>
-            <div className="flex flex-wrap gap-6">
-              {categories.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setFilters({ ...filters, category: c })}
-                  className={`pb-1 transition
-                    ${
-                      filters.category === c
-                        ? "text-rose-600 border-b-2 border-rose-600"
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
+          {categories.map(c => (
+            <button
+              key={c}
+              onClick={() => setFilters({ ...filters, category: c })}
+              className={`font-medium ${
+                filters.category === c
+                  ? "text-pink-600 border-b-2 border-pink-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((item) => (
+        {/* GRID */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filteredProducts.map(item => (
             <div
               key={item.id}
-              className="group bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
+              className="relative bg-white rounded-2xl shadow hover:shadow-xl transition overflow-hidden"
             >
-              <div className="relative h-60">
+              {/* ICONS */}
+              <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                <button
+                  onClick={() => setQuickView(item)}
+                  className="bg-white p-2 rounded-full shadow hover:bg-rose-600 hover:text-white"
+                >
+                  <FaEye />
+                </button>
+
+                <button
+                  onClick={() => addToWishlist(item)}
+                  className="bg-white p-2 rounded-full shadow"
+                >
+                  <FaHeart
+                    className={
+                      isWishlisted(item.id)
+                        ? "text-red-500"
+                        : "text-gray-400"
+                    }
+                  />
+                </button>
+              </div>
+
+              {/* IMAGE */}
+              <div className="h-52 md:h-72 overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.name}
                   className="w-full h-full object-cover"
                 />
-
-                {/* Quick View */}
-                <button
-                  onClick={() => setQuickView(item)}
-                  className="absolute inset-x-0 bottom-3 mx-3 py-2 bg-white rounded-xl text-sm font-semibold opacity-0 group-hover:opacity-100 transition"
-                >
-                  Quick View
-                </button>
-
-                <span className="absolute top-2 right-2 bg-white text-xs px-2 py-1 rounded-full text-rose-600 font-semibold">
-                  {item.brand}
-                </span>
               </div>
 
+              {/* INFO */}
               <div className="p-4 text-center">
-                <h3 className="text-sm font-semibold truncate">{item.name}</h3>
-                <p className="text-rose-600 font-bold mt-1">₹{item.price}</p>
+                <h3 className="font-semibold truncate">{item.name}</h3>
+                <p className="text-rose-600 font-bold text-lg">
+                  {item.price}
+                </p>
+                <p className="text-sm text-gray-500">{item.brand}</p>
 
                 <button
-                  onClick={() => addToCart(item)}
+                  onClick={() => handleAddToCart(item)}
                   disabled={isAdded(item.id)}
-                  className={`mt-3 w-full py-2 rounded-lg font-semibold transition
+                  className={`mt-3 w-full py-2 rounded-xl font-semibold
                     ${
                       isAdded(item.id)
-                        ? "bg-green-500 text-white cursor-not-allowed"
+                        ? "bg-green-500 text-white"
                         : "bg-rose-600 text-white hover:bg-rose-700"
                     }`}
                 >
-                  {isAdded(item.id) ? (
-                    <>
-                      <FaCheck className="inline mr-1" /> Added
-                    </>
-                  ) : (
-                    "Add to Cart"
-                  )}
+                  {isAdded(item.id) ? "Added ✓" : "Add to Cart"}
                 </button>
               </div>
             </div>
@@ -174,10 +182,10 @@ const Cosmetic = () => {
         </div>
       </div>
 
-      {/* ---------------- QUICK VIEW MODAL ---------------- */}
+      {/* QUICK VIEW MODAL (EthnicWear style) */}
       {quickView && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-4">
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 relative">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
+          <div className="bg-white rounded-3xl max-w-4xl w-full p-6 relative">
             <button
               onClick={() => setQuickView(null)}
               className="absolute top-4 right-4 text-xl"
@@ -193,11 +201,11 @@ const Cosmetic = () => {
               />
 
               <div>
-                <h2 className="text-2xl font-bold">{quickView.name}</h2>
+                <h2 className="text-3xl font-bold">{quickView.name}</h2>
                 <p className="text-gray-500">{quickView.brand}</p>
 
                 <p className="text-rose-600 text-2xl font-bold mt-4">
-                  ₹{quickView.price}
+                  {quickView.price}
                 </p>
 
                 <p className="mt-4 text-gray-700">
@@ -205,7 +213,7 @@ const Cosmetic = () => {
                 </p>
 
                 <button
-                  onClick={() => addToCart(quickView)}
+                  onClick={() => handleAddToCart(quickView)}
                   disabled={isAdded(quickView.id)}
                   className={`mt-8 w-full py-3 rounded-2xl font-semibold
                     ${
@@ -214,7 +222,13 @@ const Cosmetic = () => {
                         : "bg-rose-600 text-white hover:bg-rose-700"
                     }`}
                 >
-                  {isAdded(quickView.id) ? "Added to Cart ✓" : "Add to Cart"}
+                  {isAdded(quickView.id) ? (
+                    <>
+                      <FaCheck className="inline mr-1" /> Added
+                    </>
+                  ) : (
+                    "Add to Cart"
+                  )}
                 </button>
               </div>
             </div>
