@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   FaUsers,
   FaShoppingCart,
@@ -9,6 +10,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 
+/* ================= BRAND NAME ================= */
 
 const BrandName = () => (
   <span className="inline-flex items-baseline font-extrabold">
@@ -22,12 +24,11 @@ const BrandName = () => (
   </span>
 );
 
-
+/* ================= ABOUT PAGE ================= */
 
 const About = () => {
   return (
     <div className="bg-white font-sans">
-
       {/* ================= HERO SECTION ================= */}
       <div
         className="relative h-[70vh] bg-cover bg-center flex items-center justify-center"
@@ -43,8 +44,8 @@ const About = () => {
             About Us
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-gray-200 text-base sm:text-lg md:text-xl">
-            Redefining the future of online shopping in India with innovation,
-            trust & world-class service.
+            An upcoming e-commerce platform redefining online shopping in India
+            with innovation, trust & world-class service.
           </p>
         </div>
       </div>
@@ -56,57 +57,61 @@ const About = () => {
             Our Journey
           </h2>
 
-         <p className="text-gray-600 leading-relaxed mb-4">
-          <BrandName /> a proud venture of{" "}
-          <span className="font-semibold text-black">
-            First Track Solutions Technologies Pvt. Ltd.
-          </span>
-          , was launched in{" "}
-          <span className="font-semibold text-black">2025</span> with a clear vision —
-          to build a next-generation e-commerce platform that delivers speed,
-          reliability, and trust to customers across India.
-        </p>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            <BrandName /> is a proud venture of{" "}
+            <span className="font-semibold text-black">
+              First Track Solutions Technologies Pvt. Ltd.
+            </span>
+            , an organization founded in{" "}
+            <span className="font-semibold text-black">2022</span> with a vision
+            to build reliable, technology-driven digital solutions.
+          </p>
 
-        <p className="text-gray-600 leading-relaxed mb-4">
-          Built on the strong foundation of First Track Solutions Technologies Pvt. Ltd.,
-          <BrandName /> is designed to make online shopping simple and stress-free.
-          We bring trusted sellers and quality products together on one platform,
-          ensuring a safe, smooth, and reliable shopping experience for every customer.
-        </p>
+          <p className="text-gray-600 leading-relaxed mb-4">
+            Built on this solid foundation, <BrandName /> is being thoughtfully
+            developed as a modern e-commerce platform that connects trusted
+            sellers with quality-conscious customers. Our aim is to simplify
+            online shopping while maintaining transparency, security, and
+            reliability at every step.
+          </p>
 
-        <p className="text-gray-600 leading-relaxed">
-          We understand that every order represents time, expectation, and trust.
-          Backed by intelligent systems, a growing seller network, and strong
-          fulfillment capabilities, <BrandName /> ensures seamless experiences —
-          from product discovery and secure payments to reliable doorstep delivery.
-        </p>
+          <p className="text-gray-600 leading-relaxed">
+            We believe every order represents time, expectations, and trust.
+            Backed by intelligent systems, a growing seller ecosystem, and strong
+            fulfillment capabilities, <BrandName /> aims to deliver seamless
+            experiences — from product discovery and secure payments to reliable
+            doorstep delivery.
+            <span className="block mt-3 font-semibold text-red-600">
+              🚀 Coming Soon
+            </span>
+          </p>
         </div>
-          <img
-            src="https://images.unsplash.com/photo-1521334884684-d80222895322?w=800"
-            alt="Our Story"
-            className="rounded-2xl shadow-xl hover:scale-105 transition duration-500"
-          />
-      
+
+        <img
+          src="https://images.unsplash.com/photo-1521334884684-d80222895322?w=800"
+          alt="Our Story"
+          className="rounded-2xl shadow-xl hover:scale-105 transition duration-500"
+        />
       </div>
 
       {/* ================= STATISTICS ================= */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <StatCard icon={<FaUsers />} value="10.5k+" label="Registered Sellers" />
+          <StatCard icon={<FaUsers />} value="2022" label="Company Founded" />
           <StatCard
             icon={<FaShoppingCart />}
-            value="33k+"
-            label="Monthly Orders"
+            value="2025"
+            label="Platform Launch"
           />
           <StatCard
             icon={<FaUserFriends />}
-            value="45.5k+"
-            label="Active Customers"
+            value="Pan India"
+            label="Customer Reach"
           />
           <StatCard
             icon={<FaMoneyBillWave />}
-            value="25k+"
-            label="Annual Sales Volume"
+            value="Secure"
+            label="Payments & Checkout"
           />
         </div>
       </div>

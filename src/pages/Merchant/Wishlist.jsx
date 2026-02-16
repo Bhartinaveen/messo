@@ -13,6 +13,7 @@ const Wishlist = () => {
         <HeartOff size={40} />
         <p className="mt-3">Your wishlist is empty</p>
         <Link to="/explore" className="mt-3 px-4 py-2 bg-orange-500 text-white rounded">Browse Products</Link>
+      
       </div>
     );
   }

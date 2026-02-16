@@ -10,50 +10,61 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
+  try {
+    let data;
     try {
-      let data;
-      try {
-        const res = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-        data = await res.json();
+      data = await res.json();
 
-        if (!res.ok) throw new Error(data.message || "Login failed");
-
-        // persist via auth context (which also writes to localStorage)
-        login({ user: data.user, token: data.token });
-
-        // ADMIN vs USER REDIRECT
-        if (data.user.isAdmin) navigate('/admin');
-        else if (data.user.isMerchant) navigate('/merchant/dashboard');
-        else navigate('/profile');
-        return;
-      } catch (err) {
-        // fallback: check local users
-        const stored = JSON.parse(localStorage.getItem('users') || '[]');
-        const u = stored.find((s) => s.email === email && s.password === password);
-        if (!u) throw err;
-
-        // login locally
-        login({ user: { id: u.id, name: u.name, email: u.email, isMerchant: !!u.isMerchant }, token: 'local-token' });
-        if (u.isMerchant) navigate('/merchant/dashboard');
-        else navigate('/profile');
-        return;
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
       }
+
+      // persist via auth context (which also writes to localStorage)
+      login({ user: data.user, token: data.token });
+
+      // ADMIN vs USER REDIRECT
+      if (data.user.isAdmin) {
+        navigate('/admin');
+      } else if (data.user.isMerchant) {
+        navigate('/merchant/dashboard');
+      } else {
+        navigate('/profile');
+      }
+      return;
     } catch (err) {
-      console.error(err);
-      alert(err.message || "Login failed");
-    } finally {
-      setLoading(false);
+      // fallback: check local users
+      const stored = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = stored.find((s) => s.email === email && s.password === password);
+      if (!user) {
+        throw err;
+      }
+
+      // login locally
+      login({ user: { id: user.id, name: user.name, email: user.email, isMerchant: !!user.isMerchant }, token: 'local-token' });
+      if (user.isMerchant) {
+        navigate('/merchant/dashboard');
+      } else {
+        navigate('/profile');
+      }
+      return;
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div

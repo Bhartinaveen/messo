@@ -1,112 +1,151 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 
-const AdminSidebar = ({ className = "", selectedView = "dashboard", onSelect }) => {
+const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
   const navigate = useNavigate();
   const [openMobile, setOpenMobile] = useState(false);
   const { logout, user } = useAuth();
 
   const handleLogout = () => {
     logout();
+    setOpenMobile(false);
     navigate("/");
   };
 
-  const linkClass = (name) =>
-    `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition ${
-      selectedView === name
-        ? (user && user.role === 'superadmin' ? "bg-white text-black font-semibold" : "bg-white text-orange-600 font-semibold")
-        : "text-white/90 hover:bg-white/10"
-    }`;
-
-  const MenuButtons = ({ mobile = false }) => {
-    // Super Admin gets a focused set of capabilities
-    if (user && user.role === 'superadmin') {
-      return (
-        <>
-          <button onClick={() => onSelect("dashboard")} className={linkClass("dashboard")}>📊 Dashboard</button>
-          <button onClick={() => onSelect("analytics")} className={linkClass("analytics")}>📈 Analytics</button>
-          <button onClick={() => onSelect("users")} className={linkClass("users")}>👥 Users</button>
-          <button onClick={() => onSelect("admin-management")} className={linkClass("admin-management")}>⚙️ Admin Management</button>
-          <button onClick={() => onSelect("settings")} className={linkClass("settings")}>🔧 Settings</button>
-          <button onClick={() => onSelect("security-logs")} className={linkClass("security-logs")}>� Security Logs</button>
-          <button onClick={() => onSelect("profile")} className={linkClass("profile")}>👤 Profile</button>
-        </>
-      );
-    }
-
-    // Regular admin menu
-    return (
-      <>
-        <button onClick={() => onSelect("dashboard")} className={linkClass("dashboard")}>Dashboard</button>
-        <button onClick={() => onSelect("analytics")} className={linkClass("analytics")}>Analytics</button>
-        <button onClick={() => onSelect("orders")} className={linkClass("orders")}>Orders</button>
-        <button onClick={() => onSelect("products")} className={linkClass("products")}>Products</button>
-        <button onClick={() => onSelect("partners")} className={linkClass("partners")}>Delivery Partners</button>
-        <button onClick={() => onSelect("hero")} className={linkClass("hero")}>Hero Manager</button>
-        <button onClick={() => onSelect("profile")} className={linkClass("profile")}>Profile</button>
-      </>
-    );
+  const handleClick = (view) => {
+    onSelect(view);
+    setOpenMobile(false);
   };
 
+  const linkClass = (name) =>
+    `block w-full text-left px-4 py-3 rounded-lg font-medium transition ${
+      selectedView === name
+        ? "bg-white text-orange-600 font-semibold"
+        : "text-white hover:bg-white/20"
+    }`;
+
+  const isSuperAdmin = user?.role === "superadmin";
+
+  const Menu = () => (
+    <>
+      {/* Dashboard */}
+      <button onClick={() => handleClick("dashboard")} className={linkClass("dashboard")}>
+        {isSuperAdmin ? "Super Dashboard" : "Dashboard"}
+      </button>
+
+      {/* Superadmin Only */}
+      {isSuperAdmin && (
+        <>
+          <button onClick={() => handleClick("analytics")} className={linkClass("analytics")}>
+            Analytics
+          </button>
+
+          <button onClick={() => handleClick("security-logs")} className={linkClass("security-logs")}>
+            Security Logs
+          </button>
+
+          <button onClick={() => handleClick("settings")} className={linkClass("settings")}>
+            Settings
+          </button>
+        </>
+      )}
+
+      {/* Admin + SuperAdmin Common */}
+      <button onClick={() => handleClick("orders")} className={linkClass("orders")}>
+        Orders
+      </button>
+
+      <button onClick={() => handleClick("products")} className={linkClass("products")}>
+        Products
+      </button>
+
+      <button onClick={() => handleClick("users")} className={linkClass("users")}>
+        Users
+      </button>
+
+      <button onClick={() => handleClick("admin-management")} className={linkClass("admin-management")}>
+        Admin Management
+      </button>
+
+      {!isSuperAdmin && (
+        <>
+          <button onClick={() => handleClick("hero")} className={linkClass("hero")}>
+            Hero Manager
+          </button>
+
+          <button onClick={() => handleClick("partners")} className={linkClass("partners")}>
+            Delivery Partners
+          </button>
+        </>
+      )}
+
+      <button onClick={() => handleClick("profile")} className={linkClass("profile")}>
+        Profile
+      </button>
+
+      <button onClick={() => handleClick("support")} className={linkClass("support")}>
+        Support
+      </button>
+    </>
+  );
 
   return (
-    <aside className={className}>
-      {/* Desktop */}
-      <div className="hidden md:block bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl p-6">
-        <div className="mb-6 text-center">
-          <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center font-bold text-xl ${user && user.role === 'superadmin' ? 'bg-black text-white' : 'bg-white text-orange-600'}`}>
-            {user && user.role === 'superadmin' ? 'SA' : 'A'}
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-gradient-to-b from-orange-500 to-red-600 text-white p-6">
+        <div className="mb-8 text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-white text-orange-600 flex items-center justify-center font-bold text-lg">
+            {isSuperAdmin ? "SA" : "A"}
           </div>
-          <p className="mt-3 font-semibold">{user && user.role === 'superadmin' ? 'Super Admin' : 'Admin'}</p>
-          <p className="text-xs opacity-90">{user && user.role === 'superadmin' ? 'Platform owner' : 'Manage store'}</p>
+          <p className="mt-3 font-semibold">
+            {isSuperAdmin ? "Super Admin Panel" : "Admin Panel"}
+          </p>
         </div>
 
         <nav className="space-y-2">
-          <MenuButtons />
-        </nav>
+          <Menu />
 
-        <button
-          onClick={handleLogout}
-          className="mt-6 w-full px-3 py-3 rounded-lg bg-white text-red-600 font-semibold hover:bg-white/90"
-        >
-          Logout
-        </button>
-      </div>
-
-      {/* Mobile */}
-      <div className="md:hidden">
-        <div className="flex items-center justify-between bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl p-3">
-          <div className="flex items-center gap-3">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${user && user.role === 'superadmin' ? 'bg-black text-white' : 'bg-white text-orange-600'}`}>
-              {user && user.role === 'superadmin' ? 'SA' : 'A'}
-            </div>
-            <div>
-              <p className="text-sm font-semibold">{user && user.role === 'superadmin' ? 'Super Admin' : 'Admin'}</p>
-              <p className="text-xs opacity-90">{user && user.role === 'superadmin' ? 'Platform owner' : 'Manage store'}</p>
-            </div>
-          </div>
           <button
-            onClick={() => setOpenMobile(!openMobile)}
-            className="px-3 py-2 bg-white/20 rounded-md"
+            onClick={handleLogout}
+            className="flex items-center gap-2 w-full px-4 py-3 rounded-lg font-medium text-white hover:bg-white/20 transition"
           >
-            {openMobile ? "Close" : "Menu"}
+            <FaSignOutAlt />
+            Logout
+          </button>
+        </nav>
+      </aside>
+
+      {/* Mobile Sidebar */}
+      <div className="md:hidden relative bg-gradient-to-r from-orange-500 to-red-600 text-white p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="font-semibold text-lg">
+            {isSuperAdmin ? "Super Admin" : "Admin Panel"}
+          </h2>
+
+          <button onClick={() => setOpenMobile(!openMobile)}>
+            {openMobile ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
         </div>
 
         {openMobile && (
-          <div className="mt-3 bg-white rounded-xl shadow p-3 space-y-2">
-            <MenuButtons />
-            <button
-              onClick={handleLogout}
-              className="w-full px-3 py-2 rounded-md bg-red-600 text-white"
-            >
-              Logout
-            </button>
+          <div className="absolute left-0 top-full w-full bg-gradient-to-b from-orange-500 to-red-600 p-4 space-y-2 shadow-lg z-50">
+            <nav className="space-y-2">
+              <Menu />
+
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg font-medium text-white hover:bg-white/20 transition mt-2"
+              >
+                <FaSignOutAlt />
+                Logout
+              </button>
+            </nav>
           </div>
         )}
       </div>
-    </aside>
+    </>
   );
 };
 
