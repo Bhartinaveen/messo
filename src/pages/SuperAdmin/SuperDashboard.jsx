@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const StatCard = ({ title, value, hint }) => (
   <div className="bg-white rounded-lg shadow p-4">
     <p className="text-sm text-gray-500">{title}</p>
@@ -34,10 +36,10 @@ const SuperDashboard = ({ onNavigate }) => {
     const fetchOverview = async () => {
       try {
         const [ovRes, salesRes, usersRes, productsRes] = await Promise.all([
-          fetch('/api/super-admin/overview', { headers }),
-          fetch('/api/super-admin/reports/sales?range=30', { headers }),
-          fetch('/api/super-admin/reports/users?range=30', { headers }),
-          fetch('/api/super-admin/reports/products', { headers }),
+          fetch(`${BASE_URL}/super-admin/overview`, { headers }),
+          fetch(`${BASE_URL}/super-admin/reports/sales?range=30`, { headers }),
+          fetch(`${BASE_URL}/super-admin/reports/users?range=30`, { headers }),
+          fetch(`${BASE_URL}/super-admin/reports/products`, { headers }),
         ]);
 
         if (!ovRes.ok) throw new Error('Overview fetch failed');

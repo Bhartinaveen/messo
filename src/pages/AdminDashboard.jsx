@@ -22,6 +22,8 @@ import {
   updateDeliveryPartner,
 } from "../utils/deliveryStorage";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -51,9 +53,9 @@ const AdminDashboard = () => {
       setLoading(true);
       try {
         const [usersRes, ordersRes, productsRes] = await Promise.all([
-          fetch("/api/users", { headers }),
-          fetch("/api/orders", { headers }),
-          fetch("/api/products", { headers }),
+          fetch(`${BASE_URL}/users`, { headers }),
+          fetch(`${BASE_URL}/orders`, { headers }),
+          fetch(`${BASE_URL}/products`, { headers }),
         ]);
 
         const usersData = await usersRes.json();

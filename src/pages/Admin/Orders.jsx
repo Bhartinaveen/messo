@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const PER_PAGE = 8;
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0);
@@ -12,7 +14,7 @@ const Orders = () => {
   const fetchOrders = async (p = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/orders?page=${p}&limit=${PER_PAGE}`, { headers: { Authorization: token ? `Bearer ${token}` : '' } });
+      const res = await fetch(`${BASE_URL}/orders?page=${p}&limit=${PER_PAGE}`, { headers: { Authorization: token ? `Bearer ${token}` : '' } });
       const data = await res.json();
       setOrders(Array.isArray(data.items) ? data.items : []);
       setTotal(typeof data.total === 'number' ? data.total : 0);
@@ -27,7 +29,7 @@ const Orders = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ status }) });
+      const res = await fetch(`${BASE_URL}/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ status }) });
       if (!res.ok) throw new Error('Update failed');
       fetchOrders(page);
     } catch (err) { alert(err.message || 'Update failed'); }
@@ -37,7 +39,7 @@ const Orders = () => {
     const reason = prompt('Enter refund reason');
     if (!reason) return;
     try {
-      const res = await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ isRefunded: true, refundReason: reason }) });
+      const res = await fetch(`${BASE_URL}/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ isRefunded: true, refundReason: reason }) });
       if (!res.ok) throw new Error('Refund failed');
       fetchOrders(page);
     } catch (err) { alert(err.message || 'Refund failed'); }

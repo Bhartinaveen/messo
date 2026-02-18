@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const SuperUsers = () => {
   const [users, setUsers] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -11,7 +13,7 @@ const SuperUsers = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/users', { headers: { Authorization: token ? `Bearer ${token}` : '' } });
+      const res = await fetch(`${BASE_URL}/users`, { headers: { Authorization: token ? `Bearer ${token}` : '' } });
       const data = res.ok ? await res.json() : [];
       setUsers(Array.isArray(data) ? data : []);
       setFiltered(Array.isArray(data) ? data : []);
@@ -38,7 +40,7 @@ const SuperUsers = () => {
 
   const toggleBlock = async (id, block) => {
     try {
-      const res = await fetch(`/api/users/${id}/block`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ block }) });
+      const res = await fetch(`${BASE_URL}/users/${id}/block`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: token ? `Bearer ${token}` : '' }, body: JSON.stringify({ block }) });
       if (!res.ok) throw new Error('Action failed');
       fetchUsers();
     } catch (err) { alert(err.message || 'Action failed'); }

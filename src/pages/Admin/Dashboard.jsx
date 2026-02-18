@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const Dashboard = ({ user }) => {
   const [now, setNow] = useState(new Date());
   const [greeting, setGreeting] = useState("Hello");
@@ -24,7 +26,7 @@ const Dashboard = ({ user }) => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch('/api/admin/reports', { headers: { Authorization: token ? `Bearer ${token}` : '' } });
+        const res = await fetch(`${BASE_URL}/admin/reports`, { headers: { Authorization: token ? `Bearer ${token}` : '' } });
         const data = await res.json();
         setReports(data);
       } catch (e) { setReports(null); }
