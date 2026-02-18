@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AdminManagement = () => {
   const { token } = useAuth();
   const [admins, setAdmins] = useState([]);
@@ -11,7 +13,7 @@ const AdminManagement = () => {
   const fetchAdmins = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/super-admin/admins', { headers: { Authorization: token ? `Bearer ${token}` : '' } });
+      const res = await fetch(`${BASE_URL}/super-admin/admins`, { headers: { Authorization: token ? `Bearer ${token}` : '' } });
       const data = await res.json();
       setAdmins(data || []);
     } catch (e) {
@@ -24,7 +26,7 @@ const AdminManagement = () => {
   const removeAdmin = async (id) => {
     if (!confirm('Delete this admin?')) return;
     try {
-      const res = await fetch(`/api/super-admin/admins/${id}`, { method: 'DELETE', headers: { Authorization: token ? `Bearer ${token}` : '' } });
+      const res = await fetch(`${BASE_URL}/super-admin/admins/${id}`, { method: 'DELETE', headers: { Authorization: token ? `Bearer ${token}` : '' } });
       if (!res.ok) throw new Error('Action failed');
       fetchAdmins();
     } catch (err) { alert(err.message || 'Action failed'); }
@@ -33,7 +35,7 @@ const AdminManagement = () => {
   const createAdmin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/super-admin/admins', { method: 'POST', headers: { Authorization: token ? `Bearer ${token}` : '', 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+      const res = await fetch(`${BASE_URL}/super-admin/admins`, { method: 'POST', headers: { Authorization: token ? `Bearer ${token}` : '', 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
       if (!res.ok) throw new Error('Create failed');
       setForm({ name: '', email: '', password: '' });
       fetchAdmins();

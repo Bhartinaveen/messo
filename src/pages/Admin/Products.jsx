@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
+import getS3PutUrlService from "../../services/s3/getS3PutUrlService";
+import uploadFileToS3Service from "../../services/s3/uploadFileToS3Service";
 
 const PER_PAGE = 8;
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const emptyForm = {
   name: "",
@@ -12,6 +16,11 @@ const emptyForm = {
   countInStock: 0,
 };
 
+const emptyFiles = {
+  image: null,
+  preview: null,
+};
+
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
@@ -20,6 +29,7 @@ const AdminProducts = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(emptyForm);
+  const [files, setFiles] = useState(emptyFiles);
   const [message, setMessage] = useState("");
 
   const token = localStorage.getItem("token");
@@ -28,7 +38,7 @@ const AdminProducts = () => {
   const fetchProducts = async (p = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/products?page=${p}&limit=${PER_PAGE}`);
+      const res = await fetch(`${BASE_URL}/products?page=${p}&limit=${PER_PAGE}`);
       const data = await res.json();
 
       setProducts(data?.items || []);
@@ -63,7 +73,7 @@ const AdminProducts = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setForm((prev) => ({
+    setFiles((prev) => ({
       ...prev,
       image: file,          // store FILE not base64
       preview: URL.createObjectURL(file), // for preview only
@@ -78,30 +88,29 @@ const AdminProducts = () => {
     }
 
     try {
-      const formData = new FormData();
 
-      formData.append("name", form.name);
-      formData.append("price", Number(form.price));
-      formData.append("category", form.category);
-      formData.append("description", form.description);
-      formData.append("countInStock", Number(form.countInStock));
-
-      if (form.image) {
-        formData.append("image", form.image);
+      if (files.image){
+        const key = `products/${Date.now()}_${files.image.name}`;
+        const type = files.image.type;
+        const putUrl = await getS3PutUrlService(key, type, false);
+        await uploadFileToS3Service(putUrl, files.image, type);
+        form.image = key;
       }
 
       const url = editing
-        ? `/api/products/${editing.id}`
-        : "/api/products";
+        ? `${BASE_URL}/products/${editing.id}`
+        : `${BASE_URL}/products`;
 
       const method = editing ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
         headers: {
-          ...(token && { Authorization: `Bearer ${token}` }),
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-        body: formData,   // ✅ send FormData not JSON
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
@@ -129,7 +138,7 @@ const AdminProducts = () => {
     if (!window.confirm("Delete this product?")) return;
 
     try {
-      const res = await fetch(`/api/products/${id}`, {
+      const res = await fetch(`${BASE_URL}/products/${id}`, {
         method: "DELETE",
         headers: {
           ...(token && { Authorization: `Bearer ${token}` }),
@@ -334,7 +343,7 @@ const AdminProducts = () => {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
 
-                  {!form.image ? (
+                  {!files.preview ? (
                     <div className="flex flex-col items-center justify-center text-gray-500">
                       <Plus size={28} className="mb-2" />
                       <p className="text-sm">Click to upload image</p>
@@ -345,7 +354,7 @@ const AdminProducts = () => {
                   ) : (
                     <div className="flex flex-col items-center">
                       <img
-                        src={form.preview}
+                        src={files.preview}
                         alt="preview"
                         className="w-24 h-24 object-cover rounded-lg mb-2"
                       />

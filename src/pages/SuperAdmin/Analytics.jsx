@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const MiniBarChart = ({ series = [] }) => {
   const max = Math.max(...series.map(s => s.value), 1);
   return (
@@ -27,9 +29,9 @@ const Analytics = () => {
       setLoading(true);
       try {
         const [uRes, oRes, pRes] = await Promise.all([
-          fetch('/api/users', { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
-          fetch('/api/orders', { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
-          fetch('/api/products', { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
+          fetch(`${BASE_URL}/users`, { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
+          fetch(`${BASE_URL}/orders`, { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
+          fetch(`${BASE_URL}/products`, { headers: { Authorization: token ? `Bearer ${token}` : '' } }),
         ]);
 
         const u = uRes.ok ? await uRes.json() : [];
@@ -57,8 +59,8 @@ const Analytics = () => {
     const fetchSeries = async () => {
       try {
         const [salesRes, usersRes] = await Promise.all([
-          fetch(`/api/super-admin/reports/sales?range=${range}`, { headers }),
-          fetch(`/api/super-admin/reports/users?range=${range}`, { headers }),
+          fetch(`${BASE_URL}/super-admin/reports/sales?range=${range}`, { headers }),
+          fetch(`${BASE_URL}/super-admin/reports/users?range=${range}`, { headers }),
         ]);
 
         if (salesRes.ok) {
