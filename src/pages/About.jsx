@@ -63,7 +63,7 @@ const About = () => {
               First Track Solutions Technologies Pvt. Ltd.
             </span>
             , an organization founded in{" "}
-            <span className="font-semibold text-black">2022</span> with a vision
+            <span className="font-semibold text-black">october 2022</span> with a vision
             to build reliable, technology-driven digital solutions.
           </p>
 
@@ -82,7 +82,7 @@ const About = () => {
             experiences — from product discovery and secure payments to reliable
             doorstep delivery.
             <span className="block mt-3 font-semibold text-red-600">
-              🚀 Coming Soon
+              🚀 Launch in 2026
             </span>
           </p>
         </div>
@@ -124,17 +124,17 @@ const About = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 text-center">
           <TeamCard
-            img="https://randomuser.me/api/portraits/men/32.jpg"
+            // img="/image/about2.webp"
             name="Arjun Mehta"
-            role="Founder & CEO"
-          />
-          <TeamCard
-            img="https://randomuser.me/api/portraits/women/44.jpg"
-            name="Riya Sharma"
             role="Managing Director"
           />
           <TeamCard
-            img="https://randomuser.me/api/portraits/men/65.jpg"
+            img="/image/founder.webp"
+            name="Teajsh Parekh"
+            role="Founder & CEO"
+          />
+          <TeamCard
+            img="/image/product-designer.webp"
             name="Kabir Verma"
             role="Lead Product Designer"
           />
@@ -165,8 +165,7 @@ const TeamCard = ({ img, name, role }) => (
     <p className="text-gray-500 text-sm mb-3">{role}</p>
     <div className="flex justify-center space-x-4 text-gray-500">
       <FaLinkedin className="hover:text-red-600 cursor-pointer" />
-      <FaTwitter className="hover:text-red-600 cursor-pointer" />
-      <FaInstagram className="hover:text-red-600 cursor-pointer" />
+      
     </div>
   </div>
 );

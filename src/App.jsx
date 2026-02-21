@@ -10,8 +10,9 @@ import BottomNav from './components/BottomNav'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import PartnerAuth from './pages/PartnerAuth'
 import Profile from './pages/Profile'
-// import EditProfile from './pages/EditProfile'
+
 import AdminDashboard from './pages/AdminDashboard'
 import AdminProfile from './pages/AdminProfile'
 
@@ -68,6 +69,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/partner-auth" element={<PartnerAuth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/profile" element={<AdminProfile />} />

@@ -10,9 +10,17 @@ const Register = () => {
   const [isMerchant, setIsMerchant] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [acceptTerms, setAcceptTerms] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!acceptTerms) {
+    toast.error("Please accept Terms & Conditions");
+    return;
+  }
+
     setLoading(true);
     const payload = { name, email, password, isMerchant };
 
@@ -96,16 +104,48 @@ const Register = () => {
         className="w-full py-3 px-4 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
-        <label className="flex items-center gap-2 mt-2 text-sm">
+        {/* <label className="flex items-center gap-2 mt-2 text-sm">
           <input type="checkbox" checked={isMerchant} onChange={(e) => setIsMerchant(e.target.checked)} />
           <span>Register as a merchant</span>
-        </label>
+        </label> */}
+
+           {/* Terms & Conditions Checkbox */}
+        <div className="flex items-start">
+            <div className="flex items-center h-5">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                  required
+                />
+              </div>
+              <div className="ml-2 text-sm">
+                <label htmlFor="terms" className="text-gray-600">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-blue-600 hover:underline">
+                    Terms & Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-blue-600 hover:underline">
+                    Privacy Policy
+                  </Link>
+                </label>
+              </div>
+            </div>
+
 
         <button
         type="submit"
-        disabled={loading}
-        className="w-full py-3 px-4 rounded-lg text-white font-semibold bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-        >
+        disabled={loading || !acceptTerms}
+       className={`w-full py-3 px-4 rounded-lg text-white font-semibold transition-all duration-300
+          ${
+            loading || !acceptTerms
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 shadow-lg transform hover:-translate-y-0.5"
+          }`}
+      >
         {loading ? 'Registering...' : 'Register'}
         </button>
       </form>
