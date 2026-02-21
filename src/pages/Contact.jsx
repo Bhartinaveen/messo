@@ -1,5 +1,6 @@
 import React from "react";
 import { FiMail, FiPhone, FiGrid } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Contact = () => {
   return (
@@ -98,6 +99,17 @@ const Contact = () => {
             >
               Send Message
             </button>
+
+            {/* Floating WhatsApp Button */}
+              <a
+                href="https://wa.me/911234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-110 z-50"
+                >
+                  <FaWhatsapp size={28} />
+                </a>
+
           </form>
         </div>
 

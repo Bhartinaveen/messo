@@ -67,7 +67,7 @@ const Testimonials = () => {
         </h2>
         <p className="text-center text-red-900 mb-12">Real stories from real people.</p>
 
-        <div className="relative h-96 md:h-80 overflow-hidden rounded-2xl">
+        <div className="relative min-h-[420px] md:min-h-[350px] overflow-hidden rounded-2xl">
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               key={currentIndex}
@@ -86,13 +86,13 @@ const Testimonials = () => {
               }}
               className="absolute w-full h-full flex flex-col items-center justify-center p-6"
             >
-              <div className="bg-white shadow-lg rounded-2xl p-8 h-full flex flex-col items-center text-center border border-gray-200">
+              <div className="bg-white shadow-lg rounded-2xl p-6 md:p-8 h-full flex flex-col items-center text-center border border-gray-200">
                 <img
                   src={testimonialsData[currentIndex].img}
                   alt={testimonialsData[currentIndex].name}
                   className="w-24 h-24 rounded-full mb-4 border-4 border-green-300 object-cover"
                 />
-                <p className="text-gray-700 italic mb-4 text-lg leading-relaxed">
+                <p className="text-gray-700 italic mb-4 text-base md:text-lg leading-relaxed flex-grow">
                   "{testimonialsData[currentIndex].quote}"
                 </p>
                 <h3 className="font-bold text-gray-900 text-xl ">
