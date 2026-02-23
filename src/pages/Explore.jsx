@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SearchBar from "../components/explore/SearchBar";
+import SearchBar from "../components/SearchBar";
 import PromoBanner from "../components/explore/PromoBanner";
 import CategorySlider from "../components/explore/CategorySlider";
 import DealsOfTheDay from "../components/explore/DealsOfTheDay";

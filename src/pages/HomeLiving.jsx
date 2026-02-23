@@ -9,13 +9,13 @@ const homeliving = [
   { id: 2, brand: "Ikea", name: "Blackout Curtains", price: 1299, image: "/image/h2.jpeg", category: "Curtains", description: "High-quality blackout curtains for complete privacy." },
   { id: 3, brand: "West Elm", name: "Ceramic Vase", price: 899, image: "/image/h3.jpeg", category: "Decor", description: "Minimalist ceramic vase perfect for modern interiors." },
   { id: 4, brand: "Prestige", name: "Non-Stick Cookware Set", price: 3499, image: "/image/h4.jpeg", category: "Kitchenware", description: "Durable non-stick cookware set for everyday cooking." },
-  { id: 5, brand: "HomeCentre", name: "Throw Pillow Set", price: 1199, image: "/image/h5.jpeg", category: "Decor", description: "Soft throw pillows to enhance your living space." },
-  { id: 6, brand: "Ikea", name: "Kitchen Storage Rack", price: 1799, image: "/image/h6.jpeg", category: "Kitchenware", description: "Space-saving kitchen storage rack with modern design." },
+ 
 ];
 
 const HomeLiving = () => {
   const { addToCart, cart } = useCart();
   const { addToWishlist, wishlist } = useWishlist();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
@@ -27,9 +27,12 @@ const HomeLiving = () => {
     return homeliving.filter((item) => {
       const brandOk = filters.brand === "All" || item.brand === filters.brand;
       const catOk = filters.category === "All" || item.category === filters.category;
-      return brandOk && catOk;
+
+        const searchOk = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const isAdded = (id) => cart.some((i) => i.id === id);
   const isWishlisted = (id) => wishlist.some((i) => i.id === id);
@@ -45,6 +48,17 @@ const HomeLiving = () => {
         <p className="text-center text-gray-600 mb-10">
           Stylish & functional essentials for your home
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

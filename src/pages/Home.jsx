@@ -1,5 +1,5 @@
 import React from 'react'
-
+import SearchBar from '../components/SearchBar'
 import HeroShowcase from '../components/HeroShowcase'
 import Trending from '../components/Trending'
 import TrendingSearch from '../components/explore/TrendingSearch'
@@ -14,6 +14,7 @@ import TrendCollection from '../components/TrendCollection'
 const Home = () => {
   return (
     <>
+                <SearchBar />
                 <HeroShowcase />
                 <Trending />
                 <TrendCollection/>

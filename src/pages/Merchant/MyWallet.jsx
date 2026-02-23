@@ -5,6 +5,8 @@ const MyWallet = ({ user }) => {
   const [amount, setAmount] = useState("");
   const [transactions, setTransactions] = useState([]);
 
+  const MAX_LIMIT = 100000;
+
   // Load wallet from localStorage
   useEffect(() => {
     const storedWallet = localStorage.getItem("walletBalance");
@@ -32,6 +34,14 @@ const MyWallet = ({ user }) => {
   const handleAddMoney = () => {
     if (!amount || amount <= 0) return;
 
+     const numericAmount = Number(amount);
+
+    // ❌ Check if new balance exceeds 100000
+    if (balance + numericAmount > MAX_LIMIT) {
+      alert("Wallet balance cannot exceed ₹100000");
+      return;
+    }
+
     const newBalance = balance + Number(amount);
     setBalance(newBalance);
 
@@ -58,6 +68,9 @@ const MyWallet = ({ user }) => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-2">
             ₹ {balance.toFixed(2)}
           </h1>
+          <p className="text-xs mt-2 opacity-80">
+            Maximum allowed balance: ₹ {MAX_LIMIT}
+          </p>
         </div>
 
         {/* Add Money Section */}
@@ -71,6 +84,7 @@ const MyWallet = ({ user }) => {
               type="number"
               placeholder="Enter amount"
               value={amount}
+              max={MAX_LIMIT}
               onChange={(e) => setAmount(e.target.value)}
               className="border px-4 py-2 rounded-lg w-full sm:w-auto flex-1 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />

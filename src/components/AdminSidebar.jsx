@@ -49,6 +49,10 @@ const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
           <button onClick={() => handleClick("settings")} className={linkClass("settings")}>
             Settings
           </button>
+
+          <button onClick={() => handleClick("admin-management")} className={linkClass("admin-management")}>
+              Admin Management
+            </button>
         </>
       )}
 
@@ -65,9 +69,7 @@ const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
         Users
       </button>
 
-      <button onClick={() => handleClick("admin-management")} className={linkClass("admin-management")}>
-        Admin Management
-      </button>
+    
 
       {!isSuperAdmin && (
         <>

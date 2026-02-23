@@ -43,9 +43,11 @@ const Users = () => {
               </div>
 
               <div className="flex items-center gap-3">
+                {u.role === "user" && (
                 <button onClick={() => toggleBlock(u.id, !u.isBlocked)} className={`px-3 py-1 rounded text-xs ${u.isBlocked ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                   {u.isBlocked ? 'Unblock' : 'Block'}
                 </button>
+                )}
               </div>
             </li>
           ))}

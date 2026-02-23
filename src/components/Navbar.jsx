@@ -128,7 +128,8 @@ const Navbar = () => {
                 <li><Link to="/contact" className="hover:text-black">Contact</Link></li>
                 
               <li
-                  className="relative"
+                  className="relative">
+                <div
                   onMouseEnter={() => setShowLoginDropdown(true)}
                   onMouseLeave={() => setShowLoginDropdown(false)}
                 >
@@ -137,7 +138,7 @@ const Navbar = () => {
                   </button>
 
               {showLoginDropdown && (
-                <div className="absolute top-8 right-0 bg-white text-black rounded-md shadow-lg w-44 py-2 z-50">
+                <div className="absolute top-full right-0 bg-white text-black rounded-md shadow-lg w-44 py-2 z-50">
                   
                   <Link
                     to="/login"
@@ -150,11 +151,12 @@ const Navbar = () => {
                       to="/partner-auth"
                       className="block px-4 py-2 hover:bg-gray-100"
                     >
-                      Partner Login
+                      Become a Seller
                     </Link>
 
                   </div>
                 )}
+              </div>
               </li>
             </ul>
 

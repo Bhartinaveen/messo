@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,11 +23,21 @@ const Login = () => {
     try {
       let data;
       try {
+        if (!BASE_URL) {
+          throw new Error("API URL is not defined. Please check your .env file and ensure VITE_API_BASE_URL is set.");
+        }
+
         const res = await fetch(`${BASE_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
+
+        // Safely check if response is JSON before parsing
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(`Server error: Received non-JSON response (${res.status}). Ensure your backend is running at ${BASE_URL}`);
+        }
 
         data = await res.json();
 

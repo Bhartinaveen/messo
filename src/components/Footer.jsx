@@ -24,7 +24,7 @@ const Footer = () => {
   };
 
   return (
-  <footer className="bg-gradient-to-r from-gray-800 to-gray-700 text-white py-10 px-6">
+  <footer className="bg-gradient-to-r from-gray-800 to-gray-700 text-white py-10 px-6 mb-7">
 
       <div className="container mx-auto px-4">
 
@@ -93,6 +93,7 @@ const Footer = () => {
               <li><Link to="/blog" className="hover:underline">Blog</Link></li>
               <li><Link to="/security" className="hover:underline">Security</Link></li>
               <li><Link to="/contact" className="hover:underline">Contact</Link></li>
+              <li><Link to="/partner-auth" className="hover:underline">Become a Seller</Link></li>
            
             </ul>
           </div>

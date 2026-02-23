@@ -57,6 +57,7 @@ const EthnicWear = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(kurtas.map((k) => k.brand))];
   const categories = ["All", "Men", "Women"];
@@ -66,9 +67,14 @@ const EthnicWear = () => {
       const brandOk = filters.brand === "All" || k.brand === filters.brand;
       const catOk =
         filters.category === "All" || k.category.includes(filters.category);
-      return brandOk && catOk;
+
+         const searchOk =
+      k.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      k.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -99,6 +105,17 @@ const EthnicWear = () => {
         <p className="text-center text-gray-600 mb-12">
           Timeless styles crafted for every celebration
         </p>
+
+        {/* SEARCH BAR */}
+      <div className="flex justify-center mb-8">
+        <input
+          type="text"
+          placeholder="Search by product name or brand..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+        />
+      </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

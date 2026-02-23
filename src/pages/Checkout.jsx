@@ -14,11 +14,15 @@ const Checkout = () => {
 
   const [addresses, setAddresses] = useState([]);
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingId, setEditingId] = useState(null); // ✅ NEW
 
   const [newAddress, setNewAddress] = useState({
     name: "",
-    address: "",
-    phone: ""
+    phone: "",
+    street: "",
+    city: "",
+    state: "",
+    pincode: ""
   });
 
   // ================= LOAD DATA =================
@@ -47,18 +51,23 @@ const Checkout = () => {
     return <div className="p-6">No checkout data found.</div>;
   }
 
-  const {
-    subtotal,
-    gst,
-    deliveryCharge,
-    walletUsed,
-    walletDeduction,
-    finalTotal
-  } = checkoutData;
+  const subtotal = Number(checkoutData?.subtotal || 0);
+  const gst = Number(checkoutData?.gst || 0);
+  const deliveryCharge = Number(checkoutData?.deliveryCharge || 0);
+  const walletUsed = checkoutData?.walletUsed || false;
+  const walletDeduction = Number(checkoutData?.walletDeduction || 0);
+  const finalTotal = Number(checkoutData?.finalTotal || 0);
 
-  // ================= ADD ADDRESS =================
+  // ================= SAVE OR UPDATE ADDRESS =================
   const handleSaveAddress = () => {
-    if (!newAddress.name || !newAddress.address || !newAddress.phone) {
+    if (
+      !newAddress.name ||
+      !newAddress.phone ||
+      !newAddress.street ||
+      !newAddress.city ||
+      !newAddress.state ||
+      !newAddress.pincode
+    ) {
       alert("Please fill all fields");
       return;
     }
@@ -66,10 +75,17 @@ const Checkout = () => {
     const user =
       JSON.parse(localStorage.getItem("user")) || { id: "guest" };
 
-    const updated = [
-      ...addresses,
-      { id: Date.now(), ...newAddress }
-    ];
+    let updated;
+
+    if (editingId) {
+      // ✅ UPDATE MODE
+      updated = addresses.map((addr) =>
+        addr.id === editingId ? { ...addr, ...newAddress } : addr
+      );
+    } else {
+      // ADD MODE
+      updated = [...addresses, { id: Date.now(), ...newAddress }];
+    }
 
     localStorage.setItem(
       `addresses_${user.id}`,
@@ -77,21 +93,40 @@ const Checkout = () => {
     );
 
     setAddresses(updated);
-    setAddressId(updated[updated.length - 1].id);
     setShowAddressForm(false);
-    setNewAddress({ name: "", address: "", phone: "" });
+    setEditingId(null);
+
+    setNewAddress({
+      name: "",
+      phone: "",
+      street: "",
+      city: "",
+      state: "",
+      pincode: ""
+    });
+  };
+
+  // ✅ EDIT FUNCTION
+  const handleEdit = (address) => {
+    setShowAddressForm(true);
+    setEditingId(address.id);
+    setNewAddress(address);
   };
 
   // ================= PLACE ORDER =================
   const handlePlaceOrder = () => {
     if (cart.length === 0) return alert("Cart is empty");
-    if (!addressId) return alert("Please add address");
+    if (!addressId) return alert("Please select address");
 
     setLoading(true);
 
     try {
       const user =
         JSON.parse(localStorage.getItem("user")) || { id: "guest" };
+
+      const selectedAddress = addresses.find(
+        (a) => a.id === addressId
+      );
 
       const order = {
         id: Date.now(),
@@ -105,11 +140,11 @@ const Checkout = () => {
         walletDeduction,
         amount: finalTotal,
         paymentMethod,
-        address: addresses.find((a) => a.id === addressId),
+        address: selectedAddress,
         date: new Date().toISOString()
       };
 
-      if (walletUsed) {
+      if (walletUsed && walletDeduction > 0) {
         const newWallet = walletBalance - walletDeduction;
         localStorage.setItem("walletBalance", newWallet);
       }
@@ -117,6 +152,7 @@ const Checkout = () => {
       const savedOrders = JSON.parse(
         localStorage.getItem("orders") || "[]"
       );
+
       savedOrders.unshift(order);
       localStorage.setItem("orders", JSON.stringify(savedOrders));
 
@@ -139,78 +175,44 @@ const Checkout = () => {
 
         {/* LEFT SECTION */}
         <div className="lg:col-span-2 space-y-6">
-
           <h1 className="text-3xl font-bold">Checkout</h1>
 
-          {/* ADDRESS */}
+          {/* ADDRESS SECTION */}
           <div className="bg-white p-6 rounded-2xl shadow border">
             <h3 className="text-lg font-semibold mb-4">
               Delivery Address
             </h3>
 
-            {addresses.length === 0 && !showAddressForm && (
-              <div className="space-y-3">
-                <p className="text-gray-500">
-                  No address found.
-                </p>
-                <button
-                  onClick={() => setShowAddressForm(true)}
-                  className="px-4 py-2 bg-orange-500 text-white rounded-lg"
-                >
-                  + Add Address
-                </button>
-              </div>
-            )}
-
             {showAddressForm && (
-              <div className="space-y-3 mb-4">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={newAddress.name}
-                  onChange={(e) =>
-                    setNewAddress({
-                      ...newAddress,
-                      name: e.target.value
-                    })
-                  }
-                  className="w-full border p-3 rounded-lg"
-                />
-
-                <textarea
-                  placeholder="Full Address"
-                  value={newAddress.address}
-                  onChange={(e) =>
-                    setNewAddress({
-                      ...newAddress,
-                      address: e.target.value
-                    })
-                  }
-                  className="w-full border p-3 rounded-lg"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={newAddress.phone}
-                  onChange={(e) =>
-                    setNewAddress({
-                      ...newAddress,
-                      phone: e.target.value
-                    })
-                  }
-                  className="w-full border p-3 rounded-lg"
-                />
+              <div className="space-y-3">
+                {Object.keys(newAddress).map((field) => (
+                  <input
+                    key={field}
+                    type="text"
+                    placeholder={field.toUpperCase()}
+                    value={newAddress[field]}
+                    onChange={(e) =>
+                      setNewAddress({
+                        ...newAddress,
+                        [field]: e.target.value
+                      })
+                    }
+                    className="w-full border p-3 rounded-lg"
+                  />
+                ))}
 
                 <div className="flex gap-3">
                   <button
                     onClick={handleSaveAddress}
                     className="px-4 py-2 bg-green-600 text-white rounded-lg"
                   >
-                    Save
+                    {editingId ? "Update" : "Save"}
                   </button>
                   <button
-                    onClick={() => setShowAddressForm(false)}
+                    onClick={() => {
+                      setShowAddressForm(false);
+                      setEditingId(null);
+                    }}
                     className="px-4 py-2 bg-gray-400 text-white rounded-lg"
                   >
                     Cancel
@@ -220,71 +222,77 @@ const Checkout = () => {
             )}
 
             {addresses.length > 0 && (
-              <div className="space-y-3">
+              <div className="space-y-3 mt-4">
                 {addresses.map((a) => (
-                  <label
+                  <div
                     key={a.id}
-                    className={`block border p-4 rounded-xl cursor-pointer ${
+                    className={`border p-4 rounded-xl ${
                       addressId === a.id
                         ? "border-orange-500 bg-orange-50"
                         : ""
                     }`}
                   >
-                    <input
-                      type="radio"
-                      checked={addressId === a.id}
-                      onChange={() => setAddressId(a.id)}
-                      className="mr-2"
-                    />
-                    <span className="font-medium">
-                      {a.name}
-                    </span>
-                    <div className="text-sm text-gray-600">
-                      {a.address}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {a.phone}
-                    </div>
-                  </label>
+                    <label className="cursor-pointer">
+                      <input
+                        type="radio"
+                        checked={addressId === a.id}
+                        onChange={() => setAddressId(a.id)}
+                        className="mr-2"
+                      />
+                      <div className="font-medium">{a.name}</div>
+                      <div className="text-sm text-gray-600">
+                        {a.street}, {a.city}, {a.state} - {a.pincode}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {a.phone}
+                      </div>
+                    </label>
+
+                    {/* ✅ EDIT BUTTON */}
+                    <button
+                      onClick={() => handleEdit(a)}
+                      className="text-blue-600 text-sm mt-2 underline"
+                    >
+                      Edit
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* PAYMENT */}
+          {/* PAYMENT METHOD (UNCHANGED) */}
           <div className="bg-white p-6 rounded-2xl shadow border">
             <h3 className="text-lg font-semibold mb-4">
               Payment Method
             </h3>
 
-            <div className="grid sm:grid-cols-3 gap-4">
-              {["card", "upi", "cod"].map((method) => (
-                <label
-                  key={method}
-                  className={`border p-4 rounded-xl text-center cursor-pointer ${
-                    paymentMethod === method
-                      ? "border-orange-500 bg-orange-50"
-                      : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    className="hidden"
-                    checked={paymentMethod === method}
-                    onChange={() => setPaymentMethod(method)}
-                  />
-                  <div className="font-semibold uppercase">
-                    {method}
-                  </div>
-                </label>
-              ))}
+            <div className="space-y-3">
+              <label className="flex items-center gap-3 border p-4 rounded-lg cursor-pointer">
+                <input
+                  type="radio"
+                  value="card"
+                  checked={paymentMethod === "card"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                Credit / Debit Card
+              </label>
+
+              <label className="flex items-center gap-3 border p-4 rounded-lg cursor-pointer">
+                <input
+                  type="radio"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                Cash On Delivery
+              </label>
             </div>
           </div>
         </div>
 
-        {/* SUMMARY */}
+        {/* RIGHT SUMMARY (UNCHANGED) */}
         <div className="bg-white p-6 rounded-2xl shadow-lg border h-fit sticky top-10">
-
           <h3 className="text-xl font-semibold mb-6">
             Order Summary
           </h3>
@@ -296,7 +304,7 @@ const Checkout = () => {
             </div>
 
             <div className="flex justify-between">
-              <span>GST (18%)</span>
+              <span>GST</span>
               <span>₹{gst.toFixed(2)}</span>
             </div>
 
@@ -305,7 +313,7 @@ const Checkout = () => {
               <span>
                 {deliveryCharge === 0
                   ? "FREE"
-                  : `₹${deliveryCharge}`}
+                  : `₹${deliveryCharge.toFixed(2)}`}
               </span>
             </div>
 
