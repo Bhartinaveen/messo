@@ -51,9 +51,16 @@ const statusColor = (status) => {
 // Image resolver
 const getItemImage = (image) => {
   if (!image) return null;
-  if (image.startsWith("http")) return image;
-  if (image.startsWith("data:image")) return image;
-  return `http://localhost:5000/uploads/${image}`; // backend images
+
+    // If already full URL or base64
+  if (image.startsWith("http") || image.startsWith("data:image"))
+    return image;
+
+  // If from public folder (starts with /)
+  if (image.startsWith("/")) return image;
+
+  // Otherwise assume it's inside /public/image
+  return `/image/${image}`;
 };
 
 /* ================== COMPONENT ================== */
@@ -105,6 +112,40 @@ const MyOrders = () => {
       </p>
     );
   }
+
+  const canCancelOrder = (orderDate) => {
+  const orderTime = new Date(orderDate).getTime();
+  const now = new Date().getTime();
+  const diff = now - orderTime;
+  const hours24 = 24 * 60 * 60 * 1000;
+  return diff <= hours24;
+};
+
+const handleListCancel = (order) => {
+  if (!canCancelOrder(order.date)) {
+    alert("Cancel allowed only within 24 hours");
+    return;
+  }
+
+  const confirmCancel = window.confirm(
+    "Are you sure you want to cancel this order?"
+  );
+
+  if (!confirmCancel) return;
+
+  const updatedOrder = { ...order, status: "Cancelled" };
+
+  const saved = JSON.parse(localStorage.getItem("orders") || "[]");
+  const updated = saved.map((o) =>
+    o.id === order.id ? updatedOrder : o
+  );
+
+  localStorage.setItem("orders", JSON.stringify(updated));
+  setOrders(updated);
+
+  setToast(`Order #${order.id} has been Cancelled`);
+  setTimeout(() => setToast(""), 3000);
+};
 
   return (
     <div className="max-w-3xl mx-auto space-y-5">
@@ -186,6 +227,16 @@ const MyOrders = () => {
               Status: <b>{o.status}</b>
             </span>
 
+            <div className="flex items-center gap-4">
+              {o.status !== "Cancelled" && (
+                <button
+                  onClick={() => handleListCancel(o)}
+                  className="text-red-500 text-sm font-medium"
+                >
+                  Cancel
+                </button>
+              )}
+
             <button
               onClick={() => setSelected(o)}
               className="text-orange-500 text-sm font-medium"
@@ -194,6 +245,7 @@ const MyOrders = () => {
             </button>
           </div>
         </div>
+      </div>
       ))}
 
       {/* ================= MODAL ================= */}

@@ -8,8 +8,7 @@ const kidswear = [
   { id: 2, brand: "H&M", name: "Denim Shorts", price: 999, image: "/image/kid2.jpeg", category: "Shorts", description: "Comfortable denim shorts perfect for outdoor play." },
   { id: 3, brand: "Mini Klub", name: "Floral Dress", price: 1299, image: "/image/kid3.jpeg", category: "Dress", description: "Beautiful floral dress with breathable fabric." },
   { id: 4, brand: "UCB", name: "Hooded Jacket", price: 1499, image: "/image/kid4.jpeg", category: "Jacket", description: "Warm hooded jacket for winter outings." },
-  { id: 5, brand: "Gini & Jony", name: "Striped T-Shirt", price: 699, image: "/image/kid5.jpeg", category: "T-Shirt", description: "Classic striped t-shirt for everyday wear." },
-  { id: 6, brand: "H&M", name: "Cargo Shorts", price: 1099, image: "/image/kid6.jpeg", category: "Shorts", description: "Stylish cargo shorts with multiple pockets." },
+
 ];
 
 const KidsWear = () => {
@@ -18,6 +17,8 @@ const KidsWear = () => {
 
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   const brands = ["All", ...new Set(kidswear.map((i) => i.brand))];
   const categories = ["All", ...new Set(kidswear.map((i) => i.category))];
@@ -26,9 +27,12 @@ const KidsWear = () => {
     return kidswear.filter((item) => {
       const brandOk = filters.brand === "All" || item.brand === filters.brand;
       const catOk = filters.category === "All" || item.category === filters.category;
-      return brandOk && catOk;
+
+        const searchOk = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const isAdded = (id) => cart.some((i) => i.id === id);
   const isWishlisted = (id) => wishlist.some((i) => i.id === id);
@@ -44,6 +48,17 @@ const KidsWear = () => {
         <p className="text-center text-gray-600 mb-10">
           Cute, colorful & comfy styles for kids
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

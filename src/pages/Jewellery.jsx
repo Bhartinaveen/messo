@@ -50,6 +50,7 @@ const Jewellery = () => {
   const [filters, setFilters] = useState({ brand: "All", type: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(jewellery.map((j) => j.brand))];
   const types = ["All", ...new Set(jewellery.map((j) => j.type))];
@@ -58,9 +59,12 @@ const Jewellery = () => {
     return jewellery.filter((item) => {
       const brandOk = filters.brand === "All" || item.brand === filters.brand;
       const typeOk = filters.type === "All" || item.type === filters.type;
-      return brandOk && typeOk;
+
+      const searchOk = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && typeOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -83,6 +87,17 @@ const Jewellery = () => {
         <p className="text-center text-gray-600 mb-12">
           Elegant jewellery crafted for every occasion
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

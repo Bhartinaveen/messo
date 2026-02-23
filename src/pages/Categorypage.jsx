@@ -8,18 +8,39 @@ const CategoryPage = () => {
   const { slug } = useParams();
   const { addToCart, cart } = useCart();
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const isInCart = (id) => cart.some((item) => item.id === id);
 
   const filteredProducts = products.filter(
-    (p) => p.category === slug
-  );
+    (p) => { 
+      const categoryMatch = p.category === slug;
+
+  const searchMatch =
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.description &&
+      p.description.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  return categoryMatch && searchMatch;
+});
 
   return (
     <div className="px-4 sm:px-6 lg:px-12 py-8">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 capitalize">
         {slug.replace("-", " ")}
       </h1>
+
+      {/* SEARCH BAR */}
+    <div className="mb-6 flex justify-center">
+      <input
+        type="text"
+        placeholder="Search products in this category..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 
+                  focus:outline-none focus:ring-2 focus:ring-pink-500 shadow-sm"
+      />
+    </div>
 
       {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">

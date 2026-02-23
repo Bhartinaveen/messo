@@ -51,6 +51,7 @@ const BottomWear = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(bottomWear.map((i) => i.brand))];
   const categories = ["All", "Men", "Women"];
@@ -60,9 +61,12 @@ const BottomWear = () => {
       const brandOk = filters.brand === "All" || item.brand === filters.brand;
       const catOk =
         filters.category === "All" || item.category === filters.category;
-      return brandOk && catOk;
+
+      const searchOk = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -85,6 +89,17 @@ const BottomWear = () => {
         <p className="text-center text-gray-600 mb-12">
           Perfect fits for everyday comfort & style
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

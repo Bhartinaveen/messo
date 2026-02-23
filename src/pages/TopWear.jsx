@@ -41,24 +41,7 @@ const topWear = [
     category: "Women",
     description: "Trendy sleeveless top perfect for summer outings.",
   },
-  {
-    id: 5,
-    brand: "UrbanFit",
-    name: "Men Checked Shirt",
-    price: "₹1,299",
-    image: "/image/mtop3.jpeg",
-    category: "Men",
-    description: "Classic checked shirt with relaxed fit.",
-  },
-  {
-    id: 6,
-    brand: "StyleAura",
-    name: "Women Casual Blouse",
-    price: "₹1,099",
-    image: "/image/wtop3.jpeg",
-    category: "Women",
-    description: "Elegant casual blouse with premium stitching.",
-  },
+
 ];
 
 const TopWear = () => {
@@ -68,6 +51,7 @@ const TopWear = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(topWear.map((i) => i.brand))];
   const categories = ["All", "Men", "Women"];
@@ -77,9 +61,12 @@ const TopWear = () => {
       const brandOk = filters.brand === "All" || item.brand === filters.brand;
       const catOk =
         filters.category === "All" || item.category === filters.category;
-      return brandOk && catOk;
+
+      const searchOk = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -102,6 +89,17 @@ const TopWear = () => {
         <p className="text-center text-gray-600 mb-10">
           Trendy styles for men & women
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-10">

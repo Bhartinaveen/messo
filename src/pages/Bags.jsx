@@ -9,8 +9,7 @@ const bags = [
   { id: 2, brand: "Puma", name: "Sports Backpack", price: 2799, image: "/image/bag2.jpeg", category: "Backpack", description: "Lightweight sports backpack with spacious compartments." },
   { id: 3, brand: "Fossil", name: "Sling Bag", price: 3499, image: "/image/bag3.jpeg", category: "Sling Bag", description: "Stylish sling bag with premium finish." },
   { id: 4, brand: "Titan", name: "Leather Tote Bag", price: 4199, image: "/image/bag4.jpeg", category: "Tote Bag", description: "Spacious leather tote bag for office and travel." },
-  { id: 5, brand: "Hidesign", name: "Mini Handbag", price: 4599, image: "/image/bag5.jpeg", category: "Handbag", description: "Compact handbag with luxurious design." },
-  { id: 6, brand: "Puma", name: "Travel Backpack", price: 3299, image: "/image/bag6.jpeg", category: "Backpack", description: "Durable travel backpack ideal for trips." }
+
 ];
 
 const Bags = () => {
@@ -20,6 +19,7 @@ const Bags = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(bags.map((b) => b.brand))];
   const categories = ["All", ...new Set(bags.map((b) => b.category))];
@@ -28,9 +28,10 @@ const Bags = () => {
     return bags.filter((item) => {
       const brandMatch = filters.brand === "All" || item.brand === filters.brand;
       const categoryMatch = filters.category === "All" || item.category === filters.category;
-      return brandMatch && categoryMatch;
+      const searchMatch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      return brandMatch && categoryMatch && searchMatch;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -53,6 +54,17 @@ const Bags = () => {
         <p className="text-center text-gray-600 mb-12">
           Premium bags designed for style, comfort, and everyday use
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

@@ -41,24 +41,7 @@ const accessories = [
     category: "Cap",
     description: "Sporty cap with breathable fabric for daily use."
   },
-  {
-    id: 5,
-    brand: "Fossil",
-    name: "Bracelet",
-    price: 1199,
-    image: "/image/a5.jpeg",
-    category: "Bracelet",
-    description: "Minimal bracelet with a premium metal finish."
-  },
-  {
-    id: 6,
-    brand: "Ray-Ban",
-    name: "Wayfarer Sunglasses",
-    price: 5299,
-    image: "/image/a6.jpeg",
-    category: "Sunglasses",
-    description: "Iconic wayfarer sunglasses with bold styling."
-  }
+ 
 ];
 
 const Accessories = () => {
@@ -68,6 +51,7 @@ const Accessories = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(accessories.map((a) => a.brand))];
   const categories = ["All", ...new Set(accessories.map((a) => a.category))];
@@ -76,9 +60,10 @@ const Accessories = () => {
     return accessories.filter((item) => {
       const brandMatch = filters.brand === "All" || item.brand === filters.brand;
       const categoryMatch = filters.category === "All" || item.category === filters.category;
-      return brandMatch && categoryMatch;
+      const searchMatch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      return brandMatch && categoryMatch && searchMatch;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -101,6 +86,17 @@ const Accessories = () => {
         <p className="text-center text-gray-600 mb-12">
           Premium accessories to complete your everyday style
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

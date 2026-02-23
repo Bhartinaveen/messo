@@ -72,10 +72,28 @@ const SuperDashboard = ({ onNavigate }) => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard title="Total Users" value={overview?.totalUsers ?? '—'} hint={overview?.blockedUsers ? `${overview.blockedUsers} blocked` : ''} />
-        <StatCard title="Total Orders" value={overview?.totalOrders ?? '—'} hint="All orders" />
-        <StatCard title="Total Revenue" value={`₹${(overview?.totalRevenue || 0).toFixed(2)}`} hint="Paid orders" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard 
+          title="Total Users" 
+          value={overview?.totalUsers ?? '—'} 
+          hint="Customers" 
+        />
+        <StatCard 
+          title="Total Vendors" 
+          value={overview?.totalVendors ?? '—'} 
+          hint="Shopkeepers" 
+        />
+        <StatCard 
+          title="Total Orders" 
+          value={overview?.totalOrders ?? '—'} 
+          hint="All orders" 
+        />
+
+        <StatCard 
+          title="Total Revenue" 
+          value={`₹${(overview?.totalRevenue || 0).toFixed(2)}`} 
+          hint="Paid orders" 
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

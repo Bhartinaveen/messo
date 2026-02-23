@@ -50,6 +50,7 @@ const Watch = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(watches.map((w) => w.brand))];
   const categories = ["All", "Men", "Women", "Kids"];
@@ -62,9 +63,12 @@ const Watch = () => {
         watch.category === filters.category ||
         (watch.category === "Unisex" &&
           (filters.category === "Men" || filters.category === "Women"));
-      return brandMatch && categoryMatch;
+
+        const searchOk = watch.name.toLowerCase().includes(searchTerm.toLowerCase()) || watch.brand.toLowerCase().includes(searchTerm.toLowerCase());
+        
+      return brandMatch && categoryMatch && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -87,6 +91,17 @@ const Watch = () => {
         <p className="text-center text-gray-600 mb-12">
           Timeless watches crafted for every lifestyle
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">

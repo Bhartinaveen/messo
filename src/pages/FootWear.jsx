@@ -51,6 +51,7 @@ const FootWear = () => {
   const [filters, setFilters] = useState({ brand: "All", category: "All" });
   const [quickView, setQuickView] = useState(null);
   const [addedItems, setAddedItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const brands = ["All", ...new Set(products.map((p) => p.brand))];
   const categories = ["All", ...new Set(products.map((p) => p.category))];
@@ -60,9 +61,13 @@ const FootWear = () => {
       const brandOk = filters.brand === "All" || p.brand === filters.brand;
       const catOk =
         filters.category === "All" || p.category === filters.category;
-      return brandOk && catOk;
+      const searchOk =
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.brand.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return brandOk && catOk && searchOk;
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handleAddToCart = (item) => {
     if (!addedItems.includes(item.id)) {
@@ -85,6 +90,17 @@ const FootWear = () => {
         <p className="text-center text-gray-600 mb-12">
           Sneakers, shoes & boots for every step
         </p>
+
+        {/* SEARCH BAR */}
+        <div className="flex justify-center mb-8">
+          <input
+            type="text"
+            placeholder="Search by product name or brand..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+          />
+        </div>
 
         {/* FILTERS (EthnicWear style) */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">
