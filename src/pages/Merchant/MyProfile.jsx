@@ -7,6 +7,7 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
     name: initialUser.name || "",
     email: initialUser.email || "",
     phone: initialUser.phone || "",
+    address: initialUser.address || "",
     storeName: initialUser.storeName || "",
     businessType: initialUser.businessType || ""
   });
@@ -16,11 +17,19 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
 
   useEffect(() => {
     // keep in sync with incoming prop or localStorage
-    const stored = JSON.parse(localStorage.getItem("user")) || initialUser;
-    setFormData((f) => ({ ...f, name: stored.name || f.name, email: stored.email || f.email, phone: stored.phone || f.phone, storeName: stored.storeName || f.storeName, businessType: stored.businessType || f.businessType }));
-    setAvatar(stored.avatar || avatar);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialUser]);
+    const stored = JSON.parse(localStorage.getItem("user"));
+    if(stored) {
+    setFormData({
+      name: stored.name || "",
+      email: stored.email || "",
+      phone: stored.phone || "",
+      address: stored.address || "",
+      storeName: stored.storeName || "",
+      businessType: stored.businessType || ""
+    });
+    setAvatar(stored.avatar || null);
+  }
+  }, []);
 
   const handleEditClick = () => setIsEditing(true);
 
@@ -126,6 +135,11 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
               <label className="block text-sm font-medium text-gray-700">Phone</label>
               <input name="phone" value={formData.phone} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Address</label>
+            <textarea name="address" value={formData.address} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" rows="2" />
           </div>
 
           <div className="mt-2">
