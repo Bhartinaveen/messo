@@ -113,6 +113,21 @@ const Checkout = () => {
     setNewAddress(address);
   };
 
+  // ✅ DELETE FUNCTION
+  const handleDelete = (id) => {
+    if (!window.confirm("Are you sure you want to delete this address?")) return;
+
+    const user = JSON.parse(localStorage.getItem("user")) || { id: "guest" };
+    const updated = addresses.filter((addr) => addr.id !== id);
+
+    localStorage.setItem(`addresses_${user.id}`, JSON.stringify(updated));
+    setAddresses(updated);
+
+    if (addressId === id) {
+      setAddressId(updated.length > 0 ? updated[0].id : null);
+    }
+  };
+
   // ================= PLACE ORDER =================
   const handlePlaceOrder = () => {
     if (cart.length === 0) return alert("Cart is empty");
@@ -179,9 +194,28 @@ const Checkout = () => {
 
           {/* ADDRESS SECTION */}
           <div className="bg-white p-6 rounded-2xl shadow border">
-            <h3 className="text-lg font-semibold mb-4">
-              Delivery Address
-            </h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Delivery Address</h3>
+              {!showAddressForm && (
+                <button
+                  onClick={() => {
+                    setEditingId(null);
+                    setNewAddress({
+                      name: "",
+                      phone: "",
+                      street: "",
+                      city: "",
+                      state: "",
+                      pincode: ""
+                    });
+                    setShowAddressForm(true);
+                  }}
+                  className="text-orange-600 font-medium hover:underline"
+                >
+                  + Add New
+                </button>
+              )}
+            </div>
 
             {showAddressForm && (
               <div className="space-y-3">
@@ -248,13 +282,21 @@ const Checkout = () => {
                       </div>
                     </label>
 
-                    {/* ✅ EDIT BUTTON */}
-                    <button
-                      onClick={() => handleEdit(a)}
-                      className="text-blue-600 text-sm mt-2 underline"
-                    >
-                      Edit
-                    </button>
+                    {/* ✅ EDIT & DELETE BUTTONS */}
+                    <div className="mt-2 flex gap-4">
+                      <button
+                        onClick={() => handleEdit(a)}
+                        className="text-blue-600 text-sm underline hover:text-blue-800"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(a.id)}
+                        className="text-red-600 text-sm underline hover:text-red-800"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

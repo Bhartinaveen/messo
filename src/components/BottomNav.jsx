@@ -25,6 +25,8 @@ export default function BottomNav() {
     { to: "/", label: "Home", icon: HomeIcon },
     { to: "/blog", label: "Blog", icon: BookOpenIcon },
     { to: "/about", label: "About", icon: InformationCircleIcon },
+   
+
   
   ];
 
