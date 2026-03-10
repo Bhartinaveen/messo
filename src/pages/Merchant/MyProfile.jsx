@@ -1,165 +1,695 @@
+// import React, { useEffect, useState } from "react";
+
+// const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [message, setMessage] = useState("");
+
+//   const [formData, setFormData] = useState({
+//     name: initialUser.name || "",
+//     email: initialUser.email || "",
+//     phone: initialUser.phone || "",
+//     address: initialUser.address || "",
+//     storeName: initialUser.storeName || "",
+//     businessType: initialUser.businessType || ""
+//   });
+
+//   const [avatar, setAvatar] = useState(initialUser.avatar || null);
+
+//   const [pwdOpen, setPwdOpen] = useState(false);
+
+//   const [passwords, setPasswords] = useState({
+//     newPassword: "",
+//     confirmPassword: ""
+//   });
+
+//   useEffect(() => {
+//     const stored = JSON.parse(localStorage.getItem("user"));
+
+//     if (stored) {
+//       setFormData({
+//         name: stored.name || "",
+//         email: stored.email || "",
+//         phone: stored.phone || "",
+//         address: stored.address || "",
+//         storeName: stored.storeName || "",
+//         businessType: stored.businessType || ""
+//       });
+
+//       setAvatar(stored.avatar || null);
+//     }
+//   }, []);
+
+//   const handleEditClick = () => setIsEditing(true);
+
+//   const handleChange = (e) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
+
+//   const handleAvatarChange = (e) => {
+//     const file = e.target.files?.[0];
+
+//     if (!file) return;
+
+//     const reader = new FileReader();
+
+//     reader.onload = () => {
+//       setAvatar(reader.result);
+//     };
+
+//     reader.readAsDataURL(file);
+//   };
+
+//   const validate = () => {
+//     if (!formData.name.trim()) return "Name is required";
+
+//     if (!formData.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email))
+//       return "Valid email required";
+
+//     return null;
+//   };
+
+//   const handleSave = () => {
+//     const err = validate();
+
+//     if (err) return setMessage(err);
+
+//     const updated = { ...initialUser, ...formData, avatar };
+
+//     localStorage.setItem("user", JSON.stringify(updated));
+
+//     setIsEditing(false);
+
+//     setMessage("Profile updated successfully");
+
+//     setTimeout(() => setMessage(""), 2500);
+
+//     try {
+//       window.dispatchEvent(new Event("user-updated"));
+//     } catch (e) {}
+
+//     if (typeof onUpdate === "function") onUpdate(updated);
+//   };
+
+//   const handleCancel = () => {
+//     const stored = JSON.parse(localStorage.getItem("user"));
+
+//     if (stored) {
+//       setFormData({
+//         name: stored.name || "",
+//         email: stored.email || "",
+//         phone: stored.phone || "",
+//         address: stored.address || "",
+//         storeName: stored.storeName || "",
+//         businessType: stored.businessType || ""
+//       });
+
+//       setAvatar(stored.avatar || null);
+//     }
+
+//     setIsEditing(false);
+//   };
+
+//   const handlePwdChange = (e) => {
+//     setPasswords({ ...passwords, [e.target.name]: e.target.value });
+//   };
+
+//   const handleChangePassword = () => {
+//     if (passwords.newPassword.length < 6)
+//       return setMessage("Password must be at least 6 characters");
+
+//     if (passwords.newPassword !== passwords.confirmPassword)
+//       return setMessage("Passwords do not match");
+
+//     setMessage("Password updated successfully");
+
+//     setTimeout(() => setMessage(""), 2500);
+
+//     setPasswords({
+//       newPassword: "",
+//       confirmPassword: ""
+//     });
+
+//     setPwdOpen(false);
+//   };
+
+//   return (
+//     <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+
+//       {/* Banner */}
+//       <div className="h-36 bg-gradient-to-r from-orange-500 to-yellow-400 relative">
+
+//         {/* Avatar */}
+//         <div className="absolute -bottom-12 left-8">
+//           <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg flex items-center justify-center bg-orange-500 text-white text-3xl font-bold">
+//             {avatar ? (
+//               <img
+//                 src={avatar}
+//                 alt="avatar"
+//                 className="w-full h-full object-cover"
+//               />
+//             ) : (
+//               formData.name?.charAt(0)?.toUpperCase()
+//             )}
+//           </div>
+//         </div>
+
+//         {/* Change Avatar */}
+//         {isEditing && (
+//           <label className="absolute bottom-2 left-36 bg-black text-white px-3 py-1 rounded text-xs cursor-pointer">
+//             Change
+//             <input
+//               type="file"
+//               className="hidden"
+//               accept="image/*"
+//               onChange={handleAvatarChange}
+//             />
+//           </label>
+//         )}
+//       </div>
+
+//       {/* Profile Section */}
+//       <div className="pt-16 px-8 pb-8">
+
+//         {/* Header */}
+//         <div className="flex justify-between items-center mb-6">
+//           <div>
+//             <h2 className="text-2xl font-bold">{formData.name}</h2>
+//             <p className="text-gray-500">{formData.email}</p>
+//           </div>
+
+//           {!isEditing ? (
+//             <button
+//               onClick={handleEditClick}
+//               className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
+//             >
+//               Edit Profile
+//             </button>
+//           ) : (
+//             <div className="space-x-2">
+//               <button
+//                 onClick={handleSave}
+//                 className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700"
+//               >
+//                 Save
+//               </button>
+
+//               <button
+//                 onClick={handleCancel}
+//                 className="bg-gray-400 text-white px-5 py-2 rounded-lg hover:bg-gray-500"
+//               >
+//                 Cancel
+//               </button>
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Form */}
+//         <div className="grid md:grid-cols-2 gap-5">
+
+//           <Input
+//             label="Full Name"
+//             name="name"
+//             value={formData.name}
+//             onChange={handleChange}
+//             isEditing={isEditing}
+//           />
+
+//           <Input
+//             label="Email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleChange}
+//             isEditing={isEditing}
+//           />
+
+//           <Input
+//             label="Phone"
+//             name="phone"
+//             value={formData.phone}
+//             onChange={handleChange}
+//             isEditing={isEditing}
+//           />
+
+//         </div>
+
+//         {/* Address */}
+//         <div className="mt-4">
+//           <label className="block text-sm font-semibold mb-1">Address</label>
+//          {isEditing ? (
+//             <textarea
+//               name="address"
+//               value={formData.address}
+//               onChange={handleChange}
+//               rows="2"
+//               className="w-full border rounded-lg px-3 py-2 bg-white"
+//             />
+//           ) : (
+//             <div className="w-full px-3 py-2 bg-gray-100 rounded-lg text-gray-800">
+//               {formData.address || "—"}
+//             </div>
+//           )}
+//         </div>
+
+//         {/* Password Section */}
+//         <div className="mt-4">
+//           <button
+//             onClick={() => setPwdOpen(!pwdOpen)}
+//             className="text-blue-600 text-sm"
+//           >
+//             {pwdOpen ? "Hide Password Change" : "Change Password"}
+//           </button>
+
+//           {pwdOpen && (
+//             <div className="grid md:grid-cols-2 gap-3 mt-3">
+
+//               <input
+//                 type="password"
+//                 name="newPassword"
+//                 placeholder="New Password"
+//                 value={passwords.newPassword}
+//                 onChange={handlePwdChange}
+//                 className="border rounded-lg p-2"
+//               />
+
+//               <input
+//                 type="password"
+//                 name="confirmPassword"
+//                 placeholder="Confirm Password"
+//                 value={passwords.confirmPassword}
+//                 onChange={handlePwdChange}
+//                 className="border rounded-lg p-2"
+//               />
+
+//               <div className="md:col-span-2">
+//                 <button
+//                   onClick={handleChangePassword}
+//                   className="bg-orange-500 text-white px-4 py-2 rounded"
+//                 >
+//                   Update Password
+//                 </button>
+//               </div>
+
+//             </div>
+//           )}
+//         </div>
+
+//         {message && (
+//           <div className="text-green-600 text-sm mt-4">{message}</div>
+//         )}
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// const Input = ({ label, name, value, onChange, isEditing }) => (
+//   <div>
+//     <label className="block text-sm font-semibold mb-1">{label}</label>
+
+//     {isEditing ? (
+//       <input
+//         type="text"
+//         name={name}
+//         value={value}
+//         onChange={onChange}
+//         className="w-full border rounded-lg px-3 py-2 bg-white border-gray-300"
+//       />
+//     ) : (
+//       <div className="w-full px-3 py-2 bg-gray-100 rounded-lg text-gray-800">
+//         {value || "—"}
+//       </div>
+//     )}
+//   </div>
+// );
+
+// export default MyProfile;
+
+// frontend/src/pages/Merchant/MyProfile.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL; // Get base URL from environment
 
 const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(""); // Add error state
+
   const [formData, setFormData] = useState({
     name: initialUser.name || "",
     email: initialUser.email || "",
     phone: initialUser.phone || "",
-    address: initialUser.address || "",
-    storeName: initialUser.storeName || "",
-    businessType: initialUser.businessType || ""
+    // Removed address field as per discussion
+    // Removed storeName and businessType as they are not part of the User model's updateProfile endpoint
+    // If these fields are specific to a 'Partner' profile, they should be managed via a different API.
   });
+
   const [avatar, setAvatar] = useState(initialUser.avatar || null);
   const [pwdOpen, setPwdOpen] = useState(false);
-  const [passwords, setPasswords] = useState({ newPassword: "", confirmPassword: "" });
+  const [passwords, setPasswords] = useState({
+    newPassword: "",
+    confirmPassword: ""
+  });
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // Sync formData with initialUser prop (which comes from AuthContext/backend fetch in Profile.jsx)
   useEffect(() => {
-    // keep in sync with incoming prop or localStorage
-    const stored = JSON.parse(localStorage.getItem("user"));
-    if(stored) {
     setFormData({
-      name: stored.name || "",
-      email: stored.email || "",
-      phone: stored.phone || "",
-      address: stored.address || "",
-      storeName: stored.storeName || "",
-      businessType: stored.businessType || ""
+      name: initialUser.name || "",
+      email: initialUser.email || "",
+      phone: initialUser.phone || "",
     });
-    setAvatar(stored.avatar || null);
-  }
-  }, []);
+    setAvatar(initialUser.avatar || null); // Sync avatar too
+  }, [initialUser]); // Re-sync when initialUser prop changes
 
-  const handleEditClick = () => setIsEditing(true);
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setError(""); // Clear any previous errors when starting to edit
+  };
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleAvatar = (e) => {
+  const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
       setAvatar(reader.result);
+      // TODO: Implement S3 upload and then update user.avatar URL on backend.
+      // For now, this only updates the local preview and a warning.
+      setError("Avatar update is not yet integrated with the backend. Image will not be saved permanently.");
     };
     reader.readAsDataURL(file);
   };
 
   const validate = () => {
     if (!formData.name.trim()) return "Name is required";
-    if (!formData.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email)) return "Valid email required";
+    if (!formData.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email))
+      return "Valid email required";
     return null;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const err = validate();
-    if (err) return setMessage(err);
+    if (err) {
+      setError(err);
+      return;
+    }
+    setError(""); // Clear error message
 
-    const updated = { ...initialUser, ...formData, avatar };
-    localStorage.setItem("user", JSON.stringify(updated));
-    setIsEditing(false);
-    setMessage("Profile saved successfully");
-    setTimeout(() => setMessage(""), 2500);
-    // dispatch an event so other components (Navbar) can react immediately
     try {
-      window.dispatchEvent(new Event('user-updated'));
-    } catch (e) {}
-    if (typeof onUpdate === "function") onUpdate(updated);
+      const token = localStorage.getItem('token');
+      // The user ID for profile updates is usually inferred from the JWT token on the backend
+      // We don't need to send `id` in the payload for `/api/profile` PUT.
+
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        // avatar: avatar // Needs S3 integration to store URL on backend.
+      };
+
+      const res = await fetch(`${BASE_URL}/profile`, { // Using /api/profile PUT endpoint
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to update profile on server.');
+      }
+
+      // If successful, notify parent component with updated user data from server
+      setMessage("Profile updated successfully!");
+      if (typeof onUpdate === "function") {
+          // Pass the updated user object from the server response (data.user)
+          // Also manually include avatar if it was changed locally for immediate UI update.
+          onUpdate({ ...data.user, avatar: avatar }); // Merge with local avatar state
+      }
+      setIsEditing(false);
+      setTimeout(() => setMessage(""), 2500);
+
+    } catch (err) {
+      console.error("Error saving profile:", err);
+      setError(err.message || "Failed to save profile. Please try again.");
+    }
   };
 
   const handleCancel = () => {
-    setFormData({ name: initialUser.name || "", email: initialUser.email || "", phone: initialUser.phone || "", storeName: initialUser.storeName || "", businessType: initialUser.businessType || "" });
-    setAvatar(initialUser.avatar || null);
+    // Reset form data to the initial user prop values
+    setFormData({
+      name: initialUser.name || "",
+      email: initialUser.email || "",
+      phone: initialUser.phone || "",
+    });
+    setAvatar(initialUser.avatar || null); // Reset avatar preview too
     setIsEditing(false);
     setMessage("");
+    setError(""); // Clear errors on cancel
     setPasswords({ newPassword: "", confirmPassword: "" });
     setPwdOpen(false);
   };
 
-  const handlePwdChange = (e) => setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  const handlePwdChange = (e) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  };
 
-  const handleChangePassword = () => {
-    if (passwords.newPassword.length < 6) return setMessage("Password must be at least 6 characters");
-    if (passwords.newPassword !== passwords.confirmPassword) return setMessage("Passwords do not match");
+  const handleChangePassword = async () => {
+    if (passwords.newPassword.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError(""); // Clear error message
 
-    // In real app: call backend to update password. Here we just show success
-    setMessage("Password updated");
-    setTimeout(() => setMessage(""), 2500);
-    setPasswords({ newPassword: "", confirmPassword: "" });
-    setPwdOpen(false);
+    try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      const payload = {
+        password: passwords.newPassword // Send new password for update
+      };
+
+      const res = await fetch(`${BASE_URL}/api/profile`, { // Using /api/profile PUT endpoint
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to update password.');
+      }
+
+      setMessage("Password updated successfully!");
+      setTimeout(() => setMessage(""), 2500);
+
+      setPasswords({ newPassword: "", confirmPassword: "" });
+      setPwdOpen(false);
+    } catch (err) {
+      console.error("Error changing password:", err);
+      setError(err.message || "Failed to update password. Please try again.");
+    }
   };
 
   return (
-    <div className="max-w-2xl bg-white rounded-xl shadow p-4">
-      <div className="flex items-center justify-between pb-3 border-b">
-        <h2 className="font-semibold text-lg">My Profile</h2>
-        {!isEditing ? (
-          <button onClick={handleEditClick} className="text-sm px-4 py-1 bg-orange-500 text-white rounded">Edit</button>
-        ) : (
-          <div className="space-x-2">
-            <button onClick={handleSave} className="text-sm px-4 py-1 bg-green-500 text-white rounded">Save</button>
-            <button onClick={handleCancel} className="text-sm px-4 py-1 bg-gray-300 text-black rounded">Cancel</button>
+    <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+
+      {/* Banner */}
+      <div className="h-36 bg-gradient-to-r from-orange-500 to-yellow-400 relative">
+
+        {/* Avatar */}
+        <div className="absolute -bottom-12 left-8">
+          <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg flex items-center justify-center bg-orange-500 text-white text-3xl font-bold">
+            {avatar ? (
+              <img
+                src={avatar}
+                alt="avatar"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              formData.name?.charAt(0)?.toUpperCase()
+            )}
           </div>
+        </div>
+
+        {/* Change Avatar */}
+        {isEditing && (
+          <label className="absolute bottom-2 left-36 bg-black text-white px-3 py-1 rounded text-xs cursor-pointer">
+            Change
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={handleAvatarChange}
+            />
+          </label>
         )}
       </div>
 
-      <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
-            {avatar ? (
-              <img src={avatar} alt="avatar" className="w-full h-full object-cover" />
-            ) : (
-             <div className="w-full h-full flex items-center justify-center bg-orange-500 text-white text-3xl font-semibold">
-              {(formData.name || "U").charAt(0).toUpperCase()}
-            </div>
-            )}
+      {/* Profile Section */}
+      <div className="pt-16 px-8 pb-8">
+
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-bold">{formData.name}</h2>
+            <p className="text-gray-500">{formData.email}</p>
           </div>
-          {isEditing && (
-            <input type="file" accept="image/*" onChange={handleAvatar} className="mt-2 text-sm" />
+
+          {!isEditing ? (
+            <button
+              onClick={handleEditClick}
+              className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
+            >
+              Edit Profile
+            </button>
+          ) : (
+            <div className="space-x-2">
+              <button
+                onClick={handleSave}
+                className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700"
+              >
+                Save
+              </button>
+
+              <button
+                onClick={handleCancel}
+                className="bg-gray-400 text-white px-5 py-2 rounded-lg hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+            </div>
           )}
         </div>
 
-        <div className="md:col-span-2 space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Full Name</label>
-            <input name="name" value={formData.name} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
-          </div>
+        {/* Form */}
+        <div className="grid md:grid-cols-2 gap-5">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <input name="email" value={formData.email} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
-            </div>
+          <Input
+            label="Full Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            isEditing={isEditing}
+          />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Phone</label>
-              <input name="phone" value={formData.phone} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" />
-            </div>
-          </div>
+          <Input
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            isEditing={isEditing}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Address</label>
-            <textarea name="address" value={formData.address} onChange={handleChange} disabled={!isEditing} className="w-full border rounded-lg p-2 mt-1" rows="2" />
-          </div>
+          <Input
+            label="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            isEditing={isEditing}
+          />
 
-          <div className="mt-2">
-            <button onClick={() => setPwdOpen((s) => !s)} className="text-sm text-blue-600">{pwdOpen ? "Hide" : "Change Password"}</button>
-            {pwdOpen && (
-              <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
-                <input name="newPassword" type="password" placeholder="New password" value={passwords.newPassword} onChange={handlePwdChange} className="border rounded-lg p-2" />
-                <input name="confirmPassword" type="password" placeholder="Confirm password" value={passwords.confirmPassword} onChange={handlePwdChange} className="border rounded-lg p-2" />
-                <div className="md:col-span-2">
-                  <button onClick={handleChangePassword} className="py-2 px-3 bg-orange-500 text-white rounded mt-2">Update Password</button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {message && <div className="text-sm text-green-600 mt-2">{message}</div>}
+          {/* Removed Address field as addresses are handled in MyAddresses.jsx */}
         </div>
+
+        {/* Password Section */}
+        <div className="mt-4">
+          <button
+            onClick={() => setPwdOpen(!pwdOpen)}
+            className="text-blue-600 text-sm"
+          >
+            {pwdOpen ? "Hide Password Change" : "Change Password"}
+          </button>
+
+          {pwdOpen && (
+            <div className="grid md:grid-cols-2 gap-3 mt-3">
+
+              <input
+                type="password"
+                name="newPassword"
+                placeholder="New Password"
+                value={passwords.newPassword}
+                onChange={handlePwdChange}
+                className="border rounded-lg p-2"
+              />
+
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={passwords.confirmPassword}
+                onChange={handlePwdChange}
+                className="border rounded-lg p-2"
+              />
+
+              <div className="md:col-span-2">
+                <button
+                  onClick={handleChangePassword}
+                  className="bg-orange-500 text-white px-4 py-2 rounded"
+                >
+                  Update Password
+                </button>
+              </div>
+
+            </div>
+          )}
+        </div>
+
+        {message && (
+          <div className="text-green-600 text-sm mt-4">{message}</div>
+        )}
+        {error && (
+          <div className="text-red-600 text-sm mt-4">{error}</div>
+        )}
+
       </div>
     </div>
   );
 };
+
+const Input = ({ label, name, value, onChange, isEditing }) => (
+  <div>
+    <label className="block text-sm font-semibold mb-1">{label}</label>
+
+    {isEditing ? (
+      <input
+        type="text"
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full border rounded-lg px-3 py-2 bg-white border-gray-300"
+      />
+    ) : (
+      <div className="w-full px-3 py-2 bg-gray-100 rounded-lg text-gray-800">
+        {value || "—"}
+      </div>
+    )}
+  </div>
+);
 
 export default MyProfile;
