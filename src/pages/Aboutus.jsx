@@ -34,11 +34,11 @@ export default function AboutUs() {
     { icon: <Leaf size={30} className="text-emerald-600" />, title: "Sustainable", desc: "Eco-friendly packaging & responsible sourcing." },
   ];
 
-  const team = [
-    { name: "Alice Johnson", role: "Founder & CEO", image: "https://i.pravatar.cc/300?img=11" },
-    { name: "Rahul Sharma", role: "Head of Operations", image: "https://i.pravatar.cc/300?img=32" },
-    { name: "Sofia Rodriguez", role: "Brand Director", image: "https://i.pravatar.cc/300?img=49" },
-  ];
+  // const team = [
+  //   { name: "Alice Johnson", role: "Founder & CEO", image: "https://i.pravatar.cc/300?img=11" },
+  //   { name: "Rahul Sharma", role: "Head of Operations", image: "https://i.pravatar.cc/300?img=32" },
+  //   { name: "Sofia Rodriguez", role: "Brand Director", image: "https://i.pravatar.cc/300?img=49" },
+  // ];
 
   const stats = [
     { value: "1M+", label: "Happy Shoppers" },
@@ -121,7 +121,7 @@ export default function AboutUs() {
       </section>
 
       {/* TEAM */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">Meet Our Team</h2>
 
@@ -145,7 +145,7 @@ export default function AboutUs() {
             ))}
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );

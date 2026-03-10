@@ -96,7 +96,7 @@ const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-gradient-to-b from-orange-500 to-red-600 text-white p-6">
+      <aside className="hidden md:flex md:flex-col w-64 min-h-screen bg-black text-white p-6">
         <div className="mb-8 text-center">
           <div className="w-16 h-16 mx-auto rounded-full bg-white text-orange-600 flex items-center justify-center font-bold text-lg">
             {isSuperAdmin ? "SA" : "A"}
@@ -120,7 +120,7 @@ const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
       </aside>
 
       {/* Mobile Sidebar */}
-      <div className="md:hidden relative bg-gradient-to-r from-orange-500 to-red-600 text-white p-4">
+      <div className="md:hidden relative bg-black text-white p-4">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-lg">
             {isSuperAdmin ? "Super Admin" : "Admin Panel"}
@@ -132,7 +132,7 @@ const AdminSidebar = ({ selectedView = "dashboard", onSelect }) => {
         </div>
 
         {openMobile && (
-          <div className="absolute left-0 top-full w-full bg-gradient-to-b from-orange-500 to-red-600 p-4 space-y-2 shadow-lg z-50">
+          <div className="absolute left-0 top-full w-full bg-black p-4 space-y-2 shadow-lg z-50">
             <nav className="space-y-2">
               <Menu />
 

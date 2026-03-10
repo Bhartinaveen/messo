@@ -10,11 +10,11 @@ const slides = [
     type: "mega-sale",
   },
   {
-    image: "/image/promo2.jpg",
-    title: "✨ New Winter Collection",
-    subtitle: "Trendy Jackets • Hoodies • Sweatshirts",
-    tag: "Shop the Latest →",
-    type: "winter", 
+  image: "/image/promo-2.jpg",
+  title: "✨ New Fashion Collection",
+  subtitle: "Trendy T-Shirts • Jeans • Sneakers",
+  tag: "Shop the Latest →",
+  type: "fashion",
   },
   {
     image: "/image/promo3.jpg",

@@ -19,13 +19,13 @@ const CategorySlider = ({ search = "" }) => {
       image: "/image/men-fashion.jpg",
       tag: "New",
     },
-    {
-      name: "Home & Kitchen",
-      icon: "🏡",
-      slug: "home-kitchen",
-      image: "/image/home-kitchen.jpg",
-      tag: "Popular",
-    },
+    // {
+    //   name: "Home & Kitchen",
+    //   icon: "🏡",
+    //   slug: "home-kitchen",
+    //   image: "/image/home-kitchen.jpg",
+    //   tag: "Popular",
+    // },
     {
       name: "Electronics",
       icon: "📱",
