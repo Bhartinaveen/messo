@@ -54,39 +54,25 @@ const Login = () => {
           localStorage.removeItem("rememberedEmail");
         }
 
-        if (data.user.isAdmin) {
+        // Determine navigation based on user roles
+        if (data.user.role === 'superadmin' || data.user.role === 'admin') {
           navigate("/admin");
-        } else if (data.user.isMerchant) {
-          navigate("/merchant/dashboard");
         } else {
           navigate("/profile");
         }
         return;
       } catch (err) {
-        const stored = JSON.parse(localStorage.getItem("users") || "[]");
-        const user = stored.find(
-          (s) => s.email === email && s.password === password
-        );
-
-        if (!user) throw err;
-
-        login({
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            isMerchant: !!user.isMerchant,
-          },
-          token: "local-token",
-        });
-
-        navigate(user.isMerchant ? "/merchant/dashboard" : "/profile");
-        return;
+        // Fallback to local storage removed as per instructions.
+        // All authentication should now go through the backend API.
+        alert(err.message || "Login failed. Please check your credentials.");
+      } finally {
+        setLoading(false);
       }
     } catch (err) {
-      alert(err.message || "Login failed");
+      // This outer catch block would catch errors from the initial fetch attempt or setup.
+      alert(err.message || "An unexpected error occurred during login.");
     } finally {
-      setLoading(false);
+      setLoading(false); // Ensure loading is reset even if a top-level error occurs
     }
   };
 

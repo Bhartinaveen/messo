@@ -1,3 +1,4 @@
+// FirstUShop/src/components/BottomNav.jsx
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -8,45 +9,43 @@ import {
   UserIcon,
   ClipboardDocumentListIcon
 } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 
 export default function BottomNav() {
   const navigate = useNavigate();
   const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // ✅ Check login
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    setIsLoggedIn(!!user);
-  }, []);
+  const { user } = useAuth(); // Get user from AuthContext
+  const isLoggedIn = !!user; // Determine login status reactively
 
   // ✅ Before Login
   const guestNavItems = [
     { to: "/", label: "Home", icon: HomeIcon },
     { to: "/blog", label: "Blog", icon: BookOpenIcon },
     { to: "/about", label: "About", icon: InformationCircleIcon },
-   
-
-  
   ];
 
   // ✅ After Login
   const userNavItems = [
     { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/categories", label: "Categories", icon: Squares2X2Icon },
-   
+    { to: "/explore", label: "Categories", icon: Squares2X2Icon }, // Changed from /categories to /explore
     { to: "/my-orders", label: "Orders", icon: ClipboardDocumentListIcon },
-    { to: "/profile", label: "Profile", icon: UserIcon },
+    // MODIFIED: Conditional path for Profile button
+    { 
+      to: user && (user.role === 'admin' || user.role === 'superadmin') ? "/admin" : "/profile", 
+      label: "Profile", 
+      icon: UserIcon 
+    },
   ];
 
-  const navItems = isLoggedIn ? userNavItems : guestNavItems;
+  // The actual items to render based on login status
+  const navItemsToRender = isLoggedIn ? userNavItems : guestNavItems;
 
   return (
     <>
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50 md:hidden">
         <div className="flex justify-around items-center h-16 text-xs font-medium">
 
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItemsToRender.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
