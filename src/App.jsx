@@ -23,7 +23,7 @@ import Privacy from './pages/Privacy'
 import Cancellation from './pages/Cancellation'
 import Blog from './pages/Blog'
 import Faq from './pages/Faq'
-import Aboutus from './pages/Aboutus'
+// import Aboutus from './pages/Aboutus'
 import Security from './pages/Security'
 
 import Explore from './pages/Explore'
@@ -47,7 +47,7 @@ import Accessories from './pages/Accessories'
 import FootWear from './pages/FootWear'
 import Bags from './pages/Bags'
 import KidsWear from './pages/KidsWear'
-// import HomeLiving from './pages/HomeLiving'
+import HomeLiving from './pages/HomeLiving'
 import TopWear from './pages/TopWear'
 import EthnicWear from './pages/EthnicWear'
 import Jewellery from './pages/Jewellery'
@@ -75,7 +75,7 @@ function App() {
           <Route path="/admin/profile" element={<AdminProfile />} />
         
           <Route path="/about" element={<About />} />
-          <Route path="/aboutus" element={<Aboutus />} />
+          {/* <Route path="/aboutus" element={<Aboutus />} /> */}
           <Route path="/security" element={<Security />} />
           <Route path="/cancellation" element={<Cancellation />} />
           <Route path="/blog" element={<Blog />} />
@@ -109,7 +109,7 @@ function App() {
           <Route path="/accessories" element={<Accessories />} />
           <Route path="/bags" element={<Bags />} />
           <Route path="/kids-wear" element={<KidsWear />} />
-          {/* <Route path="/home-living" element={<HomeLiving />} /> */}
+          <Route path="/home-living" element={<HomeLiving />} />
           <Route path="/top" element={<TopWear />} />
           <Route path="/ethnic" element={<EthnicWear />} />
           <Route path="/jewel" element={<Jewellery />} />
