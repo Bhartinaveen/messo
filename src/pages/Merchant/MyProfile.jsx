@@ -435,10 +435,8 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
       // If successful, notify parent component with updated user data from server
       setMessage("Profile updated successfully!");
       if (typeof onUpdate === "function") {
-          // Pass the updated user object from the server response (data.user)
-          // Also manually include avatar if it was changed locally for immediate UI update.
-          onUpdate({ ...data.user, avatar: avatar }); // Merge with local avatar state
-      }
+        onUpdate({ ...(data.user || {}), avatar: avatar });
+      } // Parent 'Profile.jsx' will call AuthContext.login with this updated user
       setIsEditing(false);
       setTimeout(() => setMessage(""), 2500);
 
@@ -490,7 +488,7 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
         password: passwords.newPassword // Send new password for update
       };
 
-      const res = await fetch(`${BASE_URL}/api/profile`, { // Using /api/profile PUT endpoint
+      const res = await fetch(`${BASE_URL}/profile`, { // Corrected: Using /api/profile PUT endpoint
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

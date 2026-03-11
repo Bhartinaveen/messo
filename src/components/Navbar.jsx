@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";  
 import { useWishlist } from "../context/WishlistContext"; 
+import { useAuth } from "../context/AuthContext"; // Import useAuth hook
 import {
   BellIcon,
   ShoppingCartIcon,
@@ -15,31 +16,8 @@ const Navbar = () => {
   const cartItemCount = cart.length;
   const wishlistCount = wishlist.length; 
   const navigate = useNavigate();
-  const location = useLocation();
-  const [user, setUser] = useState(null);
+  const { user } = useAuth(); // Directly use 'user' from AuthContext
   const [showLoginDropdown, setShowLoginDropdown] = useState(false);
-
-
-  useEffect(() => {
-    const readUser = () => {
-      const stored = localStorage.getItem("user");
-      if (stored) setUser(JSON.parse(stored));
-      else setUser(null);
-    };
-
-    // initial read
-    readUser();
-
-    // update on navigation
-    const unlisten = () => readUser();
-
-    // update when profile saves (fires from MyProfile)
-    window.addEventListener("user-updated", readUser);
-
-    return () => {
-      window.removeEventListener("user-updated", readUser);
-    };
-  }, [location]);
 
   return (
     <nav className="fixed top-0 left-0 w-full shadow-lg z-50 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
@@ -88,15 +66,12 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
                     {user.role === 'superadmin' ? (
                     <Link to="/admin" className="text-white text-sm px-3 py-1 rounded-md bg-black/20 hover:bg-black/30">Super Admin</Link>
-                  ) : user.isAdmin ? (
-                    <Link to="/admin" className="text-white text-sm px-3 py-1 rounded-md bg-black/20 hover:bg-black/30">Admin</Link>
+                  ) : user.role === 'admin' && user.isApproved ? ( // Modified: Check for role 'admin' AND isApproved
+                    <Link to="/admin" className="text-white text-sm px-3 py-1 rounded-md bg-black/20 hover:bg-black/30">Admin</Link> // Changed label
                   ) : null}
-                  {user.isMerchant && !user.isAdmin && (
-                    <Link to="/merchant/dashboard" className="text-white text-sm px-3 py-1 rounded-md bg-black/20 hover:bg-black/30">Merchant</Link>
-                  )}
 
                   {/* Show avatar if available */}
-                  <Link to={user.isAdmin ? "/admin/profile" : user.isMerchant ? "/merchant/profile" : "/profile"} className="flex items-center gap-2">
+                  <Link to={user.role === 'superadmin' || user.role === 'admin' ? "/admin/profile" : "/profile"} className="flex items-center gap-2">
                     {user.avatar ? (
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm">
                         <img src={user.avatar} alt="avatar" className="w-full h-full object-cover" />
