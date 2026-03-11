@@ -1,3 +1,4 @@
+// FirstUShop/src/pages/AdminDashboard.jsx (MODIFIED)
 import React, { useEffect, useState } from "react";
 import AdminHeroManager from "../components/AdminHeroManager";
 import AdminSidebar from "../components/AdminSidebar";
@@ -12,6 +13,7 @@ import Settings from "./SuperAdmin/Settings";
 import SecurityLogs from "./SuperAdmin/SecurityLogs";
 import Analytics from "./SuperAdmin/Analytics";
 import SuperUsers from "./SuperAdmin/User";
+import PartnerApprovals from "./SuperAdmin/PartnerApprovals"; // NEW: Import PartnerApprovals
 import { useNavigate } from "react-router-dom";
 import {
   getProductsForUser,
@@ -28,7 +30,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
-  const [partners, setPartners] = useState([]);
+  const [partners, setPartners] = useState([]); // This is for local storage 'Delivery Partners'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [view, setView] = useState("dashboard");
@@ -40,9 +42,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
+    const currentUser = JSON.parse(localStorage.getItem("user")); // Use a distinct variable name
 
-    if (!token || !user || !user.isAdmin) {
+    if (!token || !currentUser || !currentUser.isAdmin) {
       navigate("/login");
       return;
     }
@@ -52,6 +54,7 @@ const AdminDashboard = () => {
     const fetchAdminData = async () => {
       setLoading(true);
       try {
+        // Fetch users, orders, products if current user is superadmin or a regular admin (partner)
         const [usersRes, ordersRes, productsRes] = await Promise.all([
           fetch(`${BASE_URL}/users`, { headers }),
           fetch(`${BASE_URL}/orders`, { headers }),
@@ -131,7 +134,7 @@ const AdminDashboard = () => {
               <StatCard
                 title="Revenue"
                 value={`₹${orders
-                  .filter((o) => o.isPaid)
+                  .filter((o) => o.isPaid) // Assuming isPaid exists on orders from backend
                   .reduce((sum, o) => sum + Number(o.totalPrice || 0), 0)}`}
                 color="text-pink-600"
               />
@@ -143,7 +146,7 @@ const AdminDashboard = () => {
           )}
 
           {view === "analytics" && (
-            <section className="bg-white  rounded-2xl shadow-sm border p-6">
+            <SectionWrapper>
               {user?.role === "superadmin" ? (
                 <Analytics />
               ) : (
@@ -152,7 +155,14 @@ const AdminDashboard = () => {
                   <p className="text-gray-500">Charts coming soon...</p>
                 </div>
               )}
-            </section>
+            </SectionWrapper>
+          )}
+
+          {/* NEW: Partner Approvals section for SuperAdmin */}
+          {view === "partner-approvals" && user?.role === "superadmin" && (
+            <SectionWrapper>
+              <PartnerApprovals />
+            </SectionWrapper>
           )}
 
           {view === "orders" && (
@@ -173,7 +183,7 @@ const AdminDashboard = () => {
             </SectionWrapper>
           )}
 
-          {view === "hero" && (
+          {view === "hero" && user?.role !== "superadmin" && ( // Only regular admin (partner) manages Hero
             <SectionWrapper>
               <AdminHeroManager />
             </SectionWrapper>
@@ -191,10 +201,11 @@ const AdminDashboard = () => {
               </SectionWrapper>
               )}
 
-          {view === "partners" && (
+          {/* This 'partners' section is for local storage managed 'Delivery Partners' and currently shown to non-SuperAdmins */}
+          {view === "partners" && user?.role !== "superadmin" && (
             <SectionWrapper>
               <h2 className="text-xl font-semibold mb-6">
-                Delivery Partners Management
+                Delivery Partners Management (Local)
               </h2>
 
               {/* Issue Partner */}

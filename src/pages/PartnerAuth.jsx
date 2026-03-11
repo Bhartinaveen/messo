@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext"; // NEW: Import useAuth
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL; // NEW: Define BASE_URL
 
 export default function PartnerAuth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -8,6 +11,8 @@ export default function PartnerAuth() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [step, setStep] = useState(1);
+
+  const { login } = useAuth(); // NEW: Get login from useAuth
 
   const [formData, setFormData] = useState({
     name: "",
@@ -80,22 +85,31 @@ export default function PartnerAuth() {
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isLogin) {
       // Partner Login Logic
-      console.log("Partner Login Attempt:", { email: formData.email, password: formData.password });
-      
-      // Simulate Authentication: In a real app, verify with backend.
-      // We set flags in localStorage to satisfy protected route checks in /admin
-      localStorage.setItem("isPartnerAuthenticated", "true");
-      localStorage.setItem("userRole", "partner");
-      localStorage.setItem("partnerEmail", formData.email);
+      try {
+        const res = await fetch(`${BASE_URL}/partners/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
+        const data = await res.json();
 
-      // Navigate to the Partner Dashboard
-      navigate("/admin");
-      return;
+        if (!res.ok) {
+          alert(data.message || "Partner login failed. Please check credentials.");
+          return;
+        }
+
+        login({ user: data.user, token: data.token }); // Store auth in AuthContext
+        navigate("/admin"); // Navigate to admin dashboard as partners use it
+        return;
+      } catch (err) {
+        alert(err.message || "Login failed. Please check credentials.");
+        return;
+      }
     }
 
     // Registration Logic
@@ -113,20 +127,41 @@ export default function PartnerAuth() {
       return;
     }
 
-    console.log("Seller Register:", formData);
-    alert("Registration Submitted! Status: Pending Approval");
+    try {
+        const res = await fetch(`${BASE_URL}/partners/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+                phone: formData.phone,
+                storeName: formData.storeDisplayName, // Use storeDisplayName as storeName for backend
+                businessType: formData.businessType,
+                // Add other partner-specific fields from formData if your backend supports them
+            }),
+        });
+        const data = await res.json();
 
-    // Reset registration-specific fields but keep email/password for immediate login convenience
-    setFormData(prev => ({
-      ...prev,
-      confirmPassword: "",
-      acceptTerms: false,
-      acceptPolicy: false,
-      acceptRefundPolicy: false
-    }));
+        if (!res.ok) {
+            throw new Error(data.message || 'Partner registration failed');
+        }
 
-    setIsLogin(true);
-    setStep(1);
+        alert("Partner registration successful! Your account is awaiting Superadmin approval before you can log in.");
+        // Reset registration-specific fields but keep email/password for immediate login convenience
+        setFormData(prev => ({
+          ...prev,
+          confirmPassword: "",
+          acceptTerms: false,
+          acceptPolicy: false,
+          acceptRefundPolicy: false
+        }));
+
+        setIsLogin(true); // Switch to login form
+        setStep(1);
+    } catch (err) {
+        alert(err.message || "Registration failed. Please try again.");
+    }
   };
 
   const FileUpload = ({ label, name, required = false }) => {
