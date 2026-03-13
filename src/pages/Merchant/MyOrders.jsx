@@ -148,7 +148,7 @@ const handleListCancel = (order) => {
 };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-5">
+    <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
 
       {/* 🔔 Toast */}
       {toast && (
@@ -166,14 +166,14 @@ const handleListCancel = (order) => {
             placeholder="Search order or item..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded-lg px-3 py-2 text-sm w-48"
+            className="border rounded-lg px-4 py-2 text-sm w-full md:w-64"
           />
 
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="border rounded-lg px-3 py-2 text-sm"
-          >
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="border rounded-lg px-4 py-2 text-sm w-full md:w-40"
+            >
             <option value="all">All</option>
             {STATUSES.map((s) => (
               <option key={s} value={s}>{s}</option>
@@ -185,21 +185,50 @@ const handleListCancel = (order) => {
 
       {/* Orders list */}
       {filteredOrders.map((o) => (
-        <div key={o.id} className="bg-white p-5 rounded-2xl shadow">
-          <div className="flex justify-between items-start">
+       <div key={o.id} className="bg-white p-5 rounded-2xl shadow border">
+
+          {/* Top Row */}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+
             <div>
               <p className="font-semibold text-lg">
                 Order #{o.id}
               </p>
+
               <p className="text-sm text-gray-500">
                 {new Date(o.date).toLocaleString()}
               </p>
             </div>
-            <span className="font-semibold">₹{o.amount}</span>
+
+            <div className="flex items-center gap-3">
+              <span className={`px-3 py-1 text-xs rounded-full ${statusBadge(o.status)}`}>
+                {o.status}
+              </span>
+
+            </div>
           </div>
 
+       {/* Items Preview */}
+          <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+            {o.items?.slice(0,4).map((item, i) => (
+              <img
+                key={i}
+                src={getItemImage(item.image)}
+                alt={item.name}
+                className="w-12 h-12 object-cover rounded-lg border"
+              />
+            ))}
+
+            {o.items?.length > 4 && (
+              <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg text-xs">
+                +{o.items.length - 4}
+              </div>
+            )}
+          </div>
+
+
           {/* Timeline */}
-          <div className="flex items-center mt-4">
+          <div className="flex items-center mt-5">
             {STATUSES.map((s, i) => (
               <div key={s} className="flex-1 flex items-center">
                 <div
@@ -222,36 +251,43 @@ const handleListCancel = (order) => {
             ))}
           </div>
 
-          <div className="flex justify-between items-center mt-4">
-            <span className="text-sm">
-              Status: <b>{o.status}</b>
-            </span>
 
-            <div className="flex items-center gap-4">
+          {/* Buttons */}
+          <div className="flex justify-between items-center mt-5">
+
+            <div className="text-sm text-gray-600">
+              {o.items?.length} item(s)
+            </div>
+
+            <div className="flex gap-4">
+
               {o.status !== "Cancelled" && (
                 <button
                   onClick={() => handleListCancel(o)}
-                  className="text-red-500 text-sm font-medium"
+                  className="text-red-500 text-sm font-medium hover:underline"
                 >
                   Cancel
                 </button>
               )}
 
-            <button
-              onClick={() => setSelected(o)}
-              className="text-orange-500 text-sm font-medium"
-            >
-              View Details →
-            </button>
+              <button
+                onClick={() => setSelected(o)}
+                className="text-orange-500 text-sm font-medium hover:underline"
+              >
+                View Details →
+              </button>
+
+            </div>
+
           </div>
+
         </div>
-      </div>
-      ))}
+              ))}
 
       {/* ================= MODAL ================= */}
       {selected && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white max-w-lg w-full rounded-2xl shadow-xl p-6 relative">
+          <div className="bg-white max-w-2xl w-full rounded-2xl shadow-xl p-6 relative max-h-[90vh] overflow-y-auto">
 
             <button
               onClick={() => setSelected(null)}
