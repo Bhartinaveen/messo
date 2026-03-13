@@ -324,49 +324,41 @@
 
 // export default MyProfile;
 
-// frontend/src/pages/Merchant/MyProfile.jsx
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL; // Get base URL from environment
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(""); // Add error state
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     name: initialUser.name || "",
     email: initialUser.email || "",
-    phone: initialUser.phone || "",
-    // Removed address field as per discussion
-    // Removed storeName and businessType as they are not part of the User model's updateProfile endpoint
-    // If these fields are specific to a 'Partner' profile, they should be managed via a different API.
+    phone: initialUser.phone || ""
   });
 
   const [avatar, setAvatar] = useState(initialUser.avatar || null);
+
   const [pwdOpen, setPwdOpen] = useState(false);
   const [passwords, setPasswords] = useState({
     newPassword: "",
     confirmPassword: ""
   });
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Sync formData with initialUser prop (which comes from AuthContext/backend fetch in Profile.jsx)
   useEffect(() => {
     setFormData({
       name: initialUser.name || "",
       email: initialUser.email || "",
-      phone: initialUser.phone || "",
+      phone: initialUser.phone || ""
     });
-    setAvatar(initialUser.avatar || null); // Sync avatar too
-  }, [initialUser]); // Re-sync when initialUser prop changes
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-    setError(""); // Clear any previous errors when starting to edit
-  };
+    setAvatar(initialUser.avatar || null);
+  }, [initialUser]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -375,13 +367,9 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
   const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
-    reader.onload = () => {
-      setAvatar(reader.result);
-      // TODO: Implement S3 upload and then update user.avatar URL on backend.
-      // For now, this only updates the local preview and a warning.
-      setError("Avatar update is not yet integrated with the backend. Image will not be saved permanently.");
-    };
+    reader.onload = () => setAvatar(reader.result);
     reader.readAsDataURL(file);
   };
 
@@ -398,67 +386,47 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
       setError(err);
       return;
     }
-    setError(""); // Clear error message
 
     try {
-      const token = localStorage.getItem('token');
-      // The user ID for profile updates is usually inferred from the JWT token on the backend
-      // We don't need to send `id` in the payload for `/api/profile` PUT.
+      const token = localStorage.getItem("token");
 
       if (!token) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
 
-      const payload = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        // avatar: avatar // Needs S3 integration to store URL on backend.
-      };
-
-      const res = await fetch(`${BASE_URL}/profile`, { // Using /api/profile PUT endpoint
-        method: 'PUT',
+      const res = await fetch(`${BASE_URL}/profile`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(formData)
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to update profile on server.');
-      }
+      if (!res.ok) throw new Error(data.message);
 
-      // If successful, notify parent component with updated user data from server
-      setMessage("Profile updated successfully!");
-      if (typeof onUpdate === "function") {
-        onUpdate({ ...(data.user || {}), avatar: avatar });
-      } // Parent 'Profile.jsx' will call AuthContext.login with this updated user
+      setMessage("Profile updated successfully");
       setIsEditing(false);
-      setTimeout(() => setMessage(""), 2500);
+
+      if (onUpdate) onUpdate(data.user);
 
     } catch (err) {
-      console.error("Error saving profile:", err);
-      setError(err.message || "Failed to save profile. Please try again.");
+      setError(err.message);
     }
   };
 
   const handleCancel = () => {
-    // Reset form data to the initial user prop values
+    setIsEditing(false);
+    setError("");
+    setMessage("");
     setFormData({
       name: initialUser.name || "",
       email: initialUser.email || "",
-      phone: initialUser.phone || "",
+      phone: initialUser.phone || ""
     });
-    setAvatar(initialUser.avatar || null); // Reset avatar preview too
-    setIsEditing(false);
-    setMessage("");
-    setError(""); // Clear errors on cancel
-    setPasswords({ newPassword: "", confirmPassword: "" });
-    setPwdOpen(false);
   };
 
   const handlePwdChange = (e) => {
@@ -466,78 +434,57 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
   };
 
   const handleChangePassword = async () => {
-    if (passwords.newPassword.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    setError(""); // Clear error message
+    if (passwords.newPassword.length < 6)
+      return setError("Password must be at least 6 characters");
+
+    if (passwords.newPassword !== passwords.confirmPassword)
+      return setError("Passwords do not match");
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      const payload = {
-        password: passwords.newPassword // Send new password for update
-      };
-
-      const res = await fetch(`${BASE_URL}/profile`, { // Corrected: Using /api/profile PUT endpoint
-        method: 'PUT',
+      const res = await fetch(`${BASE_URL}/profile`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ password: passwords.newPassword })
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to update password.');
-      }
+      if (!res.ok) throw new Error(data.message);
 
-      setMessage("Password updated successfully!");
-      setTimeout(() => setMessage(""), 2500);
-
-      setPasswords({ newPassword: "", confirmPassword: "" });
+      setMessage("Password updated successfully");
       setPwdOpen(false);
+
     } catch (err) {
-      console.error("Error changing password:", err);
-      setError(err.message || "Failed to update password. Please try again.");
+      setError(err.message);
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-xl overflow-hidden">
+    <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
 
       {/* Banner */}
-      <div className="h-36 bg-gradient-to-r from-orange-500 to-yellow-400 relative">
+      <div className="h-40 bg-gradient-to-r from-orange-500 to-yellow-400 relative">
 
         {/* Avatar */}
         <div className="absolute -bottom-12 left-8">
-          <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg flex items-center justify-center bg-orange-500 text-white text-3xl font-bold">
+          <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-orange-500 flex items-center justify-center text-white text-3xl font-bold">
+
             {avatar ? (
-              <img
-                src={avatar}
-                alt="avatar"
-                className="w-full h-full object-cover"
-              />
+              <img src={avatar} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               formData.name?.charAt(0)?.toUpperCase()
             )}
+
           </div>
         </div>
 
-        {/* Change Avatar */}
         {isEditing && (
-          <label className="absolute bottom-2 left-36 bg-black text-white px-3 py-1 rounded text-xs cursor-pointer">
+          <label className="absolute bottom-2 left-36 bg-black text-white text-xs px-3 py-1 rounded cursor-pointer">
             Change
             <input
               type="file"
@@ -549,44 +496,50 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
         )}
       </div>
 
-      {/* Profile Section */}
+      {/* Profile Body */}
       <div className="pt-16 px-8 pb-8">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
+
           <div>
-            <h2 className="text-2xl font-bold">{formData.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              {formData.name}
+            </h2>
+
             <p className="text-gray-500">{formData.email}</p>
           </div>
 
           {!isEditing ? (
             <button
-              onClick={handleEditClick}
-              className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
+              onClick={() => setIsEditing(true)}
+              className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition"
             >
               Edit Profile
             </button>
           ) : (
-            <div className="space-x-2">
+            <div className="flex gap-2">
+
               <button
                 onClick={handleSave}
-                className="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700"
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
               >
                 Save
               </button>
 
               <button
                 onClick={handleCancel}
-                className="bg-gray-400 text-white px-5 py-2 rounded-lg hover:bg-gray-500"
+                className="bg-gray-400 text-white px-6 py-2 rounded-lg hover:bg-gray-500"
               >
                 Cancel
               </button>
+
             </div>
           )}
         </div>
 
         {/* Form */}
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-6">
 
           <Input
             label="Full Name"
@@ -612,20 +565,20 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
             isEditing={isEditing}
           />
 
-          {/* Removed Address field as addresses are handled in MyAddresses.jsx */}
         </div>
 
         {/* Password Section */}
-        <div className="mt-4">
+        <div className="mt-8 border-t pt-6">
+
           <button
             onClick={() => setPwdOpen(!pwdOpen)}
-            className="text-blue-600 text-sm"
+            className="text-orange-600 font-semibold"
           >
             {pwdOpen ? "Hide Password Change" : "Change Password"}
           </button>
 
           {pwdOpen && (
-            <div className="grid md:grid-cols-2 gap-3 mt-3">
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
 
               <input
                 type="password"
@@ -633,7 +586,7 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
                 placeholder="New Password"
                 value={passwords.newPassword}
                 onChange={handlePwdChange}
-                className="border rounded-lg p-2"
+                className="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
 
               <input
@@ -642,13 +595,13 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
                 placeholder="Confirm Password"
                 value={passwords.confirmPassword}
                 onChange={handlePwdChange}
-                className="border rounded-lg p-2"
+                className="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
 
               <div className="md:col-span-2">
                 <button
                   onClick={handleChangePassword}
-                  className="bg-orange-500 text-white px-4 py-2 rounded"
+                  className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
                 >
                   Update Password
                 </button>
@@ -659,10 +612,11 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
         </div>
 
         {message && (
-          <div className="text-green-600 text-sm mt-4">{message}</div>
+          <p className="text-green-600 mt-4">{message}</p>
         )}
+
         {error && (
-          <div className="text-red-600 text-sm mt-4">{error}</div>
+          <p className="text-red-600 mt-4">{error}</p>
         )}
 
       </div>
@@ -672,18 +626,19 @@ const MyProfile = ({ user: initialUser = {}, onUpdate }) => {
 
 const Input = ({ label, name, value, onChange, isEditing }) => (
   <div>
-    <label className="block text-sm font-semibold mb-1">{label}</label>
+    <label className="block text-sm font-semibold mb-1 text-gray-700">
+      {label}
+    </label>
 
     {isEditing ? (
       <input
-        type="text"
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full border rounded-lg px-3 py-2 bg-white border-gray-300"
+        className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-400 focus:outline-none"
       />
     ) : (
-      <div className="w-full px-3 py-2 bg-gray-100 rounded-lg text-gray-800">
+      <div className="bg-gray-100 px-3 py-2 rounded-lg">
         {value || "—"}
       </div>
     )}

@@ -18,13 +18,21 @@ const CartPage = () => {
 
   // ================= CALCULATIONS =================
 
-  const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+  // Original price total (MRP)
+  const itemsOriginalPrice = cart.reduce(
+    (total, item) => total + item.price * 1.2 * item.quantity,
     0
   );
+    const subtotal = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+    0
+  );
+  const itemDiscount = itemsOriginalPrice - subtotal;
 
   const gst = subtotal * 0.18;
+
   const deliveryCharge = subtotal > 0 && subtotal < 500 ? 50 : 0;
+
   const originalTotal = subtotal + gst + deliveryCharge;
 
   const walletDeduction = useWallet
@@ -33,7 +41,7 @@ const CartPage = () => {
 
   const finalTotal = originalTotal - walletDeduction;
 
-  const savings = walletDeduction;
+  const savings = itemDiscount + walletDeduction;
 
   const handleCheckout = () => {
   if (cart.length === 0) {
@@ -146,65 +154,82 @@ const CartPage = () => {
 
             <div className="space-y-3 text-gray-700">
 
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>₹ {subtotal.toFixed(2)}</span>
-              </div>
+              {/* Items Original Price */}
+            <div className="flex justify-between">
+              <span>Items Price (MRP)</span>
+              <span>₹ {itemsOriginalPrice.toFixed(2)}</span>
+            </div>
 
+            {/* Product Discount */}
+            <div className="flex justify-between text-green-600">
+              <span>Product Discount</span>
+              <span>- ₹ {itemDiscount.toFixed(2)}</span>
+            </div>
+
+            {/* Discounted Subtotal */}
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>₹ {subtotal.toFixed(2)}</span>
+            </div>
+
+              {/* GST */}
               <div className="flex justify-between">
                 <span>GST (18%)</span>
                 <span>₹ {gst.toFixed(2)}</span>
               </div>
 
+              {/* Delivery */}
               <div className="flex justify-between">
                 <span>Delivery</span>
                 <span className={deliveryCharge === 0 ? "text-green-600" : ""}>
-                  {deliveryCharge === 0
-                    ? "FREE"
-                    : `₹ ${deliveryCharge}`}
+                  {deliveryCharge === 0 ? "FREE" : `₹ ${deliveryCharge}`}
                 </span>
               </div>
 
-              {/* Wallet */}
-              <div className="border-t pt-3 mt-3">
+            {/* Wallet */}
+            <div className="border-t pt-3 mt-3">
 
-                <div className="flex justify-between items-center">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={useWallet}
-                      onChange={() => setUseWallet(!useWallet)}
-                    />
-                    Use Wallet
-                  </label>
+              <div className="flex justify-between items-center">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useWallet}
+                    onChange={() => setUseWallet(!useWallet)}
+                  />
+                  Use Wallet
+                </label>
 
-                  <span className="text-sm text-gray-500">
-                    ₹ {walletBalance.toFixed(2)}
-                  </span>
-                </div>
+              <span className="text-sm text-gray-500">
+                Balance ₹ {walletBalance.toFixed(2)}
+              </span>
+            </div>
 
-                {useWallet && (
-                  <div className="flex justify-between text-green-600 mt-2">
-                    <span>Wallet Discount</span>
-                    <span>- ₹ {walletDeduction.toFixed(2)}</span>
-                  </div>
-                )}
+            {useWallet && (
+              <div className="flex justify-between text-green-600 mt-2">
+                <span>Wallet Discount</span>
+                <span>- ₹ {walletDeduction.toFixed(2)}</span>
               </div>
+            )}
+          </div>
 
-              <hr />
+          <hr />
 
+              {/* Savings */}
               {savings > 0 && (
                 <div className="flex justify-between text-green-600 font-medium">
-                  <span>You Saved</span>
+                  <span>Total Savings</span>
                   <span>₹ {savings.toFixed(2)}</span>
                 </div>
               )}
 
+              {/* Final Total */}
               <div className="flex justify-between font-bold text-xl">
                 <span>Total Payable</span>
                 <span>₹ {finalTotal.toFixed(2)}</span>
               </div>
+
             </div>
+
 
             <button
               onClick={handleCheckout}

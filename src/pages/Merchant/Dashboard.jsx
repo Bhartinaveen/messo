@@ -27,9 +27,9 @@ const Dashboard = ({ user, stats }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-tr from-purple-200 via-pink-200 to-pink-100 p-6 rounded-xl shadow-md">
-        <h2 className="text-2xl font-semibold text-purple-800">{greeting},</h2>
-        <p className="text-purple-900 text-xl font-bold mt-1">{user?.name || "Merchant"}</p>
+    <div className="bg-gradient-to-r from-yellow-100 via-orange-100 to-orange-200 border border-orange-200 p-6 rounded-xl shadow-md">
+        <h2 className="text-2xl font-semibold text-orange-600">{greeting},</h2>
+        <p className="text-orange-500 text-xl font-bold mt-1">{user?.name || "Merchant"}</p>
         <p className="text-gray-600 mt-2">{now.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long" })}</p>
         <div className="inline-flex items-center gap-2 mt-2 bg-white px-3 py-1 rounded-full shadow text-gray-700 text-sm font-medium">
           <FaClock />
