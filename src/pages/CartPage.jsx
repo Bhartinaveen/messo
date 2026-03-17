@@ -20,11 +20,11 @@ const CartPage = () => {
 
   // Original price total (MRP)
   const itemsOriginalPrice = cart.reduce(
-    (total, item) => total + item.price * 1.2 * item.quantity,
+    (total, item) => total + (Number(item.price) || 0) * 1.2 * (Number(item.quantity) || 0),
     0
   );
     const subtotal = cart.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
     0
   );
   const itemDiscount = itemsOriginalPrice - subtotal;

@@ -2,15 +2,26 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { products } from "../data/products";
 import { useCart } from "../context/CartContext";
-import { ShoppingCartIcon, EyeIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, EyeIcon, XMarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 
 const CategoryPage = () => {
   const { slug } = useParams();
   const { addToCart, cart } = useCart();
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [wishlist, setWishlist] = useState([]);
 
   const isInCart = (id) => cart.some((item) => item.id === id);
+
+  const toggleWishlist = (product) => {
+  if (wishlist.some((item) => item.id === product.id)) {
+    setWishlist(wishlist.filter((item) => item.id !== product.id));
+  } else {
+    setWishlist([...wishlist, product]);
+  }
+};
+
+const isWishlisted = (id) => wishlist.some((item) => item.id === id);
 
   const filteredProducts = products.filter(
     (p) => { 
@@ -61,14 +72,27 @@ const CategoryPage = () => {
                   className="w-full h-44 sm:h-52 object-cover cursor-pointer
                             transition-transform duration-300 group-hover:scale-105"
                 />
+            <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition">
+
+                  {/* WISHLIST */}
+                <button
+                  onClick={() => toggleWishlist(product)}
+                  className="bg-white p-2 rounded-full shadow hover:bg-red-50"
+                >
+                  <HeartIcon
+                    className={`h-5 w-5 ${
+                      isWishlisted(product.id)
+                        ? "text-red-500 fill-red-500"
+                        : "text-gray-600"
+                    }`}
+                  />
+                </button>
 
 
                 {/* QUICK VIEW (DESKTOP HOVER) */}
                 <button
                   onClick={() => setQuickViewProduct(product)}
                   className="
-                    
-                    absolute top-3 right-3
                     bg-white p-2 rounded-full shadow
                     opacity-0 group-hover:opacity-100
                     transition
@@ -76,6 +100,7 @@ const CategoryPage = () => {
                 >
                   <EyeIcon className="h-5 w-5 text-gray-700" />
                 </button>
+              </div>
               </div>
 
               {/* CONTENT */}
@@ -114,7 +139,10 @@ const CategoryPage = () => {
             </div>
           ))
         )}
+       
       </div>
+
+      
 
       {/* QUICK VIEW MODAL */}
       {quickViewProduct && (

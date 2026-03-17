@@ -18,7 +18,7 @@ const products = [
     id: 2,
     brand: "Dior",
     name: "J'adore Eau de Perfume",
-    price: "₹12,999",
+    price: 12999, // Changed from string to number
     image: "/image/cos2.jpeg",
     category: "Fragrance",
     description: "An iconic floral fragrance with a sensual feminine touch.",
@@ -27,7 +27,7 @@ const products = [
     id: 3,
     brand: "The Ordinary",
     name: "Niacinamide 10% + Zinc 1%",
-    price: "₹899",
+    price: 899, // Changed from string to number
     image: "/image/cos3.jpeg",
     category: "Skincare",
     description: "Reduces blemishes & balances oil production.",
@@ -36,7 +36,7 @@ const products = [
     id: 4,
     brand: "MAC",
     name: "Ruby Woo Lipstick",
-    price: "₹1,799",
+    price: 1799, // Changed from string to number
     image: "/image/cos4.jpeg",
     category: "Makeup",
     description: "Iconic matte red lipstick loved by professionals.",

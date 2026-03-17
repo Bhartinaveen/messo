@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from "react";
 
 import AdminSidebar from "../components/AdminSidebar";
+import TransactionHistory from "../components/TransactionHistory";
+import OrderHistory from "../components/OrderHistory";
 import Dashboard from "./Admin/Dashboard";
 import Products from "./Admin/Products";
-import AdminOrders from "./Admin/Orders";
+import AdminOrders from "./Admin/AdminOrders";
 import Users from "./Admin/User";
 import Profile from "./Admin/Profile";
+import ForgotPassword from "./SuperAdmin/ForgotPassword";
 import Support from "./Admin/Support";
 import AdminManagement from "./SuperAdmin/AdminManagement";
 import SuperDashboard from "./SuperAdmin/SuperDashboard";
@@ -14,6 +17,9 @@ import Settings from "./SuperAdmin/Settings";
 import SecurityLogs from "./SuperAdmin/SecurityLogs";
 import Analytics from "./SuperAdmin/Analytics";
 import SuperUsers from "./SuperAdmin/User";
+import Orders from "./SuperAdmin/Orders";
+import Wallet from "./SuperAdmin/Wallet";
+import CODRemittance from "./SuperAdmin/CODRemittance";
 import PartnerApprovals from "./SuperAdmin/PartnerApprovals"; 
 import HeroManager from "./SuperAdmin/HeroManager";
 import DeliveryPartners from "./Admin/DeliveryPartners";
@@ -123,6 +129,7 @@ const AdminDashboard = () => {
             </SectionWrapper>
           )}
 
+
           {/* NEW: Partner Approvals section for SuperAdmin */}
           {view === "partner-approvals" && user?.role === "superadmin" && (
             <SectionWrapper>
@@ -130,9 +137,33 @@ const AdminDashboard = () => {
             </SectionWrapper>
           )}
 
+          {view === "wallet" && user?.role === "superadmin" && (
+            <SectionWrapper>
+              <Wallet />
+            </SectionWrapper>
+          )}
+
+          {view === "cod-remittance" && user?.role === "superadmin" && (
+            <SectionWrapper>
+              <CODRemittance />
+            </SectionWrapper>
+          )}
+
+          {view === "transactions" && (
+            <SectionWrapper>
+              <TransactionHistory role={user?.role === "superadmin" ? "superadmin" : "admin"} />
+            </SectionWrapper>
+          )}
+
+          {view === "order-history" && (
+            <SectionWrapper>
+              <OrderHistory role={user?.role === "superadmin" ? "superadmin" : "admin"} />
+              </SectionWrapper>
+          )}
+
           {view === "orders" && (
             <SectionWrapper>
-              <AdminOrders />
+              { user?.role === "superadmin" ? <Orders /> : <AdminOrders />}
             </SectionWrapper>
           )}
 
@@ -148,6 +179,8 @@ const AdminDashboard = () => {
             </SectionWrapper>
           )}
 
+         
+
         {view === "hero" && user?.role !== "admin" && (
             <SectionWrapper>
               <HeroManager />
@@ -157,6 +190,12 @@ const AdminDashboard = () => {
           {view === "profile" && (
             <SectionWrapper>
               <Profile user={user} />
+            </SectionWrapper>
+          )}
+
+          {view === "forgot-password" && (
+            <SectionWrapper>
+              <ForgotPassword />
             </SectionWrapper>
           )}
 

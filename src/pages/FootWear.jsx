@@ -9,7 +9,7 @@ const products = [
     id: 1,
     name: "Black Air Force 1",
     category: "SPORTS",
-    price: "₹8,999",
+    price: 8999, // Changed from string to number
     brand: "Nike",
     image: "/image/shoes1.jpeg",
     description: "Iconic Nike Air Force 1 with premium comfort.",
@@ -18,7 +18,7 @@ const products = [
     id: 2,
     name: "Green & White Runner",
     category: "SPORTS",
-    price: "₹7,499",
+    price: 7499, // Changed from string to number
     brand: "Adidas",
     image: "/image/shoes2.jpeg",
     description: "Lightweight running shoes for daily workouts.",
@@ -27,7 +27,7 @@ const products = [
     id: 3,
     name: "White High-Tops",
     category: "CASUAL",
-    price: "₹12,495",
+    price: 12495, // Changed from string to number
     brand: "Converse",
     image: "/image/shoes3.jpeg",
     description: "Classic high-top sneakers with timeless style.",

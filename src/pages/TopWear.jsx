@@ -9,7 +9,7 @@ const topWear = [
     id: 1,
     brand: "UrbanFit",
     name: "Men Casual Shirt",
-    price: "₹1,199",
+    price: 1199, // Changed from string to number
     image: "/image/mtop1.jpeg",
     category: "Men",
     description: "Comfortable cotton casual shirt for everyday wear.",
@@ -18,7 +18,7 @@ const topWear = [
     id: 2,
     brand: "StyleAura",
     name: "Women Printed Top",
-    price: "₹899",
+    price: 899, // Changed from string to number
     image: "/image/wtop1.jpeg",
     category: "Women",
     description: "Stylish printed top with soft fabric and modern fit.",
@@ -27,7 +27,7 @@ const topWear = [
     id: 3,
     brand: "UrbanFit",
     name: "Men Slim Fit Polo",
-    price: "₹1,399",
+    price: 1399, // Changed from string to number
     image: "/image/mtop2.jpeg",
     category: "Men",
     description: "Slim fit polo t-shirt with premium fabric.",
