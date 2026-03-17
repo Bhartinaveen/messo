@@ -9,7 +9,7 @@ const bottomWear = [
     id: 1,
     brand: "UrbanFit",
     name: "Men Slim Fit Jeans",
-    price: "₹1,499",
+    price: 1499, // Changed from string to number
     image: "/image/mbottom1.jpeg",
     category: "Men",
     description: "Comfortable slim fit jeans for daily wear.",
@@ -18,7 +18,7 @@ const bottomWear = [
     id: 2,
     brand: "StyleAura",
     name: "Women A-Line Skirt",
-    price: "₹999",
+    price: 999, // Changed from string to number
     image: "/image/wbottom1.jpeg",
     category: "Women",
     description: "Elegant A-line skirt for casual & party wear.",
@@ -27,7 +27,7 @@ const bottomWear = [
     id: 3,
     brand: "UrbanFit",
     name: "Men Chino Pants",
-    price: "₹1,299",
+    price: 1299, // Changed from string to number
     image: "/image/mbottom2.jpeg",
     category: "Men",
     description: "Stylish chinos with perfect fit.",
@@ -36,7 +36,7 @@ const bottomWear = [
     id: 4,
     brand: "StyleAura",
     name: "Women Palazzos",
-    price: "₹1,099",
+    price: 1099, // Changed from string to number
     image: "/image/wbottom2.jpeg",
     category: "Women",
     description: "Trendy palazzos with soft fabric.",

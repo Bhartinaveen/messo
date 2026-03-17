@@ -10,7 +10,7 @@ const kurtas = [
     id: 1,
     brand: "FabIndia",
     name: "Silk Blend Kurta",
-    price: "₹2,499",
+    price: 2499, // Changed from string to number
     image: "/image/m1.jpg",
     category: "Men Kurta",
     description:
@@ -20,7 +20,7 @@ const kurtas = [
     id: 2,
     brand: "Manyavar",
     name: "Classic Solid Kurta",
-    price: "₹1,999",
+    price: 1999, // Changed from string to number
     image: "/image/m2.jpeg",
     category: "Men Kurta",
     description:
@@ -30,7 +30,7 @@ const kurtas = [
     id: 3,
     brand: "Wrogn",
     name: "Textured Festive Kurta",
-    price: "₹1,899",
+    price: 1899, // Changed from string to number
     image: "/image/m3.jpeg",
     category: "Men Kurta",
     description:
